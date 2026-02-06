@@ -1,0 +1,194 @@
+/* Global Styles - アプリ全体に適用される基本スタイル */
+
+/* リセットCSS - ブラウザのデフォルトスタイルを統一 */
+*,
+*::before,
+*::after {
+  box-sizing: border-box; /* パディングとボーダーを幅に含める */
+  margin: 0; /* デフォルトのマージンをリセット */
+  padding: 0; /* デフォルトのパディングをリセット */
+}
+
+/* HTML要素の基本設定 */
+html {
+  font-size: 16px; /* 基準フォントサイズを16pxに設定 */
+  -webkit-font-smoothing: antialiased; /* macOSでのフォント描画を滑らかに */
+  -moz-osx-font-smoothing: grayscale; /* Firefoxでのフォント描画を滑らかに */
+  text-rendering: optimizeLegibility; /* テキストの可読性を最適化 */
+}
+
+/* Body要素の設定 */
+body {
+  margin: 0; /* デフォルトのマージンを削除 */
+  font-family: var(--font-family-base); /* CSS変数で定義したフォントを使用 */
+  font-size: var(--font-size-base); /* 基本フォントサイズを適用 */
+  line-height: 1.6; /* 行間を1.6倍に設定（読みやすさ向上） */
+  color: var(--color-text-primary); /* メインテキストカラーを適用 */
+  background-color: var(--color-bg-secondary); /* 背景色を薄いグレーに設定 */
+  min-height: 100vh; /* 最小高さを画面全体に設定 */
+}
+
+/* 見出し要素の共通スタイル */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0; /* 上マージンを削除 */
+  margin-bottom: var(--spacing-md); /* 下マージンを設定 */
+  font-weight: var(--font-weight-bold); /* 太字に設定 */
+  line-height: 1.2; /* 見出しの行間を狭めに設定 */
+  color: var(--color-text-primary); /* テキスト色を設定 */
+}
+
+/* 各見出しのサイズ設定 */
+h1 {
+  font-size: var(--font-size-3xl); /* 32px */
+}
+
+h2 {
+  font-size: var(--font-size-2xl); /* 24px */
+}
+
+h3 {
+  font-size: var(--font-size-xl); /* 20px */
+}
+
+h4 {
+  font-size: var(--font-size-lg); /* 18px */
+}
+
+h5,
+h6 {
+  font-size: var(--font-size-base); /* 16px */
+}
+
+/* 段落要素 */
+p {
+  margin-top: 0; /* 上マージンを削除 */
+  margin-bottom: var(--spacing-md); /* 下マージンを設定 */
+}
+
+/* リンク要素 */
+a {
+  color: var(--color-primary); /* プライマリカラーを適用 */
+  text-decoration: none; /* 下線を削除 */
+  transition: color var(--transition-fast); /* カラー変更時のアニメーション */
+}
+
+a:hover {
+  color: var(--color-primary-dark); /* ホバー時に濃い色に変更 */
+  text-decoration: underline; /* ホバー時に下線を表示 */
+}
+
+/* ボタン要素の基本スタイル */
+button {
+  font-family: inherit; /* 親要素のフォントを継承 */
+  font-size: inherit; /* 親要素のフォントサイズを継承 */
+  line-height: inherit; /* 親要素の行間を継承 */
+  cursor: pointer; /* カーソルをポインターに変更 */
+  border: none; /* デフォルトのボーダーを削除 */
+  background-color: transparent; /* デフォルトの背景色を透明に */
+  padding: 0; /* デフォルトのパディングを削除 */
+}
+
+button:disabled {
+  cursor: not-allowed; /* 無効化時のカーソル */
+  opacity: 0.6; /* 無効化時の透明度 */
+}
+
+/* 入力要素の基本スタイル */
+input,
+textarea,
+select {
+  font-family: inherit; /* 親要素のフォントを継承 */
+  font-size: inherit; /* 親要素のフォントサイズを継承 */
+  line-height: inherit; /* 親要素の行間を継承 */
+  color: inherit; /* 親要素のテキスト色を継承 */
+}
+
+/* リスト要素のスタイルリセット */
+ul,
+ol {
+  margin: 0; /* マージンをリセット */
+  padding: 0; /* パディングをリセット */
+  list-style: none; /* リストマーカーを削除 */
+}
+
+/* 画像要素 */
+img {
+  max-width: 100%; /* 親要素の幅を超えないように */
+  height: auto; /* アスペクト比を維持 */
+  display: block; /* インライン要素のスペースを削除 */
+}
+
+/* テーブル要素 */
+table {
+  border-collapse: collapse; /* ボーダーを結合 */
+  width: 100%; /* 幅を100%に設定 */
+}
+
+/* スクロールバーのカスタマイズ（Webkit系ブラウザ用） */
+::-webkit-scrollbar {
+  width: 8px; /* スクロールバーの幅 */
+  height: 8px; /* 横スクロールバーの高さ */
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--color-bg-secondary); /* トラックの背景色 */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-border-dark); /* スクロールバーの色 */
+  border-radius: var(--border-radius-md); /* 角丸 */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-text-secondary); /* ホバー時の色 */
+}
+
+/* フォーカス時のアウトライン */
+:focus-visible {
+  outline: 2px solid var(--color-primary); /* プライマリカラーのアウトライン */
+  outline-offset: 2px; /* アウトラインの位置調整 */
+}
+
+/* ユーティリティクラス - よく使うスタイルを定義 */
+.container {
+  max-width: var(--container-max-width); /* 最大幅を制限 */
+  margin-left: auto; /* 左右中央揃え */
+  margin-right: auto; /* 左右中央揃え */
+  padding-left: var(--spacing-md); /* 左パディング */
+  padding-right: var(--spacing-md); /* 右パディング */
+}
+
+.text-center {
+  text-align: center; /* テキストを中央揃え */
+}
+
+.text-right {
+  text-align: right; /* テキストを右揃え */
+}
+
+.text-left {
+  text-align: left; /* テキストを左揃え */
+}
+
+/* 非表示クラス */
+.hidden {
+  display: none; /* 要素を非表示 */
+}
+
+/* スクリーンリーダー専用テキスト（視覚的には非表示、読み上げは可能） */
+.sr-only {
+  position: absolute; /* 通常のレイアウトから除外 */
+  width: 1px; /* 最小サイズ */
+  height: 1px; /* 最小サイズ */
+  padding: 0; /* パディングなし */
+  margin: -1px; /* マイナスマージンで隠す */
+  overflow: hidden; /* はみ出しを隠す */
+  clip: rect(0, 0, 0, 0); /* クリッピング */
+  white-space: nowrap; /* 改行なし */
+  border-width: 0; /* ボーダーなし */
+}
