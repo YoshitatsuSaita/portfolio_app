@@ -1,0 +1,13 @@
+/* ヘッダーのスタイル定義 */
+.header {
+  background-color: #4a90e2; /* 背景色を青系に設定 */
+  color: white; /* 文字色を白に設定 */
+  padding: 1.5rem 2rem; /* 上下1.5rem、左右2remの余白 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 下方向に軽い影を追加 */
+}
+
+.header-title {
+  margin: 0; /* デフォルトのマージンを削除 */
+  font-size: 1.5rem; /* フォントサイズを設定 */
+  font-weight: 600; /* フォントの太さを設定 */
+}
