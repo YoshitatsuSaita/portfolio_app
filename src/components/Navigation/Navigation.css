@@ -1,0 +1,32 @@
+/* ナビゲーションバーのスタイル定義 */
+.navigation {
+  display: flex; /* フレックスボックスレイアウトを使用 */
+  background-color: #f8f9fa; /* 背景色を明るいグレーに設定 */
+  padding: 0; /* 内側の余白をリセット */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* 下方向に軽い影を追加 */
+}
+
+/* ナビゲーションリンクの基本スタイル */
+.nav-link {
+  padding: 1rem 2rem; /* 上下1rem、左右2remの余白 */
+  text-decoration: none; /* 下線を削除 */
+  color: #495057; /* 文字色を濃いグレーに設定 */
+  font-weight: 500; /* フォントの太さを設定 */
+  transition:
+    background-color 0.2s,
+    color 0.2s; /* 背景色と文字色の変化をアニメーション */
+  border-bottom: 3px solid transparent; /* 下線用の透明なボーダーを設定 */
+}
+
+/* ホバー時のスタイル */
+.nav-link:hover {
+  background-color: #e9ecef; /* 背景色を少し濃いグレーに変更 */
+  color: #212529; /* 文字色をより濃く変更 */
+}
+
+/* アクティブなリンクのスタイル */
+.nav-link.active {
+  color: #4a90e2; /* 文字色を青系に変更 */
+  background-color: #fff; /* 背景色を白に変更 */
+  border-bottom-color: #4a90e2; /* 下線を青系に変更 */
+}

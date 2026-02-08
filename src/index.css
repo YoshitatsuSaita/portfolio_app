@@ -1,3 +1,12 @@
+/* アプリケーションのエントリーポイントCSS */
+/* このファイルはmain.tsxでインポートされ、アプリ全体に適用される */
+
+/* CSS変数をインポート - 色、サイズ、余白などの定義 */
+@import "./styles/variables.css";
+
+/* グローバルスタイルをインポート - 基本的なリセットと共通スタイル */
+@import "./styles/global.css";
+/* 
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
@@ -67,4 +76,4 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
+} */
