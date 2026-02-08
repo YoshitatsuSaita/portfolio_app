@@ -71,3 +71,63 @@
   gap: 0.5rem; /* ボタン間の間隔を設定 */
   justify-content: flex-end; /* ボタンを右揃えに配置 */
 }
+
+/* 編集ボタンのスタイル */
+.btn-secondary {
+  background-color: var(
+    --color-primary
+  ); /* 背景色を青系に設定 - プライマリカラーを使用 */
+  color: white; /* 文字色を白に設定 - 可読性を確保 */
+  padding: var(--spacing-sm) var(--spacing-md); /* 内側の余白を設定 - ボタンのサイズ調整 */
+  border: none; /* ボーダーなし - シンプルなデザイン */
+  border-radius: var(--border-radius-md); /* 角丸を適用 - 柔らかい印象 */
+  font-size: var(--font-size-sm); /* フォントサイズを小さめに設定 */
+  font-weight: var(--font-weight-medium); /* フォントを少し太く - 視認性向上 */
+  cursor: pointer; /* カーソルをポインターに変更 - クリック可能を示す */
+  transition:
+    background-color var(--transition-fast),
+    transform var(--transition-fast); /* 背景色と変形のアニメーション - スムーズな視覚効果 */
+}
+
+/* 編集ボタンのホバー時スタイル */
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(
+    --color-primary-dark
+  ); /* 背景色をより濃い青に変更 - ホバー効果 */
+  transform: translateY(-1px); /* ボタンを少し上に移動 - 浮き上がる効果 */
+}
+
+/* 編集ボタンの無効化時スタイル */
+.btn-secondary:disabled {
+  opacity: 0.6; /* 透明度を下げる - 無効状態を示す */
+  cursor: not-allowed; /* カーソルを禁止マークに変更 - クリック不可を示す */
+}
+
+/* 削除ボタンのスタイル */
+.btn-danger {
+  background-color: var(
+    --color-error
+  ); /* 背景色を赤系に設定 - 危険な操作を視覚的に示す */
+  color: white; /* 文字色を白に設定 - 可読性を確保 */
+  padding: var(--spacing-sm) var(--spacing-md); /* 内側の余白を設定 - ボタンのサイズ調整 */
+  border: none; /* ボーダーなし - シンプルなデザイン */
+  border-radius: var(--border-radius-md); /* 角丸を適用 - 柔らかい印象 */
+  font-size: var(--font-size-sm); /* フォントサイズを小さめに設定 */
+  font-weight: var(--font-weight-medium); /* フォントを少し太く - 視認性向上 */
+  cursor: pointer; /* カーソルをポインターに変更 - クリック可能を示す */
+  transition:
+    background-color var(--transition-fast),
+    transform var(--transition-fast); /* 背景色と変形のアニメーション - スムーズな視覚効果 */
+}
+
+/* 削除ボタンのホバー時スタイル */
+.btn-danger:hover:not(:disabled) {
+  background-color: #c82333; /* 背景色をより濃い赤に変更 - ホバー効果 */
+  transform: translateY(-1px); /* ボタンを少し上に移動 - 浮き上がる効果 */
+}
+
+/* 削除ボタンの無効化時スタイル */
+.btn-danger:disabled {
+  opacity: 0.6; /* 透明度を下げる - 無効状態を示す */
+  cursor: not-allowed; /* カーソルを禁止マークに変更 - クリック不可を示す */
+}

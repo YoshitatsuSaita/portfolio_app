@@ -1,5 +1,7 @@
 import { useForm } from "react-hook-form"; // React Hook Formをインポート
+import { useEffect } from "react"; // useEffectフックをインポート - 編集モード時の初期値設定用
 import { useMedicationStore } from "../../store/medicationStore"; // Zustandストアをインポート
+import { Medication } from "../../types"; // Medication型をインポート - 編集モード用
 import "./MedicationForm.css"; // CSSをインポート
 
 // フォーム入力データの型定義
@@ -15,18 +17,25 @@ interface MedicationFormData {
 
 // MedicationFormコンポーネントのpropsの型定義
 interface MedicationFormProps {
-  onSuccess: () => void; // 登録成功時に実行する関数
+  medication?: Medication; // 編集対象の薬剤データ（任意） - 未指定の場合は新規登録モード
+  onSuccess: () => void; // 登録/更新成功時に実行する関数
 }
 
 // 薬剤登録フォームコンポーネント
-function MedicationForm({ onSuccess }: MedicationFormProps) {
+function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
   const addMedication = useMedicationStore((state) => state.addMedication); // ストアからaddMedication関数を取得
+  const updateMedication = useMedicationStore(
+    (state) => state.updateMedication,
+  ); // ストアからupdateMedication関数を取得
+
+  const isEditMode = !!medication; // 編集モードかどうかを判定（medicationが存在すればtrue）
 
   // React Hook Formの初期化
   const {
     register, // 入力欄を登録する関数
     handleSubmit, // フォーム送信時の処理を登録する関数
     watch, // フォームの値を監視する関数
+    reset, // フォームをリセットする関数
     formState: { errors, isSubmitting }, // エラー情報と送信中フラグ
   } = useForm<MedicationFormData>({
     defaultValues: {
@@ -41,25 +50,58 @@ function MedicationForm({ onSuccess }: MedicationFormProps) {
     },
   });
 
+  // 編集モードの場合、フォームに既存データを設定
+  useEffect(() => {
+    if (medication) {
+      // medicationが存在する場合（編集モード）
+      reset({
+        // フォームの値をリセットして既存データを設定
+        name: medication.name, // 薬品名
+        dosage: medication.dosage, // 服用量
+        frequency: medication.frequency, // 服用回数
+        times: medication.times, // 服用時間の配列
+        startDate: medication.startDate, // 開始日
+        endDate: medication.endDate || "", // 終了日（nullの場合は空文字）
+        memo: medication.memo, // メモ
+      });
+    }
+  }, [medication, reset]); // medicationまたはresetが変更された時に再実行
+
   const frequency = watch("frequency"); // 服用回数の値を監視
 
   // フォーム送信時の処理
   const onSubmit = async (data: MedicationFormData) => {
     try {
-      // ZustandストアのaddMedication関数を呼び出して薬剤を登録
-      await addMedication({
-        name: data.name, // 薬品名
-        dosage: data.dosage, // 服用量
-        frequency: data.frequency, // 服用回数
-        times: data.times.slice(0, data.frequency), // 服用回数分の時間のみ取得
-        startDate: data.startDate, // 開始日
-        endDate: data.endDate || null, // 終了日（空の場合はnull）
-        memo: data.memo, // メモ
-        fdaDetails: null, // FDA詳細情報は今回はnull
-      });
+      if (isEditMode) {
+        // 編集モードの場合
+        // ZustandストアのupdateMedication関数を呼び出して薬剤を更新
+        await updateMedication(medication.id, {
+          // 薬剤IDを指定
+          name: data.name, // 薬品名
+          dosage: data.dosage, // 服用量
+          frequency: data.frequency, // 服用回数
+          times: data.times.slice(0, data.frequency), // 服用回数分の時間のみ取得
+          startDate: data.startDate, // 開始日
+          endDate: data.endDate || null, // 終了日（空の場合はnull）
+          memo: data.memo, // メモ
+        });
+      } else {
+        // 新規登録モードの場合
+        // ZustandストアのaddMedication関数を呼び出して薬剤を登録
+        await addMedication({
+          name: data.name, // 薬品名
+          dosage: data.dosage, // 服用量
+          frequency: data.frequency, // 服用回数
+          times: data.times.slice(0, data.frequency), // 服用回数分の時間のみ取得
+          startDate: data.startDate, // 開始日
+          endDate: data.endDate || null, // 終了日（空の場合はnull）
+          memo: data.memo, // メモ
+          fdaDetails: null, // FDA詳細情報は今回はnull
+        });
+      }
       onSuccess(); // 成功時のコールバックを実行（モーダルを閉じる）
     } catch (error) {
-      console.error("薬剤の登録に失敗しました:", error); // エラーをコンソールに出力
+      console.error("薬剤の登録/更新に失敗しました:", error); // エラーをコンソールに出力
     }
   };
 
@@ -223,8 +265,15 @@ function MedicationForm({ onSuccess }: MedicationFormProps) {
           className="btn btn-primary" // プライマリボタンスタイル
           disabled={isSubmitting} // 送信中は無効化
         >
-          {isSubmitting ? "登録中..." : "登録"}{" "}
-          {/* 送信中は「登録中...」と表示 */}
+          {
+            isSubmitting
+              ? isEditMode
+                ? "更新中..."
+                : "登録中..." // 送信中は処理中メッセージを表示
+              : isEditMode
+                ? "更新"
+                : "登録" // 通常時は編集モードか新規登録モードかでボタンテキストを変更
+          }
         </button>
       </div>
     </form>
