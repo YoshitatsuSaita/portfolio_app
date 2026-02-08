@@ -1,0 +1,73 @@
+/* 薬剤カードのスタイル定義 */
+.medication-card {
+  background-color: #ffffff; /* 背景色を白に設定 - カードを目立たせる */
+  border-radius: 8px; /* 角を丸くする - 柔らかい印象 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 影を追加 - カードを浮き上がらせる */
+  padding: 1.5rem; /* 内側の余白を設定 - コンテンツとの余白 */
+  margin-bottom: 1rem; /* 下の余白を設定 - カード間のスペース */
+  transition: box-shadow 0.3s ease; /* 影の変化をアニメーション - ホバー時の効果 */
+}
+
+/* ホバー時のスタイル */
+.medication-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* 影を強くする - ホバー時の視覚効果 */
+}
+
+/* カードヘッダーのスタイル */
+.card-header {
+  border-bottom: 2px solid #e9ecef; /* 下にボーダーを追加 - ヘッダーと本体を区切る */
+  padding-bottom: 0.75rem; /* 下の余白を設定 - ボーダーとの間隔 */
+  margin-bottom: 1rem; /* 下のマージンを設定 - 本体との間隔 */
+}
+
+/* 薬品名のスタイル */
+.medication-name {
+  font-size: 1.25rem; /* フォントサイズを大きく - 薬品名を目立たせる */
+  font-weight: 600; /* フォントを太字に - 重要性を強調 */
+  color: #212529; /* 文字色を濃い黒に設定 - 可読性向上 */
+  margin: 0; /* デフォルトのマージンを削除 - レイアウト調整 */
+}
+
+/* カード本体のスタイル */
+.card-body {
+  display: flex; /* フレックスボックスレイアウトを使用 - 要素の配置を柔軟に */
+  flex-direction: column; /* 縦方向に要素を配置 - 詳細情報を縦に並べる */
+  gap: 0.5rem; /* 要素間の間隔を設定 - 詳細情報の間隔 */
+}
+
+/* 詳細情報1項目のスタイル */
+.medication-detail {
+  display: flex; /* フレックスボックスレイアウトを使用 - ラベルと値を横に並べる */
+  align-items: flex-start; /* 要素を上揃えに - テキストが折り返した場合の対応 */
+}
+
+/* ラベルのスタイル */
+.detail-label {
+  font-weight: 500; /* フォントを中太字に - ラベルを目立たせる */
+  color: #6c757d; /* 文字色をグレーに設定 - 値と区別 */
+  min-width: 90px; /* 最小幅を設定 - ラベルの幅を揃える */
+  margin-right: 0.5rem; /* 右のマージンを設定 - 値との間隔 */
+}
+
+/* 値のスタイル */
+.detail-value {
+  color: #212529; /* 文字色を濃い黒に設定 - 可読性向上 */
+  flex: 1; /* 残りのスペースを全て使用 - 長いテキストに対応 */
+}
+
+/* メモのスタイル */
+.medication-detail.memo {
+  margin-top: 0.5rem; /* 上のマージンを追加 - 他の項目と区別 */
+  padding-top: 0.5rem; /* 上の余白を追加 - 他の項目と区別 */
+  border-top: 1px solid #e9ecef; /* 上にボーダーを追加 - 視覚的に区切る */
+}
+
+/* カードフッターのスタイル */
+.card-footer {
+  margin-top: 1rem; /* 上のマージンを設定 - 本体との間隔 */
+  padding-top: 1rem; /* 上の余白を設定 - 本体との間隔 */
+  border-top: 1px solid #e9ecef; /* 上にボーダーを追加 - フッターと本体を区切る */
+  display: flex; /* フレックスボックスレイアウトを使用 - ボタンの配置 */
+  gap: 0.5rem; /* ボタン間の間隔を設定 */
+  justify-content: flex-end; /* ボタンを右揃えに配置 */
+}

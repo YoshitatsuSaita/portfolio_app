@@ -1,0 +1,132 @@
+/* 薬剤登録フォームのスタイル */
+.medication-form {
+  display: flex; /* フレックスボックスレイアウト */
+  flex-direction: column; /* 縦方向に配置 */
+  gap: var(--spacing-lg); /* 要素間の余白 */
+}
+
+/* フォームグループ - 各入力項目のコンテナ */
+.form-group {
+  display: flex; /* フレックスボックスレイアウト */
+  flex-direction: column; /* 縦方向に配置 */
+  gap: var(--spacing-sm); /* ラベルと入力欄の間の余白 */
+}
+
+/* フォームラベル */
+.form-label {
+  font-weight: var(--font-weight-medium); /* フォントを少し太く */
+  color: var(--color-text-primary); /* テキスト色 */
+  font-size: var(--font-size-base); /* フォントサイズ */
+}
+
+/* 必須マーク */
+.required {
+  color: var(--color-error); /* 赤色 */
+  margin-left: var(--spacing-xs); /* 左側に少し余白 */
+}
+
+/* フォーム入力欄（テキスト、数値、日付、時刻） */
+.form-input {
+  padding: var(--spacing-sm) var(--spacing-md); /* 内側の余白 */
+  border: 1px solid var(--color-border); /* ボーダー */
+  border-radius: var(--border-radius-md); /* 角丸 */
+  font-size: var(--font-size-base); /* フォントサイズ */
+  transition: border-color var(--transition-fast); /* ボーダー色の変化をアニメーション */
+}
+
+/* フォーカス時の入力欄 */
+.form-input:focus {
+  outline: none; /* デフォルトのアウトラインを削除 */
+  border-color: var(--color-primary); /* ボーダー色をプライマリカラーに */
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1); /* 薄い青色の影を追加 */
+}
+
+/* エラー時の入力欄 */
+.form-input.error {
+  border-color: var(--color-error); /* ボーダー色を赤に */
+}
+
+/* テキストエリア */
+.form-textarea {
+  padding: var(--spacing-sm) var(--spacing-md); /* 内側の余白 */
+  border: 1px solid var(--color-border); /* ボーダー */
+  border-radius: var(--border-radius-md); /* 角丸 */
+  font-size: var(--font-size-base); /* フォントサイズ */
+  font-family: inherit; /* フォントを継承 */
+  resize: vertical; /* 縦方向のリサイズのみ許可 */
+  transition: border-color var(--transition-fast); /* ボーダー色の変化をアニメーション */
+}
+
+/* フォーカス時のテキストエリア */
+.form-textarea:focus {
+  outline: none; /* デフォルトのアウトラインを削除 */
+  border-color: var(--color-primary); /* ボーダー色をプライマリカラーに */
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1); /* 薄い青色の影を追加 */
+}
+
+/* エラーメッセージ */
+.error-message {
+  color: var(--color-error); /* 赤色 */
+  font-size: var(--font-size-sm); /* 小さめのフォント */
+  margin: 0; /* マージンなし */
+}
+
+/* 服用時間入力欄のコンテナ */
+.times-container {
+  display: flex; /* フレックスボックスレイアウト */
+  flex-direction: column; /* 縦方向に配置 */
+  gap: var(--spacing-md); /* 各時間入力欄の間の余白 */
+}
+
+/* 個別の時間入力グループ */
+.time-input-group {
+  display: flex; /* フレックスボックスレイアウト */
+  flex-direction: column; /* 縦方向に配置 */
+  gap: var(--spacing-sm); /* ラベルと入力欄の間の余白 */
+}
+
+/* 時間ラベル */
+.time-label {
+  font-size: var(--font-size-sm); /* 小さめのフォント */
+  color: var(--color-text-secondary); /* グレー */
+  font-weight: var(--font-weight-medium); /* フォントを少し太く */
+}
+
+/* フォームアクション（ボタンエリア） */
+.form-actions {
+  display: flex; /* フレックスボックスレイアウト */
+  justify-content: flex-end; /* 右揃え */
+  gap: var(--spacing-md); /* ボタン間の余白 */
+  margin-top: var(--spacing-md); /* 上側の余白 */
+}
+
+/* 共通ボタンスタイル */
+.btn {
+  padding: var(--spacing-sm) var(--spacing-xl); /* 内側の余白 */
+  border: none; /* ボーダーなし */
+  border-radius: var(--border-radius-md); /* 角丸 */
+  font-size: var(--font-size-base); /* フォントサイズ */
+  font-weight: var(--font-weight-medium); /* フォントを少し太く */
+  cursor: pointer; /* カーソルをポインターに */
+  transition:
+    background-color var(--transition-fast),
+    transform var(--transition-fast); /* 背景色と変形のアニメーション */
+}
+
+/* プライマリボタン */
+.btn-primary {
+  background-color: var(--color-primary); /* プライマリカラー */
+  color: white; /* 白文字 */
+}
+
+/* プライマリボタンホバー時 */
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-dark); /* 濃いプライマリカラー */
+  transform: translateY(-1px); /* 少し上に移動 */
+}
+
+/* 無効化されたボタン */
+.btn:disabled {
+  opacity: 0.6; /* 透明度を下げる */
+  cursor: not-allowed; /* カーソルを禁止マークに */
+}
