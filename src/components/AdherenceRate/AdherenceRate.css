@@ -1,0 +1,86 @@
+/* 服用遵守率表示のスタイル定義 */
+.adherence-rate-container {
+  width: 100%; /* 幅を100%に設定 */
+  max-width: 800px; /* 最大幅を800pxに制限 */
+  margin: 0 auto var(--spacing-xl) auto; /* 左右中央揃え、下側に余白 */
+}
+
+.adherence-rate-title {
+  font-size: var(--font-size-xl); /* フォントサイズを特大に */
+  font-weight: var(--font-weight-bold); /* 太字 */
+  color: var(--color-text-primary); /* テキスト色 */
+  margin-bottom: var(--spacing-lg); /* 下側の余白 */
+}
+
+/* 遵守率カード群 */
+.adherence-cards {
+  display: grid; /* グリッドレイアウト */
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(200px, 1fr)
+  ); /* 自動的に列数を調整（最小200px） */
+  gap: var(--spacing-lg); /* カード間の余白 */
+}
+
+/* 個別の遵守率カード */
+.adherence-card {
+  background-color: var(--color-bg-primary); /* 白背景 */
+  border-radius: var(--border-radius-lg); /* 大きめの角丸 */
+  padding: var(--spacing-lg); /* 内側の余白 */
+  box-shadow: var(--shadow-md); /* 中程度の影 */
+  text-align: center; /* テキストを中央揃え */
+  transition: transform var(--transition-fast); /* 変形のアニメーション */
+}
+
+.adherence-card:hover {
+  transform: translateY(-2px); /* ホバー時に少し上に移動 */
+}
+
+/* カードのラベル */
+.card-label {
+  font-size: var(--font-size-sm); /* フォントサイズを小さく */
+  color: var(--color-text-secondary); /* グレー */
+  margin-bottom: var(--spacing-sm); /* 下側の余白 */
+  font-weight: var(--font-weight-medium); /* 中太字 */
+}
+
+/* 遵守率の数値表示 */
+.card-value {
+  font-size: var(--font-size-3xl); /* フォントサイズを大見出しサイズに */
+  font-weight: var(--font-weight-bold); /* 太字 */
+  color: var(--color-primary); /* プライマリカラー */
+  margin-bottom: var(--spacing-xs); /* 下側の余白 */
+}
+
+/* 遵守率が高い場合（80%以上） */
+.card-value.high {
+  color: var(--color-secondary); /* 緑色（成功を示す） */
+}
+
+/* 遵守率が中程度の場合（50-79%） */
+.card-value.medium {
+  color: var(--color-warning); /* オレンジ色（警告） */
+}
+
+/* 遵守率が低い場合（50%未満） */
+.card-value.low {
+  color: var(--color-error); /* 赤色（エラー） */
+}
+
+/* パーセント記号 */
+.percent-sign {
+  font-size: var(--font-size-xl); /* パーセント記号は少し小さく */
+}
+
+/* 詳細情報（服用回数/予定回数） */
+.card-detail {
+  font-size: var(--font-size-xs); /* フォントサイズを極小に */
+  color: var(--color-text-secondary); /* グレー */
+}
+
+/* レスポンシブ対応 - モバイル */
+@media (max-width: 768px) {
+  .adherence-cards {
+    grid-template-columns: 1fr; /* 1列に変更 */
+  }
+}

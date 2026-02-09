@@ -1,9 +1,217 @@
 /* カレンダー画面のスタイル定義 */
-.calendar {
-  padding: 2rem; /* 内側の余白を設定 */
+.calendar-page {
+  padding: var(--spacing-lg); /* 内側の余白を設定 */
+  max-width: 1200px; /* 最大幅を1200pxに制限 */
+  margin: 0 auto; /* 左右中央揃え */
 }
 
-.calendar h1 {
-  margin-bottom: 1.5rem; /* タイトル下の余白 */
-  color: #333; /* 文字色を濃いグレーに */
+.calendar-page h1 {
+  margin-bottom: var(--spacing-xl); /* タイトル下の余白 */
+  color: var(--color-text-primary); /* 文字色 */
+  text-align: center; /* テキストを中央揃え */
+}
+
+/* カレンダーコンテナ */
+.calendar-container {
+  display: grid; /* グリッドレイアウト */
+  grid-template-columns: 2fr 1fr; /* カレンダー:詳細 = 2:1 */
+  gap: var(--spacing-xl); /* 要素間の余白 */
+  align-items: start; /* 上揃え */
+}
+
+/* カレンダー本体のラッパー */
+.calendar-wrapper {
+  background-color: var(--color-bg-primary); /* 白背景 */
+  padding: var(--spacing-lg); /* 内側の余白 */
+  border-radius: var(--border-radius-lg); /* 角丸 */
+  box-shadow: var(--shadow-md); /* 中程度の影 */
+}
+
+/* 選択日の詳細表示エリア */
+.calendar-detail {
+  background-color: var(--color-bg-primary); /* 白背景 */
+  padding: var(--spacing-lg); /* 内側の余白 */
+  border-radius: var(--border-radius-lg); /* 角丸 */
+  box-shadow: var(--shadow-md); /* 中程度の影 */
+  position: sticky; /* スティッキーポジション（スクロール時に固定） */
+  top: var(--spacing-lg); /* 上から余白分の位置に固定 */
+  max-height: calc(
+    100vh - 120px
+  ); /* 最大高さを画面高さから120pxを引いた値に制限 */
+  overflow-y: auto; /* 縦方向のスクロールを有効化 */
+}
+
+/* React Calendarのカスタムスタイル */
+.react-calendar {
+  width: 100%; /* 幅を100%に設定 */
+  border: none; /* デフォルトのボーダーを削除 */
+  font-family: var(--font-family-base); /* フォントを設定 */
+}
+
+/* カレンダーのナビゲーション（月の切り替えボタン） */
+.react-calendar__navigation {
+  display: flex; /* フレックスボックスレイアウト */
+  height: 44px; /* 高さを設定 */
+  margin-bottom: var(--spacing-md); /* 下側の余白 */
+}
+
+.react-calendar__navigation button {
+  min-width: 44px; /* 最小幅を設定 */
+  background: none; /* 背景なし */
+  font-size: var(--font-size-lg); /* フォントサイズを大きく */
+  color: var(--color-text-primary); /* テキスト色 */
+  border: none; /* ボーダーなし */
+  cursor: pointer; /* カーソルをポインターに */
+  transition: background-color var(--transition-fast); /* 背景色の変化をアニメーション */
+}
+
+.react-calendar__navigation button:hover {
+  background-color: var(--color-bg-secondary); /* ホバー時に薄いグレー背景 */
+  border-radius: var(--border-radius-sm); /* 小さい角丸 */
+}
+
+.react-calendar__navigation button:disabled {
+  opacity: 0.4; /* 無効化時の透明度 */
+  cursor: not-allowed; /* カーソルを禁止マークに */
+}
+
+/* 月・年の表示 */
+.react-calendar__navigation__label {
+  font-weight: var(--font-weight-bold); /* 太字 */
+  font-size: var(--font-size-xl); /* フォントサイズを特大に */
+}
+
+/* 曜日ヘッダー */
+.react-calendar__month-view__weekdays {
+  text-align: center; /* テキストを中央揃え */
+  font-weight: var(--font-weight-medium); /* 中太字 */
+  font-size: var(--font-size-sm); /* フォントサイズを小さく */
+  color: var(--color-text-secondary); /* グレー */
+}
+
+.react-calendar__month-view__weekdays abbr {
+  text-decoration: none; /* 下線を削除 */
+}
+
+/* カレンダーのタイル（各日付） */
+.react-calendar__tile {
+  max-width: 100%; /* 最大幅を100%に設定 */
+  padding: var(--spacing-md); /* 内側の余白 */
+  background: none; /* 背景なし */
+  text-align: center; /* テキストを中央揃え */
+  line-height: 1.2; /* 行間を設定 */
+  font-size: var(--font-size-base); /* フォントサイズ */
+  border: 1px solid transparent; /* 透明なボーダー（ホバー時に表示） */
+  border-radius: var(--border-radius-sm); /* 小さい角丸 */
+  cursor: pointer; /* カーソルをポインターに */
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast); /* 背景色とボーダー色の変化をアニメーション */
+  position: relative; /* 絶対配置の基準点 */
+  min-height: 60px; /* 最小高さを設定（マークを表示するスペース確保） */
+}
+
+.react-calendar__tile:hover {
+  background-color: var(--color-bg-secondary); /* ホバー時に薄いグレー背景 */
+  border-color: var(--color-border); /* ボーダーを表示 */
+}
+
+/* 今日の日付 */
+.react-calendar__tile--now {
+  background-color: var(--color-primary-light); /* 薄い青背景 */
+  font-weight: var(--font-weight-bold); /* 太字 */
+}
+
+.react-calendar__tile--now:hover {
+  background-color: #d1e7fd; /* ホバー時に少し濃い青 */
+}
+
+/* 選択された日付 */
+.react-calendar__tile--active {
+  background-color: var(--color-primary); /* プライマリカラー背景 */
+  color: white; /* 白文字 */
+  font-weight: var(--font-weight-bold); /* 太字 */
+}
+
+.react-calendar__tile--active:hover {
+  background-color: var(
+    --color-primary-dark
+  ); /* ホバー時に濃いプライマリカラー */
+}
+
+/* 隣接月の日付（グレーアウト） */
+.react-calendar__month-view__days__day--neighboringMonth {
+  color: var(--color-text-disabled); /* 薄いグレー */
+}
+
+/* 日付タイル内の服用予定マーク */
+.tile-content {
+  display: flex; /* フレックスボックスレイアウト */
+  flex-direction: column; /* 縦方向に配置 */
+  align-items: center; /* 中央揃え */
+  gap: var(--spacing-xs); /* 要素間の余白 */
+}
+
+/* 服用予定数のバッジ */
+.schedule-badge {
+  display: inline-block; /* インラインブロック要素 */
+  background-color: var(--color-primary); /* プライマリカラー背景 */
+  color: white; /* 白文字 */
+  border-radius: var(--border-radius-full); /* 完全な円形 */
+  padding: 2px 8px; /* 内側の余白 */
+  font-size: var(--font-size-xs); /* フォントサイズを極小に */
+  font-weight: var(--font-weight-bold); /* 太字 */
+  margin-top: var(--spacing-xs); /* 上側の余白 */
+}
+
+/* 完了済みの服用予定がある日 */
+.schedule-badge.completed {
+  background-color: var(--color-secondary); /* 成功色（緑） */
+}
+
+/* 未完了の服用予定がある日 */
+.schedule-badge.pending {
+  background-color: var(--color-warning); /* 警告色（オレンジ） */
+}
+
+/* 全て完了済みの日 */
+.schedule-badge.all-completed {
+  background-color: var(--color-secondary); /* 成功色（緑） */
+}
+
+/* レスポンシブ対応 - タブレット */
+@media (max-width: 1024px) {
+  .calendar-container {
+    grid-template-columns: 1fr; /* 1列に変更 */
+  }
+
+  .calendar-detail {
+    position: static; /* スティッキーポジションを解除 */
+    max-height: none; /* 最大高さの制限を解除 */
+  }
+}
+
+/* レスポンシブ対応 - モバイル */
+@media (max-width: 768px) {
+  .calendar-page {
+    padding: var(--spacing-md); /* パディングを小さく */
+  }
+
+  .calendar-wrapper {
+    padding: var(--spacing-md); /* パディングを小さく */
+  }
+
+  .calendar-detail {
+    padding: var(--spacing-md); /* パディングを小さく */
+  }
+
+  .react-calendar__tile {
+    padding: var(--spacing-sm); /* パディングを小さく */
+    min-height: 50px; /* 最小高さを小さく */
+    font-size: var(--font-size-sm); /* フォントサイズを小さく */
+  }
+
+  .react-calendar__navigation__label {
+    font-size: var(--font-size-lg); /* フォントサイズを小さく */
+  }
 }

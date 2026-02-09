@@ -1,9 +1,23 @@
 /* ホーム画面のスタイル定義 */
 .home {
-  padding: 2rem; /* 内側の余白を設定 */
+  padding: var(--spacing-lg); /* 内側の余白を設定 */
+  max-width: 1000px; /* 最大幅を1000pxに制限 */
+  margin: 0 auto; /* 左右中央揃え */
 }
 
 .home h1 {
-  margin-bottom: 1.5rem; /* タイトル下の余白 */
-  color: #333; /* 文字色を濃いグレーに */
+  margin-bottom: var(--spacing-xl); /* タイトル下の余白 */
+  color: var(--color-text-primary); /* 文字色 */
+  text-align: center; /* テキストを中央揃え */
+}
+
+/* レスポンシブ対応 - モバイル */
+@media (max-width: 768px) {
+  .home {
+    padding: var(--spacing-md); /* パディングを小さく */
+  }
+
+  .home h1 {
+    font-size: var(--font-size-2xl); /* タイトルを少し小さく */
+  }
 }

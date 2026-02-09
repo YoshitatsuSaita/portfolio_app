@@ -1,0 +1,139 @@
+/* 服用予定リストのスタイル定義 */
+.schedule-list-container {
+  width: 100%; /* 幅を100%に設定 */
+  max-width: 800px; /* 最大幅を800pxに制限 */
+  margin: 0 auto; /* 左右中央揃え */
+}
+
+/* 日付ヘッダーのスタイル */
+.date-header {
+  display: flex; /* フレックスボックスレイアウト */
+  align-items: center; /* 垂直方向中央揃え */
+  gap: var(--spacing-md); /* アイコンとテキストの間隔 */
+  margin-bottom: var(--spacing-lg); /* 下側の余白 */
+  padding: var(--spacing-md); /* 内側の余白 */
+  background-color: var(--color-primary-light); /* 薄い青背景 */
+  border-radius: var(--border-radius-md); /* 角丸 */
+}
+
+.date-header h2 {
+  margin: 0; /* デフォルトのマージンを削除 */
+  font-size: var(--font-size-xl); /* フォントサイズを特大に */
+  color: var(--color-text-primary); /* テキスト色 */
+}
+
+/* 服用予定リスト本体 */
+.schedule-list {
+  display: flex; /* フレックスボックスレイアウト */
+  flex-direction: column; /* 縦方向に配置 */
+  gap: var(--spacing-md); /* 各項目間の余白 */
+}
+
+/* 服用予定項目（カード形式） */
+.schedule-item {
+  display: flex; /* フレックスボックスレイアウト */
+  align-items: center; /* 垂直方向中央揃え */
+  padding: var(--spacing-lg); /* 内側の余白 */
+  background-color: var(--color-bg-primary); /* 白背景 */
+  border-radius: var(--border-radius-md); /* 角丸 */
+  box-shadow: var(--shadow-sm); /* 小さい影 */
+  transition: box-shadow var(--transition-fast); /* 影の変化をアニメーション */
+}
+
+.schedule-item:hover {
+  box-shadow: var(--shadow-md); /* ホバー時に影を強く */
+}
+
+/* 服用完了済みの項目 */
+.schedule-item.completed {
+  background-color: #f0f9ff; /* 薄い青背景（完了を示す） */
+  opacity: 0.8; /* 少し透明に */
+}
+
+/* 時刻表示部分 */
+.schedule-time {
+  min-width: 80px; /* 最小幅を設定（時刻が揃うように） */
+  font-size: var(--font-size-lg); /* フォントサイズを大きく */
+  font-weight: var(--font-weight-bold); /* 太字 */
+  color: var(--color-primary); /* プライマリカラー */
+}
+
+/* 薬剤情報部分 */
+.schedule-info {
+  flex: 1; /* 残りのスペースを使用 */
+  margin-left: var(--spacing-lg); /* 左側の余白 */
+}
+
+.medication-name {
+  font-size: var(--font-size-lg); /* フォントサイズを大きく */
+  font-weight: var(--font-weight-medium); /* 中太字 */
+  color: var(--color-text-primary); /* テキスト色 */
+  margin-bottom: var(--spacing-xs); /* 下側の余白 */
+}
+
+.medication-dosage {
+  font-size: var(--font-size-sm); /* フォントサイズを小さく */
+  color: var(--color-text-secondary); /* グレー */
+}
+
+/* チェックボックス部分 */
+.schedule-checkbox {
+  display: flex; /* フレックスボックスレイアウト */
+  align-items: center; /* 垂直方向中央揃え */
+  gap: var(--spacing-sm); /* チェックボックスとラベルの間隔 */
+}
+
+.schedule-checkbox input[type="checkbox"] {
+  width: 24px; /* チェックボックスの幅 */
+  height: 24px; /* チェックボックスの高さ */
+  cursor: pointer; /* カーソルをポインターに */
+}
+
+.schedule-checkbox label {
+  font-size: var(--font-size-sm); /* フォントサイズを小さく */
+  color: var(--color-text-secondary); /* グレー */
+  cursor: pointer; /* カーソルをポインターに */
+}
+
+/* 完了時刻表示 */
+.actual-time {
+  font-size: var(--font-size-xs); /* フォントサイズを極小に */
+  color: var(--color-secondary); /* 成功色（緑） */
+  margin-top: var(--spacing-xs); /* 上側の余白 */
+}
+
+/* 空の状態の表示 */
+.empty-schedule {
+  text-align: center; /* テキストを中央揃え */
+  padding: var(--spacing-2xl); /* 内側の余白 */
+  background-color: var(--color-bg-secondary); /* 薄いグレー背景 */
+  border-radius: var(--border-radius-md); /* 角丸 */
+  border: 2px dashed var(--color-border); /* 破線のボーダー */
+}
+
+.empty-schedule p {
+  margin: 0; /* マージンなし */
+  color: var(--color-text-secondary); /* グレー */
+  font-size: var(--font-size-lg); /* フォントサイズを大きく */
+}
+
+/* レスポンシブ対応 - モバイル */
+@media (max-width: 768px) {
+  .schedule-item {
+    flex-direction: column; /* 縦方向に配置 */
+    align-items: flex-start; /* 左揃え */
+    gap: var(--spacing-md); /* 要素間の余白 */
+  }
+
+  .schedule-time {
+    min-width: auto; /* 最小幅の制限を解除 */
+  }
+
+  .schedule-info {
+    margin-left: 0; /* 左側の余白を削除 */
+  }
+
+  .schedule-checkbox {
+    align-self: flex-end; /* 右側に配置 */
+  }
+}

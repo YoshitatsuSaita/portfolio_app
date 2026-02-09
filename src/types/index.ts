@@ -63,3 +63,20 @@ export interface FDAResult {
   adverse_reactions?: string[];
   dosage_and_administration?: string[];
 }
+
+// 服用予定の型定義（スケジュール表示用）
+export interface ScheduleItem {
+  id: string; // スケジュール項目の一意識別子（薬剤ID + 予定時刻の組み合わせ）
+  medicationId: string; // 薬剤ID
+  medicationName: string; // 薬品名（表示用）
+  dosage: string; // 服用量（表示用）
+  scheduledTime: string; // 予定服用日時（ISO 8601形式）
+  completed: boolean; // 服用完了フラグ
+  actualTime: string | null; // 実際の服用日時（ISO 8601形式、未服用の場合はnull）
+  recordId: string | null; // 服用記録ID（記録が存在する場合のみ）
+}
+// ※この型定義は @types/react-calendar パッケージで提供されていますが、
+//   念のため明示的に定義することで型安全性を確保します
+
+// カレンダーの値の型（単一日付または日付範囲）
+export type CalendarValue = Date | null | [Date | null, Date | null];
