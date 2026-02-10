@@ -10,7 +10,8 @@ import "./MedicationForm.css"; // CSSをインポート
 
 // フォーム入力データの型定義
 interface MedicationFormData {
-  name: string; // 薬品名
+  name: string; // 薬品名（商品名）
+  genericName: string; // 一般名 - 追加
   dosage: string; // 服用量
   frequency: number; // 服用回数
   times: string[]; // 服用時間の配列
@@ -54,7 +55,8 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
   } = useForm<MedicationFormData>({
     defaultValues: {
       // デフォルト値を設定
-      name: "", // 薬品名は空文字
+      name: "", // 薬品名（商品名）は空文字
+      genericName: "", // 一般名は空文字 - 追加
       dosage: "", // 服用量は空文字
       frequency: 1, // 服用回数は1回
       times: ["08:00"], // 服用時間は朝8時をデフォルト
@@ -70,7 +72,8 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
       // medicationが存在する場合（編集モード）
       reset({
         // フォームの値をリセットして既存データを設定
-        name: medication.name, // 薬品名
+        name: medication.name, // 薬品名（商品名）
+        genericName: medication.genericName || "", // 一般名（未設定の場合は空文字） - 追加
         dosage: medication.dosage, // 服用量
         frequency: medication.frequency, // 服用回数
         times: medication.times, // 服用時間の配列
@@ -82,13 +85,18 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
   }, [medication, reset]); // medicationまたはresetが変更された時に再実行
 
   const frequency = watch("frequency"); // 服用回数の値を監視
-  const drugName = watch("name"); // 薬品名の値を監視 - 検索ボタンの有効/無効判定に使用
+  const drugName = watch("name"); // 薬品名（商品名）の値を監視
+  const genericName = watch("genericName"); // 一般名の値を監視 - 追加
 
-  // OpenFDA API検索処理 - 「詳細情報を検索」ボタンクリック時に実行
+  // OpenFDA API検索処理 - 一般名が入力されていればそれを使用、なければ商品名を使用
   const handleSearch = async () => {
-    if (!drugName.trim()) {
-      // 薬品名が空の場合は検索しない（トリム後の空文字チェック）
-      setSearchError("薬品名を入力してください"); // エラーメッセージを設定
+    // 検索に使用する名称を決定（一般名が入力されていればそれを優先、なければ商品名）
+    const searchTerm = genericName.trim() || drugName.trim(); // 一般名を優先、なければ商品名
+    const useGenericName = !!genericName.trim(); // 一般名が入力されていればtrueにする
+
+    if (!searchTerm) {
+      // 両方とも空の場合はエラー
+      setSearchError("薬品名または一般名を入力してください"); // エラーメッセージを設定
       return; // 処理を中断
     }
 
@@ -97,7 +105,7 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
     setSearchResults([]); // 検索結果をクリア - 前回の結果を削除
 
     try {
-      const results = await searchDrugByName(drugName); // OpenFDA APIを呼び出して検索実行
+      const results = await searchDrugByName(searchTerm, useGenericName); // OpenFDA APIを呼び出して検索実行（一般名かどうかのフラグを渡す）
 
       if (results.length === 0) {
         // 検索結果が0件の場合
@@ -134,7 +142,8 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
         // ZustandストアのupdateMedication関数を呼び出して薬剤を更新
         await updateMedication(medication.id, {
           // 薬剤IDを指定
-          name: data.name, // 薬品名
+          name: data.name, // 薬品名（商品名）
+          genericName: data.genericName || undefined, // 一般名（空の場合はundefined） - 追加
           dosage: data.dosage, // 服用量
           frequency: data.frequency, // 服用回数
           times: data.times.slice(0, data.frequency), // 服用回数分の時間のみ取得
@@ -147,7 +156,8 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
         // 新規登録モードの場合
         // ZustandストアのaddMedication関数を呼び出して薬剤を登録
         await addMedication({
-          name: data.name, // 薬品名
+          name: data.name, // 薬品名（商品名）
+          genericName: data.genericName || undefined, // 一般名（空の場合はundefined） - 追加
           dosage: data.dosage, // 服用量
           frequency: data.frequency, // 服用回数
           times: data.times.slice(0, data.frequency), // 服用回数分の時間のみ取得
@@ -188,13 +198,41 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
         />
         {errors.name && <p className="error-message">{errors.name.message}</p>}{" "}
         {/* エラーメッセージ表示 */}
-        {/* OpenFDA検索ボタン - 薬品名入力後に有効化 */}
+      </div>
+      {/* 一般名入力欄 - 追加 */}
+      <div className="form-group">
+        <label htmlFor="genericName" className="form-label">
+          一般名（任意）
+        </label>
+        <input
+          id="genericName" // ラベルとの紐づけ用ID
+          type="text" // テキスト入力
+          className={`form-input ${errors.genericName ? "error" : ""}`} // エラー時にerrorクラスを追加
+          placeholder="例: ロキソプロフェンナトリウム水和物" // プレースホルダー
+          {...register("genericName")} // React Hook Formに登録（バリデーションなし・任意入力）
+        />
+        <p
+          className="field-hint"
+          style={{
+            fontSize: "0.875rem",
+            color: "var(--color-text-secondary)",
+            marginTop: "0.25rem",
+          }}
+        >
+          一般名を入力すると、より正確な検索結果が得られます
+        </p>
+        {errors.genericName && (
+          <p className="error-message">{errors.genericName.message}</p>
+        )}
+      </div>
+      {/* OpenFDA検索ボタン - 一般名入力欄の下に配置 */}
+      <div className="form-group">
         <button
           type="button" // フォーム送信ではなく通常のボタンとして動作（submitを防ぐ）
           className="btn btn-secondary" // セカンダリボタンスタイル適用
           onClick={handleSearch} // クリック時に検索処理を実行
-          disabled={!drugName.trim() || isSearching} // 薬品名が空、または検索中の場合は無効化
-          style={{ marginTop: "0.5rem" }} // 上側に余白を追加（入力欄との間隔）
+          disabled={(!drugName.trim() && !genericName.trim()) || isSearching} // 薬品名と一般名の両方が空、または検索中の場合は無効化
+          style={{ width: "100%" }} // ボタンを幅いっぱいに表示
         >
           {isSearching ? "検索中..." : "詳細情報を検索"}{" "}
           {/* 検索中はローディングテキストを表示 */}
@@ -205,8 +243,10 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
             {searchError}
           </p>
         )}
-        {/* 検索結果リスト表示エリア - アコーディオン形式で複数の候補を表示 */}
-        {searchResults.length > 0 && (
+      </div>
+      {/* 検索結果リスト表示エリア - アコーディオン形式で複数の候補を表示 */}
+      {searchResults.length > 0 && (
+        <div className="form-group">
           <div className="search-results" style={{ marginTop: "1rem" }}>
             {/* 検索結果件数表示 */}
             <p
@@ -434,8 +474,8 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
               );
             })}
           </div>
-        )}
-      </div>
+        </div>
+      )}
       {/* 服用量入力欄 */}
       <div className="form-group">
         <label htmlFor="dosage" className="form-label">

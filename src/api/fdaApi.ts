@@ -9,17 +9,26 @@ const FDA_API_BASE_URL = "https://api.fda.gov/drug/label.json";
 const TIMEOUT_MS = 5000; // 5秒
 
 /**
- * OpenFDA APIで薬品名を検索する関数
- * @param name 検索する薬品名
+ * OpenFDA APIで薬品を検索する関数（一般名での検索に対応）
+ * @param searchTerm 検索する薬品名（一般名または商品名）
+ * @param useGenericName trueの場合は一般名で検索、falseの場合は商品名で検索（デフォルト: true）
  * @returns 検索結果の配列（FDADetails型）
  * @throws エラーメッセージ（ネットワークエラー、タイムアウト、レート制限超過時）
  */
-export const searchDrugByName = async (name: string): Promise<FDADetails[]> => {
+export const searchDrugByName = async (
+  searchTerm: string, // 検索語句（一般名または商品名）
+  useGenericName: boolean = true, // 一般名で検索するかどうか（デフォルトはtrue）
+): Promise<FDADetails[]> => {
   // 薬品名をURLエンコード（スペースや特殊文字に対応）
-  const encodedName = encodeURIComponent(name);
+  const encodedName = encodeURIComponent(searchTerm);
 
-  // APIリクエストURL（商品名で部分一致検索、最大5件取得）
-  const url = `${FDA_API_BASE_URL}?search=openfda.brand_name:"${encodedName}"&limit=5`;
+  // 検索フィールドを選択（一般名 or 商品名）
+  const searchField = useGenericName
+    ? "openfda.generic_name" // 一般名で検索
+    : "openfda.brand_name"; // 商品名で検索
+
+  // APIリクエストURL（指定されたフィールドで部分一致検索、最大5件取得）
+  const url = `${FDA_API_BASE_URL}?search=${searchField}:"${encodedName}"&limit=5`;
 
   // AbortControllerを作成（タイムアウト制御用）
   const controller = new AbortController();
