@@ -1,0 +1,151 @@
+/* エラーバウンダリーのスタイル定義 */
+.error-boundary {
+  min-height: 100vh; /* 最小高さを画面全体に設定 - 画面いっぱいに表示 */
+  display: flex; /* フレックスボックスレイアウトを使用 - コンテンツを中央配置するため */
+  align-items: center; /* 垂直方向中央揃え - エラー内容を画面中央に配置 */
+  justify-content: center; /* 水平方向中央揃え - エラー内容を画面中央に配置 */
+  background-color: var(
+    --color-bg-secondary
+  ); /* 背景色を薄いグレーに設定 - 視覚的に通常画面と区別 */
+  padding: var(--spacing-lg); /* 内側の余白を設定 - 画面端との余白確保 */
+}
+
+/* エラー内容のコンテナ */
+.error-boundary-content {
+  max-width: 600px; /* 最大幅を600pxに制限 - 可読性を確保 */
+  width: 100%; /* 幅を100%に設定 - レスポンシブ対応 */
+  background-color: var(
+    --color-bg-primary
+  ); /* 背景色を白に設定 - コンテンツを目立たせる */
+  border-radius: var(
+    --border-radius-lg
+  ); /* 大きめの角丸を適用 - 柔らかい印象 */
+  padding: var(--spacing-2xl); /* 内側の余白を設定 - コンテンツとの余白確保 */
+  box-shadow: var(
+    --shadow-lg
+  ); /* 大きな影を追加 - コンテンツを浮き上がらせる */
+  text-align: center; /* テキストを中央揃え - 視覚的なバランス */
+}
+
+/* エラーアイコン */
+.error-icon {
+  font-size: 4rem; /* フォントサイズを非常に大きく設定 - アイコンを目立たせる */
+  margin-bottom: var(--spacing-lg); /* 下側の余白を設定 - タイトルとの間隔 */
+}
+
+/* エラータイトル */
+.error-title {
+  font-size: var(
+    --font-size-3xl
+  ); /* フォントサイズを大見出しサイズに設定 - タイトルを目立たせる */
+  font-weight: var(--font-weight-bold); /* 太字に設定 - 重要性を強調 */
+  color: var(--color-error); /* 文字色を赤系に設定 - エラーを視覚的に示す */
+  margin-bottom: var(--spacing-lg); /* 下側の余白を設定 - メッセージとの間隔 */
+}
+
+/* エラーメッセージ */
+.error-message {
+  font-size: var(
+    --font-size-lg
+  ); /* フォントサイズを大きめに設定 - 可読性向上 */
+  color: var(
+    --color-text-secondary
+  ); /* 文字色をグレーに設定 - タイトルより控えめに */
+  line-height: 1.8; /* 行間を広めに設定 - 読みやすさ向上 */
+  margin-bottom: var(--spacing-2xl); /* 下側の余白を設定 - ボタンとの間隔 */
+}
+
+/* アクションボタン群 */
+.error-actions {
+  display: flex; /* フレックスボックスレイアウトを使用 - ボタンを横並びに配置 */
+  gap: var(--spacing-md); /* ボタン間の余白を設定 - ボタンの間隔確保 */
+  justify-content: center; /* 水平方向中央揃え - ボタンを中央に配置 */
+  margin-bottom: var(--spacing-xl); /* 下側の余白を設定 - 詳細情報との間隔 */
+}
+
+/* エラー詳細（開発環境のみ） */
+.error-details {
+  margin-top: var(--spacing-2xl); /* 上側の余白を設定 - ボタンとの間隔 */
+  text-align: left; /* テキストを左揃えに変更 - コードの可読性向上 */
+  background-color: var(
+    --color-bg-secondary
+  ); /* 背景色を薄いグレーに設定 - 詳細情報エリアを区別 */
+  border-radius: var(--border-radius-md); /* 角丸を適用 - 柔らかい印象 */
+  padding: var(--spacing-lg); /* 内側の余白を設定 - コンテンツとの余白確保 */
+}
+
+/* エラー詳細のサマリー */
+.error-details-summary {
+  font-weight: var(
+    --font-weight-bold
+  ); /* 太字に設定 - クリック可能であることを示す */
+  color: var(--color-text-primary); /* 文字色を濃い黒に設定 - 視認性向上 */
+  cursor: pointer; /* カーソルをポインターに変更 - クリック可能を示す */
+  padding: var(--spacing-sm); /* 内側の余白を設定 - クリック領域を広げる */
+  margin: calc(
+    var(--spacing-lg) * -1
+  ); /* 外側のマージンを負の値に設定 - パディングを相殺してピッタリ配置 */
+  margin-bottom: var(
+    --spacing-md
+  ); /* 下側のマージンのみ正の値に設定 - コンテンツとの間隔 */
+  border-radius: var(--border-radius-md); /* 角丸を適用 */
+  transition: background-color var(--transition-fast); /* 背景色の変化をアニメーション - ホバー効果 */
+}
+
+/* エラー詳細サマリーのホバー時 */
+.error-details-summary:hover {
+  background-color: var(
+    --color-bg-tertiary
+  ); /* ホバー時に背景色を濃いグレーに変更 - 視覚的フィードバック */
+}
+
+/* エラー詳細の内容 */
+.error-details-content {
+  margin-top: var(--spacing-md); /* 上側の余白を設定 - サマリーとの間隔 */
+}
+
+/* エラーコード表示 */
+.error-code {
+  background-color: #282c34; /* 背景色を暗いグレーに設定 - コードエディタ風の表示 */
+  color: #abb2bf; /* 文字色を薄いグレーに設定 - コードエディタ風の配色 */
+  padding: var(--spacing-md); /* 内側の余白を設定 - コードとの余白確保 */
+  border-radius: var(--border-radius-sm); /* 小さい角丸を適用 */
+  overflow-x: auto; /* 横方向のスクロールを有効化 - 長いコードに対応 */
+  font-family: var(
+    --font-family-mono
+  ); /* 等幅フォントを使用 - コードの可読性向上 */
+  font-size: var(
+    --font-size-sm
+  ); /* フォントサイズを小さめに設定 - コード表示に適したサイズ */
+  line-height: 1.5; /* 行間を設定 - コードの可読性向上 */
+  white-space: pre-wrap; /* 空白と改行を保持しつつ折り返し - コードの表示を維持 */
+  word-break: break-word; /* 長い単語を折り返し - レイアウト崩れを防止 */
+}
+
+/* レスポンシブ対応 - モバイル */
+@media (max-width: 768px) {
+  /* 画面幅が768px以下の場合（スマートフォン） */
+  .error-boundary-content {
+    padding: var(--spacing-lg); /* パディングを小さく - 画面が狭い場合の調整 */
+  }
+
+  .error-title {
+    font-size: var(
+      --font-size-2xl
+    ); /* タイトルのフォントサイズを小さく - モバイルに最適化 */
+  }
+
+  .error-message {
+    font-size: var(
+      --font-size-base
+    ); /* メッセージのフォントサイズを標準サイズに - 可読性維持 */
+  }
+
+  .error-actions {
+    flex-direction: column; /* ボタンを縦方向に配置 - モバイルでの操作性向上 */
+  }
+
+  .error-actions .btn {
+    width: 100%; /* ボタンを幅いっぱいに表示 - タップしやすさ向上 */
+  }
+}

@@ -1,32 +1,27 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"; // React Routerの必要なコンポーネントをインポート
-import Layout from "./components/Layout/Layout"; // Layoutコンポーネントをインポート
-import Home from "./pages/Home/Home"; // Homeページコンポーネントをインポート
-import Medications from "./pages/Medications/Medications"; // Medicationsページコンポーネントをインポート
-import Calendar from "./pages/Calendar/Calendar"; // Calendarページコンポーネントをインポート
-import "./App.css"; // アプリ全体のCSSをインポート
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout/Layout";
+import Home from "./pages/Home/Home";
+import Medications from "./pages/Medications/Medications";
+import Calendar from "./pages/Calendar/Calendar";
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary"; // ErrorBoundaryコンポーネントをインポート
+import "./App.css";
 
-// アプリケーションのメインコンポーネント - ルーティング設定を定義
 function App() {
   return (
-    <BrowserRouter>
+    <ErrorBoundary>
       {" "}
-      {/* ブラウザのHistoryAPIを使用したルーティングを有効化 */}
-      <Routes>
-        {" "}
-        {/* ルート定義の開始 */}
-        <Route path="/" element={<Layout />}>
-          {" "}
-          {/* 共通レイアウトを適用 */}
-          <Route index element={<Home />} />{" "}
-          {/* "/" パスでHomeコンポーネントを表示 */}
-          <Route path="medications" element={<Medications />} />{" "}
-          {/* "/medications" パスでMedicationsコンポーネントを表示 */}
-          <Route path="calendar" element={<Calendar />} />{" "}
-          {/* "/calendar" パスでCalendarコンポーネントを表示 */}
-        </Route>
-      </Routes>
-    </BrowserRouter>
+      {/* アプリ全体をErrorBoundaryでラップ - 予期しないエラーをキャッチ */}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="medications" element={<Medications />} />
+            <Route path="calendar" element={<Calendar />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }
 
-export default App; // 他のファイルから使用できるようにエクスポート
+export default App;
