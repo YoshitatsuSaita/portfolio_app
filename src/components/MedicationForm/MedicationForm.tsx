@@ -1,17 +1,15 @@
 // src/components/MedicationForm/MedicationForm.tsx
 
 import { useForm } from "react-hook-form"; // React Hook Formをインポート
-import { useEffect, useState } from "react"; // useEffectとuseStateフックをインポート - 編集モード時の初期値設定用と検索状態管理用
+import { useEffect } from "react"; // useEffectフックをインポート - 編集モード時の初期値設定用
 import { useMedicationStore } from "../../store/medicationStore"; // Zustandストアをインポート
 import { Medication } from "../../types"; // Medication型をインポート - 編集モード用
-import { searchDrugByName } from "../../api/fdaApi"; // OpenFDA API検索関数をインポート - 薬品詳細情報検索用
-import { FDADetails } from "../../types"; // FDADetails型をインポート - 検索結果の型定義
 import "./MedicationForm.css"; // CSSをインポート
 
 // フォーム入力データの型定義
 interface MedicationFormData {
   name: string; // 薬品名（商品名）
-  genericName: string; // 一般名 - 追加
+  genericName: string; // 一般名
   dosage: string; // 服用量
   frequency: number; // 服用回数
   times: string[]; // 服用時間の配列
@@ -35,16 +33,6 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
 
   const isEditMode = !!medication; // 編集モードかどうかを判定（medicationが存在すればtrue）
 
-  // 検索状態の管理 - OpenFDA API検索機能用
-  const [isSearching, setIsSearching] = useState(false); // 検索中フラグ - trueの場合は検索中（ローディング表示）
-  const [searchResults, setSearchResults] = useState<FDADetails[]>([]); // 検索結果の配列 - 複数の候補を保持
-  const [searchError, setSearchError] = useState<string | null>(null); // 検索エラーメッセージ - エラーがない場合はnull
-  const [selectedFdaDetails, setSelectedFdaDetails] =
-    useState<FDADetails | null>(null); // 選択されたFDA詳細情報を保持 - 保存ボタンクリック時に設定、フォーム送信時にIndexedDBに保存
-  const [expandedResultIndex, setExpandedResultIndex] = useState<number | null>(
-    null,
-  ); // 展開中の検索結果のインデックス - アコーディオン制御用（nullの場合は全て折りたたみ状態）
-
   // React Hook Formの初期化
   const {
     register, // 入力欄を登録する関数
@@ -56,7 +44,7 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
     defaultValues: {
       // デフォルト値を設定
       name: "", // 薬品名（商品名）は空文字
-      genericName: "", // 一般名は空文字 - 追加
+      genericName: "", // 一般名は空文字
       dosage: "", // 服用量は空文字
       frequency: 1, // 服用回数は1回
       times: ["08:00"], // 服用時間は朝8時をデフォルト
@@ -73,7 +61,7 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
       reset({
         // フォームの値をリセットして既存データを設定
         name: medication.name, // 薬品名（商品名）
-        genericName: medication.genericName || "", // 一般名（未設定の場合は空文字） - 追加
+        genericName: medication.genericName || "", // 一般名（未設定の場合は空文字）
         dosage: medication.dosage, // 服用量
         frequency: medication.frequency, // 服用回数
         times: medication.times, // 服用時間の配列
@@ -85,54 +73,6 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
   }, [medication, reset]); // medicationまたはresetが変更された時に再実行
 
   const frequency = watch("frequency"); // 服用回数の値を監視
-  const drugName = watch("name"); // 薬品名（商品名）の値を監視
-  const genericName = watch("genericName"); // 一般名の値を監視 - 追加
-
-  // OpenFDA API検索処理 - 一般名が入力されていればそれを使用、なければ商品名を使用
-  const handleSearch = async () => {
-    // 検索に使用する名称を決定（一般名が入力されていればそれを優先、なければ商品名）
-    const searchTerm = genericName.trim() || drugName.trim(); // 一般名を優先、なければ商品名
-    const useGenericName = !!genericName.trim(); // 一般名が入力されていればtrueにする
-
-    if (!searchTerm) {
-      // 両方とも空の場合はエラー
-      setSearchError("薬品名または一般名を入力してください"); // エラーメッセージを設定
-      return; // 処理を中断
-    }
-
-    setIsSearching(true); // 検索中フラグをtrueに設定 - ローディング表示開始
-    setSearchError(null); // エラーメッセージをクリア - 前回のエラーを削除
-    setSearchResults([]); // 検索結果をクリア - 前回の結果を削除
-
-    try {
-      const results = await searchDrugByName(searchTerm, useGenericName); // OpenFDA APIを呼び出して検索実行（一般名かどうかのフラグを渡す）
-
-      if (results.length === 0) {
-        // 検索結果が0件の場合
-        setSearchError("該当する薬品情報が見つかりませんでした"); // エラーメッセージを設定
-      } else {
-        // 検索結果が1件以上の場合
-        setSearchResults(results); // 検索結果を状態に保存 - 次のステップで表示用
-      }
-    } catch (error) {
-      // API呼び出しでエラーが発生した場合
-      console.error("検索エラー:", error); // コンソールにエラーを出力
-      setSearchError("検索中にエラーが発生しました。もう一度お試しください。"); // ユーザー向けエラーメッセージを設定
-    } finally {
-      setIsSearching(false); // 検索中フラグをfalseに設定 - ローディング表示終了（成功・失敗に関わらず実行）
-    }
-  };
-
-  // FDA詳細情報を保存する関数 - 「この情報を保存」ボタンクリック時に実行
-  const handleSaveFdaDetails = (details: FDADetails, index: number) => {
-    setSelectedFdaDetails(details); // 選択された詳細情報を状態に保存 - フォーム送信時にIndexedDBに保存される
-    alert("FDA詳細情報が選択されました。薬剤登録時に保存されます。"); // ユーザーに選択完了を通知（視覚的フィードバック）
-  };
-
-  // アコーディオンの展開/折りたたみを切り替える関数 - 検索結果カードのヘッダークリック時に実行
-  const toggleExpand = (index: number) => {
-    setExpandedResultIndex(expandedResultIndex === index ? null : index); // 同じインデックスをクリックした場合は閉じる（null）、異なる場合は開く（そのインデックス）
-  };
 
   // フォーム送信時の処理
   const onSubmit = async (data: MedicationFormData) => {
@@ -143,28 +83,26 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
         await updateMedication(medication.id, {
           // 薬剤IDを指定
           name: data.name, // 薬品名（商品名）
-          genericName: data.genericName || undefined, // 一般名（空の場合はundefined） - 追加
+          genericName: data.genericName || undefined, // 一般名（空の場合はundefined）
           dosage: data.dosage, // 服用量
           frequency: data.frequency, // 服用回数
           times: data.times.slice(0, data.frequency), // 服用回数分の時間のみ取得
           startDate: data.startDate, // 開始日
           endDate: data.endDate || null, // 終了日（空の場合はnull）
           memo: data.memo, // メモ
-          fdaDetails: selectedFdaDetails, // 選択されたFDA詳細情報を保存 - 検索結果から選択した場合のみ値が入る、未選択の場合はnull
         });
       } else {
         // 新規登録モードの場合
         // ZustandストアのaddMedication関数を呼び出して薬剤を登録
         await addMedication({
           name: data.name, // 薬品名（商品名）
-          genericName: data.genericName || undefined, // 一般名（空の場合はundefined） - 追加
+          genericName: data.genericName || undefined, // 一般名（空の場合はundefined）
           dosage: data.dosage, // 服用量
           frequency: data.frequency, // 服用回数
           times: data.times.slice(0, data.frequency), // 服用回数分の時間のみ取得
           startDate: data.startDate, // 開始日
           endDate: data.endDate || null, // 終了日（空の場合はnull）
           memo: data.memo, // メモ
-          fdaDetails: selectedFdaDetails, // 選択されたFDA詳細情報を保存 - 検索結果から選択した場合のみ値が入る、未選択の場合はnull
         });
       }
       onSuccess(); // 成功時のコールバックを実行（モーダルを閉じる）
@@ -225,257 +163,6 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
           <p className="error-message">{errors.genericName.message}</p>
         )}
       </div>
-      {/* OpenFDA検索ボタン - 一般名入力欄の下に配置 */}
-      <div className="form-group">
-        <button
-          type="button" // フォーム送信ではなく通常のボタンとして動作（submitを防ぐ）
-          className="btn btn-secondary" // セカンダリボタンスタイル適用
-          onClick={handleSearch} // クリック時に検索処理を実行
-          disabled={(!drugName.trim() && !genericName.trim()) || isSearching} // 薬品名と一般名の両方が空、または検索中の場合は無効化
-          style={{ width: "100%" }} // ボタンを幅いっぱいに表示
-        >
-          {isSearching ? "検索中..." : "詳細情報を検索"}{" "}
-          {/* 検索中はローディングテキストを表示 */}
-        </button>
-        {/* 検索エラーメッセージ表示 */}
-        {searchError && (
-          <p className="error-message" style={{ marginTop: "0.5rem" }}>
-            {searchError}
-          </p>
-        )}
-      </div>
-      {/* 検索結果リスト表示エリア - アコーディオン形式で複数の候補を表示 */}
-      {searchResults.length > 0 && (
-        <div className="form-group">
-          <div className="search-results" style={{ marginTop: "1rem" }}>
-            {/* 検索結果件数表示 */}
-            <p
-              className="results-count"
-              style={{
-                marginBottom: "0.75rem",
-                fontWeight: "500",
-                color: "var(--color-text-primary)",
-              }}
-            >
-              {searchResults.length}件の候補が見つかりました
-            </p>
-            {/* 検索結果を1つずつ表示 */}
-            {searchResults.map((result, index) => {
-              // このカードが展開されているかどうかを判定
-              const isExpanded = expandedResultIndex === index;
-              // このカードが選択されているかどうかを判定（保存済みかチェック）
-              const isSelected = selectedFdaDetails === result;
-
-              return (
-                <div
-                  key={index} // Reactのkey属性 - 各要素を一意に識別
-                  className="search-result-card" // カードのスタイルクラス
-                  style={{
-                    border: "1px solid var(--color-border)", // ボーダー
-                    borderRadius: "var(--border-radius-md)", // 角丸
-                    marginBottom: "0.75rem", // カード間の余白
-                    overflow: "hidden", // はみ出しを隠す
-                  }}
-                >
-                  {/* カードヘッダー - クリックで展開/折りたたみ */}
-                  <div
-                    className="result-card-header"
-                    onClick={() => toggleExpand(index)} // クリック時にアコーディオンを切り替え
-                    style={{
-                      padding: "0.75rem 1rem", // 内側の余白
-                      backgroundColor: isExpanded
-                        ? "var(--color-primary-light)" // 展開時は薄い青背景
-                        : "var(--color-bg-secondary)", // 折りたたみ時は薄いグレー背景
-                      cursor: "pointer", // カーソルをポインターに変更（クリック可能を示す）
-                      display: "flex", // フレックスボックスレイアウト
-                      justifyContent: "space-between", // 両端に配置
-                      alignItems: "center", // 垂直方向中央揃え
-                      transition: "background-color 0.2s", // 背景色変化のアニメーション
-                    }}
-                  >
-                    <div>
-                      {/* 商品名表示 - 配列の最初の要素を表示、なければ「不明」 */}
-                      <strong>{result.brandName?.[0] || "商品名不明"}</strong>
-                      {/* 一般名表示 - 商品名の下に小さく表示 */}
-                      {result.genericName && (
-                        <div
-                          style={{
-                            fontSize: "0.875rem", // 小さめのフォント
-                            color: "var(--color-text-secondary)", // グレー
-                            marginTop: "0.25rem", // 上側の余白
-                          }}
-                        >
-                          一般名: {result.genericName[0]}
-                        </div>
-                      )}
-                    </div>
-                    {/* 展開/折りたたみアイコン */}
-                    <span
-                      style={{
-                        fontSize: "1.25rem", // アイコンサイズ
-                        transform: isExpanded
-                          ? "rotate(180deg)"
-                          : "rotate(0deg)", // 展開時は180度回転
-                        transition: "transform 0.2s", // 回転のアニメーション
-                      }}
-                    >
-                      ▼{/* 下向き三角アイコン */}
-                    </span>
-                  </div>
-
-                  {/* カード本体 - 展開時のみ表示 */}
-                  {isExpanded && (
-                    <div
-                      className="result-card-body"
-                      style={{
-                        padding: "1rem", // 内側の余白
-                        backgroundColor: "var(--color-bg-primary)", // 白背景
-                        borderTop: "1px solid var(--color-border)", // 上部にボーダー
-                      }}
-                    >
-                      {/* 製造元情報 */}
-                      {result.manufacturerName && (
-                        <div style={{ marginBottom: "0.75rem" }}>
-                          <strong
-                            style={{ color: "var(--color-text-primary)" }}
-                          >
-                            製造元:
-                          </strong>
-                          <p
-                            style={{
-                              margin: "0.25rem 0 0 0", // 余白調整
-                              color: "var(--color-text-secondary)", // グレー
-                            }}
-                          >
-                            {result.manufacturerName.join(", ")}
-                            {/* 配列をカンマ区切りで結合 */}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* 有効成分情報 */}
-                      {result.activeIngredient && (
-                        <div style={{ marginBottom: "0.75rem" }}>
-                          <strong
-                            style={{ color: "var(--color-text-primary)" }}
-                          >
-                            有効成分:
-                          </strong>
-                          <p
-                            style={{
-                              margin: "0.25rem 0 0 0",
-                              color: "var(--color-text-secondary)",
-                            }}
-                          >
-                            {result.activeIngredient.join(", ")}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* 用途情報 */}
-                      {result.purpose && (
-                        <div style={{ marginBottom: "0.75rem" }}>
-                          <strong
-                            style={{ color: "var(--color-text-primary)" }}
-                          >
-                            用途:
-                          </strong>
-                          <p
-                            style={{
-                              margin: "0.25rem 0 0 0",
-                              color: "var(--color-text-secondary)",
-                            }}
-                          >
-                            {result.purpose.join(", ")}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* 警告情報 */}
-                      {result.warnings && (
-                        <div style={{ marginBottom: "0.75rem" }}>
-                          <strong
-                            style={{ color: "var(--color-error)" }} // 警告は赤色で強調
-                          >
-                            警告:
-                          </strong>
-                          <p
-                            style={{
-                              margin: "0.25rem 0 0 0",
-                              color: "var(--color-text-secondary)",
-                              fontSize: "0.875rem", // 小さめのフォント
-                            }}
-                          >
-                            {result.warnings[0].substring(0, 200)}...
-                            {/* 最初の200文字のみ表示 */}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* 副作用情報 */}
-                      {result.adverseReactions && (
-                        <div style={{ marginBottom: "0.75rem" }}>
-                          <strong style={{ color: "var(--color-warning)" }}>
-                            副作用:
-                          </strong>
-                          <p
-                            style={{
-                              margin: "0.25rem 0 0 0",
-                              color: "var(--color-text-secondary)",
-                              fontSize: "0.875rem",
-                            }}
-                          >
-                            {result.adverseReactions[0].substring(0, 200)}...
-                          </p>
-                        </div>
-                      )}
-
-                      {/* 使用方法情報 */}
-                      {result.dosageAndAdministration && (
-                        <div style={{ marginBottom: "0.75rem" }}>
-                          <strong
-                            style={{ color: "var(--color-text-primary)" }}
-                          >
-                            使用方法:
-                          </strong>
-                          <p
-                            style={{
-                              margin: "0.25rem 0 0 0",
-                              color: "var(--color-text-secondary)",
-                              fontSize: "0.875rem",
-                            }}
-                          >
-                            {result.dosageAndAdministration[0].substring(
-                              0,
-                              200,
-                            )}
-                            ...
-                          </p>
-                        </div>
-                      )}
-
-                      {/* 保存ボタン */}
-                      <button
-                        type="button" // フォーム送信を防ぐ
-                        className="btn btn-secondary" // セカンダリボタンスタイル
-                        onClick={() => handleSaveFdaDetails(result, index)} // クリック時に詳細情報を保存
-                        disabled={isSelected} // 既に選択済みの場合は無効化
-                        style={{
-                          marginTop: "0.5rem", // 上側の余白
-                          width: "100%", // 幅いっぱいに表示
-                        }}
-                      >
-                        {isSelected ? "✓ 保存済み" : "この情報を保存"}
-                        {/* 選択済みの場合はチェックマーク表示 */}
-                      </button>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
       {/* 服用量入力欄 */}
       <div className="form-group">
         <label htmlFor="dosage" className="form-label">
