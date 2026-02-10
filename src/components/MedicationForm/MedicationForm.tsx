@@ -199,7 +199,7 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
         {errors.name && <p className="error-message">{errors.name.message}</p>}{" "}
         {/* エラーメッセージ表示 */}
       </div>
-      {/* 一般名入力欄 - 追加 */}
+      {/* 一般名入力欄*/}
       <div className="form-group">
         <label htmlFor="genericName" className="form-label">
           一般名（任意）
@@ -219,7 +219,7 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
             marginTop: "0.25rem",
           }}
         >
-          一般名を入力すると、より正確な検索結果が得られます
+          一般名の入力は任意です
         </p>
         {errors.genericName && (
           <p className="error-message">{errors.genericName.message}</p>
