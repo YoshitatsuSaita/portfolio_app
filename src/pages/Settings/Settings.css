@@ -1,0 +1,186 @@
+/* 設定画面のスタイル定義 */
+.settings {
+  padding: var(--spacing-lg); /* 内側の余白 */
+  max-width: 800px; /* 最大幅を800pxに制限 */
+  margin: 0 auto; /* 左右中央揃え */
+}
+
+.settings h1 {
+  margin-bottom: var(--spacing-xl); /* タイトル下の余白 */
+  color: var(--color-text-primary); /* テキスト色 */
+}
+
+/* セクション */
+.settings-section {
+  background-color: var(--color-bg-primary); /* 白背景 */
+  border-radius: var(--border-radius-lg); /* 角丸 */
+  padding: var(--spacing-xl); /* 内側の余白 */
+  margin-bottom: var(--spacing-xl); /* セクション間の余白 */
+  box-shadow: var(--shadow-md); /* 中程度の影 */
+}
+
+.settings-section h2 {
+  margin-top: 0; /* 上マージンを削除 */
+  margin-bottom: var(--spacing-lg); /* 下マージンを設定 */
+  color: var(--color-text-primary); /* テキスト色 */
+  font-size: var(--font-size-xl); /* フォントサイズを特大に */
+  border-bottom: 2px solid var(--color-border); /* 下にボーダー */
+  padding-bottom: var(--spacing-sm); /* 下パディング */
+}
+
+/* サブセクションタイトル */
+.subsection-title {
+  margin-top: var(--spacing-xl); /* 上マージン */
+  margin-bottom: var(--spacing-md); /* 下マージン */
+  color: var(--color-text-primary); /* テキスト色 */
+  font-size: var(--font-size-lg); /* フォントサイズを大きく */
+}
+
+/* 設定項目 */
+.setting-item {
+  margin-bottom: var(--spacing-lg); /* 項目間の余白 */
+}
+
+/* 設定ラベル */
+.setting-label {
+  display: flex; /* フレックスボックスレイアウト */
+  align-items: center; /* 垂直方向中央揃え */
+  gap: var(--spacing-sm); /* チェックボックスとテキストの間隔 */
+  cursor: pointer; /* カーソルをポインターに */
+}
+
+.setting-label-text {
+  font-size: var(--font-size-base); /* フォントサイズ */
+  font-weight: var(--font-weight-medium); /* 中太字 */
+  color: var(--color-text-primary); /* テキスト色 */
+}
+
+/* チェックボックス */
+.setting-checkbox {
+  width: 20px; /* 幅 */
+  height: 20px; /* 高さ */
+  cursor: pointer; /* カーソルをポインターに */
+}
+
+/* 説明文 */
+.setting-description {
+  margin-top: var(--spacing-xs); /* 上マージン */
+  font-size: var(--font-size-sm); /* フォントサイズを小さく */
+  color: var(--color-text-secondary); /* グレー */
+  line-height: 1.5; /* 行間 */
+}
+
+/* スライダー */
+.setting-slider {
+  width: 100%; /* 幅を100%に */
+  margin-top: var(--spacing-sm); /* 上マージン */
+  cursor: pointer; /* カーソルをポインターに */
+}
+
+/* 天気情報カード */
+.weather-info {
+  background-color: var(--color-primary-light); /* 薄い青背景 */
+  border-radius: var(--border-radius-md); /* 角丸 */
+  padding: var(--spacing-lg); /* 内側の余白 */
+  margin-bottom: var(--spacing-lg); /* 下マージン */
+}
+
+.weather-info-header {
+  display: flex; /* フレックスボックスレイアウト */
+  align-items: center; /* 垂直方向中央揃え */
+  gap: var(--spacing-sm); /* アイコンとテキストの間隔 */
+  margin-bottom: var(--spacing-md); /* 下マージン */
+}
+
+.weather-icon {
+  font-size: 2rem; /* アイコンサイズを大きく */
+}
+
+.weather-description {
+  font-size: var(--font-size-lg); /* フォントサイズを大きく */
+  font-weight: var(--font-weight-medium); /* 中太字 */
+  color: var(--color-text-primary); /* テキスト色 */
+}
+
+.weather-info-details {
+  display: flex; /* フレックスボックスレイアウト */
+  gap: var(--spacing-xl); /* 詳細項目間の余白 */
+  margin-bottom: var(--spacing-sm); /* 下マージン */
+}
+
+.weather-detail {
+  display: flex; /* フレックスボックスレイアウト */
+  flex-direction: column; /* 縦方向に配置 */
+}
+
+.weather-detail-label {
+  font-size: var(--font-size-sm); /* フォントサイズを小さく */
+  color: var(--color-text-secondary); /* グレー */
+  margin-bottom: var(--spacing-xs); /* 下マージン */
+}
+
+.weather-detail-value {
+  font-size: var(--font-size-xl); /* フォントサイズを特大に */
+  font-weight: var(--font-weight-bold); /* 太字 */
+  color: var(--color-primary); /* プライマリカラー */
+}
+
+.weather-last-updated {
+  font-size: var(--font-size-xs); /* フォントサイズを極小に */
+  color: var(--color-text-secondary); /* グレー */
+  margin: 0; /* マージンなし */
+}
+
+/* エラーメッセージ */
+.error-message {
+  background-color: #fee; /* 薄い赤背景 */
+  color: var(--color-error); /* 赤文字 */
+  padding: var(--spacing-md); /* 内側の余白 */
+  border-radius: var(--border-radius-md); /* 角丸 */
+  margin-bottom: var(--spacing-md); /* 下マージン */
+  border-left: 4px solid var(--color-error); /* 左に赤いボーダー */
+}
+
+/* ボタン */
+.btn {
+  padding: var(--spacing-sm) var(--spacing-xl); /* 内側の余白 */
+  border: none; /* ボーダーなし */
+  border-radius: var(--border-radius-md); /* 角丸 */
+  font-size: var(--font-size-base); /* フォントサイズ */
+  font-weight: var(--font-weight-medium); /* 中太字 */
+  cursor: pointer; /* カーソルをポインターに */
+  transition:
+    background-color var(--transition-fast),
+    transform var(--transition-fast); /* 背景色と変形のアニメーション */
+}
+
+.btn-primary {
+  background-color: var(--color-primary); /* プライマリカラー */
+  color: white; /* 白文字 */
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-dark); /* 濃いプライマリカラー */
+  transform: translateY(-1px); /* 少し上に移動 */
+}
+
+.btn:disabled {
+  opacity: 0.6; /* 透明度を下げる */
+  cursor: not-allowed; /* カーソルを禁止マークに */
+}
+
+/* レスポンシブ対応 - モバイル */
+@media (max-width: 768px) {
+  .settings {
+    padding: var(--spacing-md); /* パディングを小さく */
+  }
+
+  .settings-section {
+    padding: var(--spacing-md); /* パディングを小さく */
+  }
+
+  .weather-info-details {
+    flex-direction: column; /* 縦方向に配置 */
+    gap: var(--spacing-md); /* 詳細項目間の余白 */
+  }
+}

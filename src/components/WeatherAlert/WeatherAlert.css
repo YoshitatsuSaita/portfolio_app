@@ -1,0 +1,84 @@
+/* 天気警告バナーのスタイル定義 */
+.weather-alert {
+  display: flex; /* フレックスボックスレイアウト */
+  align-items: flex-start; /* 上揃え */
+  gap: var(--spacing-md); /* アイコンとコンテンツの間隔 */
+  background: linear-gradient(
+    135deg,
+    #fff3cd 0%,
+    #ffe8a1 100%
+  ); /* グラデーション背景（薄い黄色〜オレンジ） */
+  border-left: 4px solid var(--color-warning); /* 左にオレンジのボーダー */
+  border-radius: var(--border-radius-md); /* 角丸 */
+  padding: var(--spacing-lg); /* 内側の余白 */
+  margin-bottom: var(--spacing-xl); /* 下マージン */
+  box-shadow: var(--shadow-md); /* 中程度の影 */
+  animation: slideIn 0.3s ease-out; /* スライドインアニメーション */
+}
+
+/* スライドインアニメーションの定義 */
+@keyframes slideIn {
+  from {
+    opacity: 0; /* 透明 */
+    transform: translateY(-10px); /* 上から */
+  }
+  to {
+    opacity: 1; /* 不透明 */
+    transform: translateY(0); /* 元の位置 */
+  }
+}
+
+/* 警告アイコン */
+.weather-alert-icon {
+  font-size: 2rem; /* アイコンサイズを大きく */
+  flex-shrink: 0; /* 縮小しない */
+}
+
+/* 警告コンテンツ */
+.weather-alert-content {
+  flex: 1; /* 残りのスペースを使用 */
+}
+
+/* 警告タイトル */
+.weather-alert-title {
+  margin: 0 0 var(--spacing-sm) 0; /* 下マージンのみ */
+  font-size: var(--font-size-lg); /* フォントサイズを大きく */
+  font-weight: var(--font-weight-bold); /* 太字 */
+  color: #856404; /* 濃い茶色（警告色） */
+}
+
+/* 警告メッセージリスト */
+.weather-alert-messages {
+  display: flex; /* フレックスボックスレイアウト */
+  flex-direction: column; /* 縦方向に配置 */
+  gap: var(--spacing-xs); /* メッセージ間の余白 */
+}
+
+/* 個別の警告メッセージ */
+.weather-alert-message {
+  margin: 0; /* マージンなし */
+  font-size: var(--font-size-base); /* フォントサイズ */
+  color: #856404; /* 濃い茶色 */
+  line-height: 1.5; /* 行間 */
+}
+
+/* レスポンシブ対応 - モバイル */
+@media (max-width: 768px) {
+  .weather-alert {
+    flex-direction: column; /* 縦方向に配置 */
+    gap: var(--spacing-sm); /* アイコンとコンテンツの間隔 */
+    padding: var(--spacing-md); /* パディングを小さく */
+  }
+
+  .weather-alert-icon {
+    font-size: 1.5rem; /* アイコンサイズを小さく */
+  }
+
+  .weather-alert-title {
+    font-size: var(--font-size-base); /* タイトルを小さく */
+  }
+
+  .weather-alert-message {
+    font-size: var(--font-size-sm); /* メッセージを小さく */
+  }
+}

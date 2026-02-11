@@ -149,16 +149,6 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
           placeholder="例: ロキソプロフェンナトリウム水和物" // プレースホルダー
           {...register("genericName")} // React Hook Formに登録（バリデーションなし・任意入力）
         />
-        <p
-          className="field-hint"
-          style={{
-            fontSize: "0.875rem",
-            color: "var(--color-text-secondary)",
-            marginTop: "0.25rem",
-          }}
-        >
-          一般名の入力は任意です
-        </p>
         {errors.genericName && (
           <p className="error-message">{errors.genericName.message}</p>
         )}

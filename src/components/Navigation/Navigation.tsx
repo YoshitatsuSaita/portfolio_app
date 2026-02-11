@@ -1,3 +1,5 @@
+// src/components/Navigation/Navigation.tsx
+
 import { NavLink } from "react-router-dom"; // ルーティング用のNavLinkをインポート
 import "./Navigation.css"; // CSSファイルをインポート
 
@@ -31,6 +33,15 @@ function Navigation() {
         } // アクティブ時にactiveクラスを追加
       >
         カレンダー {/* カレンダー画面へのリンク */}
+      </NavLink>
+      {/* 設定画面へのリンク（新規追加） */}
+      <NavLink
+        to="/settings"
+        className={({ isActive }) =>
+          isActive ? "nav-link active" : "nav-link"
+        } // アクティブ時にactiveクラスを追加
+      >
+        設定 {/* 設定画面へのリンク */}
       </NavLink>
     </nav>
   );
