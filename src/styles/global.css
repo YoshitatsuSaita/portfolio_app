@@ -154,32 +154,6 @@ table {
   outline-offset: 2px; /* アウトラインの位置調整 */
 }
 
-/* ユーティリティクラス - よく使うスタイルを定義 */
-.container {
-  max-width: var(--container-max-width); /* 最大幅を制限 */
-  margin-left: auto; /* 左右中央揃え */
-  margin-right: auto; /* 左右中央揃え */
-  padding-left: var(--spacing-md); /* 左パディング */
-  padding-right: var(--spacing-md); /* 右パディング */
-}
-
-.text-center {
-  text-align: center; /* テキストを中央揃え */
-}
-
-.text-right {
-  text-align: right; /* テキストを右揃え */
-}
-
-.text-left {
-  text-align: left; /* テキストを左揃え */
-}
-
-/* 非表示クラス */
-.hidden {
-  display: none; /* 要素を非表示 */
-}
-
 /* スクリーンリーダー専用テキスト（視覚的には非表示、読み上げは可能） */
 .sr-only {
   position: absolute; /* 通常のレイアウトから除外 */
@@ -191,4 +165,41 @@ table {
   clip: rect(0, 0, 0, 0); /* クリッピング */
   white-space: nowrap; /* 改行なし */
   border-width: 0; /* ボーダーなし */
+}
+
+/* ========================================
+   共通ボタンスタイル - ボタンの基本定義
+   ======================================== */
+
+/* 共通ボタンの基本スタイル */
+.btn {
+  padding: var(--spacing-sm) var(--spacing-xl); /* 内側の余白 - 上下小、左右特大 */
+  border: none; /* ボーダーなし - シンプルなデザイン */
+  border-radius: var(--border-radius-md); /* 角丸を適用 - 柔らかい印象 */
+  font-size: var(--font-size-base); /* フォントサイズを基本サイズに */
+  font-weight: var(--font-weight-medium); /* フォントを少し太く - 視認性向上 */
+  cursor: pointer; /* カーソルをポインターに変更 - クリック可能を示す */
+  transition:
+    background-color var(--transition-fast),
+    transform var(--transition-fast); /* 背景色と変形のアニメーション - スムーズな視覚効果 */
+}
+
+/* プライマリボタン - 主要アクション用（青系） */
+.btn-primary {
+  background-color: var(--color-primary); /* 背景色をプライマリカラー（青）に */
+  color: white; /* 文字色を白に - 可読性を確保 */
+}
+
+/* プライマリボタンのホバー時スタイル */
+.btn-primary:hover:not(:disabled) {
+  background-color: var(
+    --color-primary-dark
+  ); /* 背景色をより濃い青に変更 - ホバー効果 */
+  transform: translateY(-1px); /* ボタンを少し上に移動 - 浮き上がる効果 */
+}
+
+/* 無効化されたボタン */
+.btn:disabled {
+  opacity: 0.6; /* 透明度を下げる - 無効状態を視覚的に示す */
+  cursor: not-allowed; /* カーソルを禁止マークに変更 - クリック不可を示す */
 }

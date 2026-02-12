@@ -99,34 +99,3 @@
   gap: var(--spacing-md); /* ボタン間の余白 */
   margin-top: var(--spacing-md); /* 上側の余白 */
 }
-
-/* 共通ボタンスタイル */
-.btn {
-  padding: var(--spacing-sm) var(--spacing-xl); /* 内側の余白 */
-  border: none; /* ボーダーなし */
-  border-radius: var(--border-radius-md); /* 角丸 */
-  font-size: var(--font-size-base); /* フォントサイズ */
-  font-weight: var(--font-weight-medium); /* フォントを少し太く */
-  cursor: pointer; /* カーソルをポインターに */
-  transition:
-    background-color var(--transition-fast),
-    transform var(--transition-fast); /* 背景色と変形のアニメーション */
-}
-
-/* プライマリボタン */
-.btn-primary {
-  background-color: var(--color-primary); /* プライマリカラー */
-  color: white; /* 白文字 */
-}
-
-/* プライマリボタンホバー時 */
-.btn-primary:hover:not(:disabled) {
-  background-color: var(--color-primary-dark); /* 濃いプライマリカラー */
-  transform: translateY(-1px); /* 少し上に移動 */
-}
-
-/* 無効化されたボタン */
-.btn:disabled {
-  opacity: 0.6; /* 透明度を下げる */
-  cursor: not-allowed; /* カーソルを禁止マークに */
-}
