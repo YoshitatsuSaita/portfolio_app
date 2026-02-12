@@ -148,6 +148,11 @@ table {
   background-color: var(--color-text-secondary); /* ホバー時の色 */
 }
 
+h1 {
+  /* 見出し1 */
+  text-align: center; /* テキストを中央揃え */
+}
+
 /* フォーカス時のアウトライン */
 :focus-visible {
   outline: 2px solid var(--color-primary); /* プライマリカラーのアウトライン */
