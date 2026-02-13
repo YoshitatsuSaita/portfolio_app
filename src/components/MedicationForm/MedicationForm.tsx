@@ -9,7 +9,6 @@ import "./MedicationForm.css"; // CSSをインポート
 // フォーム入力データの型定義
 interface MedicationFormData {
   name: string; // 薬品名（商品名）
-  genericName: string; // 一般名
   dosage: string; // 服用量
   frequency: number; // 服用回数
   times: string[]; // 服用時間の配列
@@ -44,7 +43,6 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
     defaultValues: {
       // デフォルト値を設定
       name: "", // 薬品名（商品名）は空文字
-      genericName: "", // 一般名は空文字
       dosage: "", // 服用量は空文字
       frequency: 1, // 服用回数は1回
       times: ["08:00"], // 服用時間は朝8時をデフォルト
@@ -61,7 +59,6 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
       reset({
         // フォームの値をリセットして既存データを設定
         name: medication.name, // 薬品名（商品名）
-        genericName: medication.genericName || "", // 一般名（未設定の場合は空文字）
         dosage: medication.dosage, // 服用量
         frequency: medication.frequency, // 服用回数
         times: medication.times, // 服用時間の配列
@@ -83,7 +80,6 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
         await updateMedication(medication.id, {
           // 薬剤IDを指定
           name: data.name, // 薬品名（商品名）
-          genericName: data.genericName || undefined, // 一般名（空の場合はundefined）
           dosage: data.dosage, // 服用量
           frequency: data.frequency, // 服用回数
           times: data.times.slice(0, data.frequency), // 服用回数分の時間のみ取得
@@ -96,7 +92,6 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
         // ZustandストアのaddMedication関数を呼び出して薬剤を登録
         await addMedication({
           name: data.name, // 薬品名（商品名）
-          genericName: data.genericName || undefined, // 一般名（空の場合はundefined）
           dosage: data.dosage, // 服用量
           frequency: data.frequency, // 服用回数
           times: data.times.slice(0, data.frequency), // 服用回数分の時間のみ取得
@@ -136,22 +131,6 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
         />
         {errors.name && <p className="error-message">{errors.name.message}</p>}{" "}
         {/* エラーメッセージ表示 */}
-      </div>
-      {/* 一般名入力欄*/}
-      <div className="form-group">
-        <label htmlFor="genericName" className="form-label">
-          一般名（任意）
-        </label>
-        <input
-          id="genericName" // ラベルとの紐づけ用ID
-          type="text" // テキスト入力
-          className={`form-input ${errors.genericName ? "error" : ""}`} // エラー時にerrorクラスを追加
-          placeholder="例: ロキソプロフェンナトリウム水和物" // プレースホルダー
-          {...register("genericName")} // React Hook Formに登録（バリデーションなし・任意入力）
-        />
-        {errors.genericName && (
-          <p className="error-message">{errors.genericName.message}</p>
-        )}
       </div>
       {/* 服用量入力欄 */}
       <div className="form-group">

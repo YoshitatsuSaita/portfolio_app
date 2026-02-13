@@ -229,29 +229,6 @@ export const markAsCompleted = async (id: string): Promise<number> => {
   });
 };
 
-/**
- * 服用遵守率を計算
- * @param startDate 開始日時（ISO 8601形式）
- * @param endDate 終了日時（ISO 8601形式）
- * @returns 服用遵守率（0-100のパーセンテージ）
- */
-export const calculateAdherenceRate = async (
-  startDate: string,
-  endDate: string,
-): Promise<number> => {
-  // 指定された期間の服用記録を全て取得
-  const records = await getRecordsByDateRange(startDate, endDate);
-
-  // 記録が0件の場合は0%を返す
-  if (records.length === 0) return 0;
-
-  // 服用完了した記録の数をカウント
-  const completedCount = records.filter((r) => r.completed).length;
-
-  // 遵守率を計算（完了数 / 全体数 × 100）し、小数第1位で四捨五入
-  return Math.round((completedCount / records.length) * 1000) / 10;
-};
-
 // ===== 天気データ用のCRUD操作（新規追加） =====
 
 /**

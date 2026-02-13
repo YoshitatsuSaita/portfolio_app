@@ -2,7 +2,6 @@
 export interface Medication {
   id: string; // 薬剤の一意識別子（UUID）
   name: string; // 薬品名
-  genericName?: string; // 一般名（任意）
   dosage: string; // 服用量（例: "1錠", "10ml"）
   frequency: number; // 1日あたりの服用回数
   times: string[]; // 服用時刻の配列（例: ["08:00", "20:00"]）

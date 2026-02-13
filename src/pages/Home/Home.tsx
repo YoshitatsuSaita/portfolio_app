@@ -2,7 +2,6 @@
 
 import { useEffect } from "react"; // useEffectフックをインポート
 import ScheduleList from "../../components/ScheduleList/ScheduleList"; // ScheduleListコンポーネントをインポート
-import AdherenceRate from "../../components/AdherenceRate/AdherenceRate"; // AdherenceRateコンポーネントをインポート
 import WeatherAlert from "../../components/WeatherAlert/WeatherAlert"; // WeatherAlertコンポーネントをインポート（新規追加）
 import { useWeatherStore } from "../../store/weatherStore"; // 天気ストアをインポート（新規追加）
 import "./Home.css"; // CSSをインポート
@@ -36,8 +35,6 @@ function Home() {
       <h1>今日の服用予定</h1> {/* ページタイトル */}
       {/* 天気警告の表示（新規追加） */}
       <WeatherAlert weather={weatherData} settings={weatherSettings} />
-      {/* 服用遵守率を表示 */}
-      <AdherenceRate />
       {/* 今日の服用予定リストを表示（dateプロパティ未指定 = 今日） */}
       <ScheduleList />
     </div>
