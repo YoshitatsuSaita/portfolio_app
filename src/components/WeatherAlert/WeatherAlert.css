@@ -1,31 +1,37 @@
-/* 天気警告バナーのスタイル定義 */
+/* src/components/WeatherAlert/WeatherAlert.css */
+
+/* 天気警告バナーのベーススタイル定義 */
+/* 警告・良好どちらの状態でも共通して使用するレイアウト・形状のみを定義 */
 .weather-alert {
   display: flex; /* フレックスボックスレイアウト */
   align-items: flex-start; /* 上揃え */
   gap: var(--spacing-md); /* アイコンとコンテンツの間隔 */
+  border-radius: var(--border-radius-md); /* 角丸 */
+  padding: var(--spacing-lg); /* 内側の余白 */
+  margin-bottom: var(--spacing-xl); /* 下マージン */
+  box-shadow: var(--shadow-md); /* 中程度の影 */
+  border-left-width: 4px; /* 左ボーダーの太さ（色はmodifier側で指定） */
+  border-left-style: solid; /* 左ボーダーのスタイル（色はmodifier側で指定） */
+}
+
+/* 警告状態（高温・高湿度のいずれか、または両方が基準値以上）*/
+.weather-alert--warning {
   background: linear-gradient(
     135deg,
     #fff3cd 0%,
     #ffe8a1 100%
   ); /* グラデーション背景（薄い黄色〜オレンジ） */
-  border-left: 4px solid var(--color-warning); /* 左にオレンジのボーダー */
-  border-radius: var(--border-radius-md); /* 角丸 */
-  padding: var(--spacing-lg); /* 内側の余白 */
-  margin-bottom: var(--spacing-xl); /* 下マージン */
-  box-shadow: var(--shadow-md); /* 中程度の影 */
-  animation: slideIn 0.3s ease-out; /* スライドインアニメーション */
+  border-left-color: var(--color-warning); /* 左ボーダーをオレンジに */
 }
 
-/* スライドインアニメーションの定義 */
-@keyframes slideIn {
-  from {
-    opacity: 0; /* 透明 */
-    transform: translateY(-10px); /* 上から */
-  }
-  to {
-    opacity: 1; /* 不透明 */
-    transform: translateY(0); /* 元の位置 */
-  }
+/* 良好状態（温度・湿度がともに基準値未満）*/
+.weather-alert--good {
+  background: linear-gradient(
+    135deg,
+    #d1e7dd 0%,
+    #a8d5be 100%
+  ); /* グラデーション背景（薄い緑系、警告と対比する安心感） */
+  border-left-color: #198754; /* 左ボーダーを緑に */
 }
 
 /* 警告アイコン */
@@ -44,7 +50,16 @@
   margin: 0 0 var(--spacing-sm) 0; /* 下マージンのみ */
   font-size: var(--font-size-lg); /* フォントサイズを大きく */
   font-weight: var(--font-weight-bold); /* 太字 */
+}
+
+/* タイトルのテキスト色：警告状態 */
+.weather-alert--warning .weather-alert-title {
   color: #856404; /* 濃い茶色（警告色） */
+}
+
+/* タイトルのテキスト色：良好状態 */
+.weather-alert--good .weather-alert-title {
+  color: #0f5132; /* 濃い緑（安心・良好を表現） */
 }
 
 /* 警告メッセージリスト */
@@ -58,8 +73,17 @@
 .weather-alert-message {
   margin: 0; /* マージンなし */
   font-size: var(--font-size-base); /* フォントサイズ */
-  color: #856404; /* 濃い茶色 */
   line-height: 1.5; /* 行間 */
+}
+
+/* メッセージのテキスト色：警告状態 */
+.weather-alert--warning .weather-alert-message {
+  color: #856404; /* 濃い茶色（警告色） */
+}
+
+/* メッセージのテキスト色：良好状態 */
+.weather-alert--good .weather-alert-message {
+  color: #0f5132; /* 濃い緑（安心・良好を表現） */
 }
 
 /* レスポンシブ対応 - モバイル */

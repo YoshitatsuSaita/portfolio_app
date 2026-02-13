@@ -97,9 +97,6 @@ function Home() {
       {/* 天気設定セクション（Settings.tsxから統合） */}
       <section className="home-weather-section">
         {" "}
-        {/* 天気設定エリアのコンテナ */}
-        <h2 className="home-weather-title">天気連携</h2>{" "}
-        {/* セクションタイトル */}
         {/* 天気連携の有効/無効トグル */}
         <div className="home-weather-toggle">
           {" "}

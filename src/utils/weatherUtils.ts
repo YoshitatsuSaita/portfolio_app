@@ -1,8 +1,8 @@
 // src/utils/weatherUtils.ts
 
-import { WeatherData } from "../types"; // 天気データの型定義のみインポート（WeatherSettingsは不要に）
+import { WeatherData } from "../types"; // 天気データの型定義のみインポート
 
-// ===== 警告判定の定数定義（旧WeatherSettingsから移動） =====
+// ===== 警告判定の定数定義 =====
 const HIGH_TEMP_THRESHOLD = 30; // 高温警告の基準温度（摂氏30度以上で警告）
 const HIGH_HUMIDITY_THRESHOLD = 80; // 高湿度警告の基準湿度（80%以上で警告）
 
@@ -10,22 +10,13 @@ const HIGH_HUMIDITY_THRESHOLD = 80; // 高湿度警告の基準湿度（80%以�
  * 天気データに基づいて警告メッセージを生成する関数
  * @param weather - 天気データオブジェクト（気温、湿度などを含む）
  * @returns string[] - 警告メッセージの配列（警告がない場合は空配列）
- *
- * 簡略化により、閾値は定数として関数内に保持。
- * 通知フラグ（notifyHighTemp, notifyHighHumidity）は常にON扱い。
- *
- * 使用例:
- * const alerts = checkWeatherAlerts(weatherData);
- * if (alerts.length > 0) {
- *   alerts.forEach(alert => console.log(alert));
- * }
  */
 export function checkWeatherAlerts(
-  weather: WeatherData, // 天気データ（引数からsettingsを削除）
+  weather: WeatherData, // 天気データ（引数）
 ): string[] {
   const alerts: string[] = []; // 警告メッセージを格納する配列（初期値は空配列）
 
-  // 高温警告のチェック（通知フラグは常にON扱い）
+  // 高温警告のチェック（30度以上で警告を追加）
   if (weather.temperature >= HIGH_TEMP_THRESHOLD) {
     // 現在気温が基準温度（30度）以上か判定
     alerts.push(
@@ -34,7 +25,7 @@ export function checkWeatherAlerts(
     );
   }
 
-  // 高湿度警告のチェック（通知フラグは常にON扱い）
+  // 高湿度警告のチェック（80%以上で警告を追加）
   if (weather.humidity >= HIGH_HUMIDITY_THRESHOLD) {
     // 現在湿度が基準湿度（80%）以上か判定
     alerts.push(
@@ -51,17 +42,31 @@ export function checkWeatherAlerts(
 }
 
 /**
+ * 保管環境が良好かどうかを判定する関数
+ * 温度・湿度がともに基準値未満の場合にtrueを返す
+ * @param weather - 天気データオブジェクト
+ * @returns boolean - 保管環境が良好であればtrue
+ *
+ * 使用例:
+ * const isGood = isStorageEnvironmentGood(weatherData);
+ * if (isGood) {
+ *   console.log("保管環境は良好です");
+ * }
+ */
+export function isStorageEnvironmentGood(weather: WeatherData): boolean {
+  const tempIsOk = weather.temperature < HIGH_TEMP_THRESHOLD; // 気温が基準値（30度）未満か判定
+  const humidityIsOk = weather.humidity < HIGH_HUMIDITY_THRESHOLD; // 湿度が基準値（80%）未満か判定
+
+  return tempIsOk && humidityIsOk; // 両方の条件を満たす場合のみtrueを返す
+}
+
+/**
  * 天気概要から適切な絵文字アイコンを取得する関数
  * @param description - 天気概要（日本語、例: "晴れ", "曇り"）
  * @returns string - 天気を表す絵文字
- *
- * 使用例:
- * const icon = getWeatherIcon("晴れ");
- * console.log(icon); // "☀️"
  */
 export function getWeatherIcon(description: string): string {
   // 天気概要の文字列に特定のキーワードが含まれているかチェック
-  // includes(): 部分一致で検索（例: "薄い雲" には "曇" が含まれる）
 
   if (description.includes("晴")) return "☀️"; // 晴れ（快晴、晴天など）
   if (description.includes("曇")) return "☁️"; // 曇り（薄曇り、曇天など）
@@ -69,37 +74,25 @@ export function getWeatherIcon(description: string): string {
   if (description.includes("雪")) return "❄️"; // 雪（小雪、大雪など）
   if (description.includes("雷")) return "⚡"; // 雷雨
 
-  // どのキーワードにも一致しない場合のデフォルト
-  return "🌤️"; // 薄曇り（部分的に晴れ）
+  return "🌤️"; // どのキーワードにも一致しない場合のデフォルト
 }
 
 /**
  * 天気データが古いかどうかを判定する関数
- * @param timestamp - 天気データの取得日時（ISO 8601形式、例: "2026-02-11T06:00:00.000Z"）
+ * @param timestamp - 天気データの取得日時（ISO 8601形式）
  * @param maxAgeHours - データの有効期限（時間単位、デフォルト: 6時間）
  * @returns boolean - データが古い場合はtrue、新しい場合はfalse
- *
- * 使用例:
- * const isStale = isWeatherDataStale(weatherData.timestamp);
- * if (isStale) {
- *   console.log('天気データが古いため、再取得が必要です');
- * }
  */
 export function isWeatherDataStale(
   timestamp: string, // データ取得日時（ISO 8601形式）
-  maxAgeHours: number = 6, // デフォルト: 6時間（天気は6時間ごとに更新が一般的）
+  maxAgeHours: number = 6, // デフォルト: 6時間
 ): boolean {
   const now = new Date(); // 現在時刻を取得
   const dataTime = new Date(timestamp); // データ取得時刻をDateオブジェクトに変換
 
-  // 現在時刻とデータ取得時刻の差分を計算（ミリ秒単位）
-  const timeDifference = now.getTime() - dataTime.getTime();
+  const timeDifference = now.getTime() - dataTime.getTime(); // 差分をミリ秒単位で計算
 
-  // ミリ秒を時間に変換
-  // 1秒 = 1000ミリ秒、1分 = 60秒、1時間 = 60分
-  // → 1時間 = 1000 * 60 * 60 ミリ秒
-  const ageInHours = timeDifference / (1000 * 60 * 60);
+  const ageInHours = timeDifference / (1000 * 60 * 60); // ミリ秒を時間に変換
 
-  // 経過時間が最大経過時間以上の場合はtrue（古い）
-  return ageInHours >= maxAgeHours;
+  return ageInHours >= maxAgeHours; // 経過時間が有効期限以上の場合はtrue（古い）
 }
