@@ -1,51 +1,52 @@
 // src/utils/weatherUtils.ts
 
-import { WeatherData, WeatherSettings } from "../types"; // 型定義をインポート
+import { WeatherData } from "../types"; // 天気データの型定義のみインポート（WeatherSettingsは不要に）
+
+// ===== 警告判定の定数定義（旧WeatherSettingsから移動） =====
+const HIGH_TEMP_THRESHOLD = 30; // 高温警告の基準温度（摂氏30度以上で警告）
+const HIGH_HUMIDITY_THRESHOLD = 80; // 高湿度警告の基準湿度（80%以上で警告）
 
 /**
- * 天気データと設定に基づいて警告メッセージを生成する関数
+ * 天気データに基づいて警告メッセージを生成する関数
  * @param weather - 天気データオブジェクト（気温、湿度などを含む）
- * @param settings - ユーザーの天気設定（警告の基準温度・湿度など）
  * @returns string[] - 警告メッセージの配列（警告がない場合は空配列）
  *
+ * 簡略化により、閾値は定数として関数内に保持。
+ * 通知フラグ（notifyHighTemp, notifyHighHumidity）は常にON扱い。
+ *
  * 使用例:
- * const alerts = checkWeatherAlerts(weatherData, userSettings);
+ * const alerts = checkWeatherAlerts(weatherData);
  * if (alerts.length > 0) {
  *   alerts.forEach(alert => console.log(alert));
  * }
  */
 export function checkWeatherAlerts(
-  weather: WeatherData, // 天気データ
-  settings: WeatherSettings, // 天気設定
+  weather: WeatherData, // 天気データ（引数からsettingsを削除）
 ): string[] {
   const alerts: string[] = []; // 警告メッセージを格納する配列（初期値は空配列）
 
-  // 高温警告のチェック
-  if (
-    settings.notifyHighTemp && // 高温通知が有効化されている
-    weather.temperature >= settings.highTempThreshold // 現在気温が基準温度以上
-  ) {
-    // 警告メッセージを配列に追加
+  // 高温警告のチェック（通知フラグは常にON扱い）
+  if (weather.temperature >= HIGH_TEMP_THRESHOLD) {
+    // 現在気温が基準温度（30度）以上か判定
     alerts.push(
+      // 条件を満たしたら警告メッセージを配列に追加
       `高温注意: 現在${weather.temperature}度です。薬の保管場所を確認してください。`,
     );
   }
 
-  // 高湿度警告のチェック
-  if (
-    settings.notifyHighHumidity && // 高湿度通知が有効化されている
-    weather.humidity >= settings.highHumidityThreshold // 現在湿度が基準湿度以上
-  ) {
-    // 警告メッセージを配列に追加
+  // 高湿度警告のチェック（通知フラグは常にON扱い）
+  if (weather.humidity >= HIGH_HUMIDITY_THRESHOLD) {
+    // 現在湿度が基準湿度（80%）以上か判定
     alerts.push(
+      // 条件を満たしたら警告メッセージを配列に追加
       `高湿度注意: 湿度${weather.humidity}%です。薬は密閉容器で保管してください。`,
     );
   }
 
   // 警告メッセージの配列を返す
-  // 0個の場合: 警告なし（空配列）
-  // 1個の場合: 高温または高湿度のどちらか
-  // 2個の場合: 高温かつ高湿度の両方
+  // 0個: 警告なし（空配列）
+  // 1個: 高温または高湿度のどちらか
+  // 2個: 高温かつ高湿度の両方
   return alerts;
 }
 
@@ -95,13 +96,10 @@ export function isWeatherDataStale(
   const timeDifference = now.getTime() - dataTime.getTime();
 
   // ミリ秒を時間に変換
-  // 1秒 = 1000ミリ秒
-  // 1分 = 60秒
-  // 1時間 = 60分
+  // 1秒 = 1000ミリ秒、1分 = 60秒、1時間 = 60分
   // → 1時間 = 1000 * 60 * 60 ミリ秒
   const ageInHours = timeDifference / (1000 * 60 * 60);
 
   // 経過時間が最大経過時間以上の場合はtrue（古い）
-  // 例: 7時間経過していて、maxAgeHours=6の場合 → true
   return ageInHours >= maxAgeHours;
 }

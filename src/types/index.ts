@@ -37,7 +37,7 @@ export interface ScheduleItem {
 // カレンダーの値の型（単一日付または日付範囲）
 export type CalendarValue = Date | null | [Date | null, Date | null];
 
-// =====天気関連の型定義 =====
+// ===== 天気関連の型定義 =====
 
 // 天気データの型定義
 export interface WeatherData {
@@ -53,13 +53,9 @@ export interface WeatherData {
   };
 }
 
-// 天気設定の型定義
+// 天気設定の型定義（簡略化: 閾値・通知フラグはweatherUtils.tsの定数に移動）
 export interface WeatherSettings {
   enabled: boolean; // 天気連携の有効/無効（デフォルト: false）
-  highTempThreshold: number; // 高温警告の基準温度（摂氏、デフォルト: 30度）
-  highHumidityThreshold: number; // 高湿度警告の基準（パーセント、デフォルト: 80%）
-  notifyHighTemp: boolean; // 高温通知の有効/無効（デフォルト: true）
-  notifyHighHumidity: boolean; // 高湿度通知の有効/無効（デフォルト: true）
   lastFetchedAt: string | null; // 最終取得日時（ISO 8601形式、未取得の場合はnull）
 }
 

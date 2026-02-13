@@ -18,7 +18,7 @@ function WeatherAlert({ weather, settings }: WeatherAlertProps) {
   }
 
   // 警告メッセージを生成（checkWeatherAlerts関数を使用）
-  const alerts = checkWeatherAlerts(weather, settings);
+  const alerts = checkWeatherAlerts(weather);
   // alerts: 警告メッセージの配列（0個の場合もあり）
   // 例: ["高温注意: 現在35度です。薬の保管場所を確認してください。"]
 

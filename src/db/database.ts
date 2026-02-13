@@ -351,10 +351,6 @@ export const getWeatherSettings = async (): Promise<WeatherSettings> => {
     settings || {
       // デフォルト値
       enabled: false, // 天気連携は初期状態でOFF
-      highTempThreshold: 30, // 高温警告の基準: 30度
-      highHumidityThreshold: 80, // 高湿度警告の基準: 80%
-      notifyHighTemp: true, // 高温通知はON
-      notifyHighHumidity: true, // 高湿度通知はON
       lastFetchedAt: null, // 未取得
     }
   );
