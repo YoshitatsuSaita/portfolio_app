@@ -1,71 +1,72 @@
 /* カレンダー画面のスタイル定義 */
 .calendar-page {
-  padding: var(--spacing-lg); /* 内側の余白を設定 */
+  padding: 1.5rem; /* 内側の余白を設定（24px） */
   max-width: 1200px; /* 最大幅を1200pxに制限 */
   margin: 0 auto; /* 左右中央揃え */
 }
 
 .calendar-page h1 {
-  margin-bottom: var(--spacing-xl); /* タイトル下の余白 */
-  color: var(--color-text-primary); /* 文字色 */
+  margin-bottom: 2rem; /* タイトル下の余白（32px） */
+  color: #212121; /* 文字色（濃い黒） */
   text-align: center; /* テキストを中央揃え */
 }
 
 /* カレンダーコンテナ */
 .calendar-container {
   display: grid; /* グリッドレイアウト */
-  grid-template-columns: 1fr; /* ★変更：1列に統一してカレンダーの下に詳細を配置 */
-  gap: var(--spacing-xl); /* 要素間の余白 */
+  grid-template-columns: 1fr; /* 1列に統一してカレンダーの下に詳細を配置 */
+  gap: 2rem; /* 要素間の余白（32px） */
   align-items: start; /* 上揃え */
 }
 
 /* カレンダー本体のラッパー */
 .calendar-wrapper {
-  background-color: var(--color-bg-primary); /* 白背景 */
-  padding: var(--spacing-lg); /* 内側の余白 */
-  border-radius: var(--border-radius-lg); /* 角丸 */
-  box-shadow: var(--shadow-md); /* 中程度の影 */
+  background-color: #ffffff; /* 白背景 */
+  padding: 1.5rem; /* 内側の余白（24px） */
+  border-radius: 1rem; /* 角丸（16px） */
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06); /* 中程度の影 */
 }
 
 /* 選択日の詳細表示エリア */
 .calendar-detail {
-  background-color: var(--color-bg-primary); /* 白背景 */
-  padding: var(--spacing-lg); /* 内側の余白 */
-  border-radius: var(--border-radius-lg); /* 角丸 */
-  box-shadow: var(--shadow-md); /* 中程度の影 */
-  /* ★削除：position: sticky → 縦並びのため不要 */
-  /* ★削除：top → 縦並びのため不要 */
-  /* ★削除：max-height → 縦並びのため不要 */
-  /* ★削除：overflow-y: auto → 縦並びのため不要 */
+  background-color: #ffffff; /* 白背景 */
+  padding: 1.5rem; /* 内側の余白（24px） */
+  border-radius: 1rem; /* 角丸（16px） */
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06); /* 中程度の影 */
 }
 
 /* React Calendarのカスタムスタイル */
 .react-calendar {
   width: 100%; /* 幅を100%に設定 */
   border: none; /* デフォルトのボーダーを削除 */
-  font-family: var(--font-family-base); /* フォントを設定 */
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; /* システムフォントを優先使用 */
 }
 
 /* カレンダーのナビゲーション（月の切り替えボタン） */
 .react-calendar__navigation {
   display: flex; /* フレックスボックスレイアウト */
   height: 44px; /* 高さを設定 */
-  margin-bottom: var(--spacing-md); /* 下側の余白 */
+  margin-bottom: 1rem; /* 下側の余白（16px） */
 }
 
 .react-calendar__navigation button {
   min-width: 44px; /* 最小幅を設定 */
   background: none; /* 背景なし */
-  font-size: var(--font-size-lg); /* フォントサイズを大きく */
-  color: var(--color-text-primary); /* テキスト色 */
+  font-size: 1.125rem; /* フォントサイズを大きく（18px） */
+  color: #212121; /* テキスト色（濃い黒） */
   border: none; /* ボーダーなし */
   cursor: pointer; /* カーソルをポインターに */
-  transition: background-color var(--transition-fast); /* 背景色の変化をアニメーション */
 }
 
 .react-calendar__navigation button:hover {
-  background-color: var(--color-bg-secondary); /* ホバー時に薄いグレー背景 */
-  border-radius: var(--border-radius-sm); /* 小さい角丸 */
+  background-color: #f5f5f5; /* ホバー時に薄いグレー背景 */
+  border-radius: 0.25rem; /* 小さい角丸（4px） */
 }
 
 .react-calendar__navigation button:disabled {
@@ -75,16 +76,16 @@
 
 /* 月・年の表示 */
 .react-calendar__navigation__label {
-  font-weight: var(--font-weight-bold); /* 太字 */
-  font-size: var(--font-size-xl); /* フォントサイズを特大に */
+  font-weight: 700; /* 太字 */
+  font-size: 1.25rem; /* フォントサイズを特大に（20px） */
 }
 
 /* 曜日ヘッダー */
 .react-calendar__month-view__weekdays {
   text-align: center; /* テキストを中央揃え */
-  font-weight: var(--font-weight-medium); /* 中太字 */
-  font-size: var(--font-size-sm); /* フォントサイズを小さく */
-  color: var(--color-text-secondary); /* グレー */
+  font-weight: 500; /* 中太字 */
+  font-size: 0.875rem; /* フォントサイズを小さく（14px） */
+  color: #757575; /* グレー（サブテキスト色） */
 }
 
 .react-calendar__month-view__weekdays abbr {
@@ -94,30 +95,27 @@
 /* カレンダーのタイル（各日付） */
 .react-calendar__tile {
   max-width: 100%; /* 最大幅を100%に設定 */
-  padding: var(--spacing-md); /* 内側の余白 */
+  padding: 1rem; /* 内側の余白（16px） */
   background: none; /* 背景なし */
   text-align: center; /* テキストを中央揃え */
   line-height: 1.2; /* 行間を設定 */
-  font-size: var(--font-size-base); /* フォントサイズ */
+  font-size: 1rem; /* フォントサイズ（16px） */
   border: 1px solid transparent; /* 透明なボーダー（ホバー時に表示） */
-  border-radius: var(--border-radius-sm); /* 小さい角丸 */
+  border-radius: 0.25rem; /* 小さい角丸（4px） */
   cursor: pointer; /* カーソルをポインターに */
-  transition:
-    background-color var(--transition-fast),
-    border-color var(--transition-fast); /* 背景色とボーダー色の変化をアニメーション */
   position: relative; /* 絶対配置の基準点 */
   min-height: 60px; /* 最小高さを設定（マークを表示するスペース確保） */
 }
 
 .react-calendar__tile:hover {
-  background-color: var(--color-bg-secondary); /* ホバー時に薄いグレー背景 */
-  border-color: var(--color-border); /* ボーダーを表示 */
+  background-color: #f5f5f5; /* ホバー時に薄いグレー背景 */
+  border-color: #e0e0e0; /* ボーダーを表示（デフォルトボーダー色） */
 }
 
 /* 今日の日付 */
 .react-calendar__tile--now {
-  background-color: var(--color-primary-light); /* 薄い青背景 */
-  font-weight: var(--font-weight-bold); /* 太字 */
+  background-color: #e3f2fd; /* 薄い青背景（プライマリライト色） */
+  font-weight: 700; /* 太字 */
 }
 
 .react-calendar__tile--now:hover {
@@ -126,20 +124,18 @@
 
 /* 選択された日付 */
 .react-calendar__tile--active {
-  background-color: var(--color-primary); /* プライマリカラー背景 */
+  background-color: #4a90e2; /* プライマリカラー（青）背景 */
   color: white; /* 白文字 */
-  font-weight: var(--font-weight-bold); /* 太字 */
+  font-weight: 700; /* 太字 */
 }
 
 .react-calendar__tile--active:hover {
-  background-color: var(
-    --color-primary-dark
-  ); /* ホバー時に濃いプライマリカラー */
+  background-color: #357abd; /* ホバー時に濃いプライマリカラー */
 }
 
 /* 隣接月の日付（グレーアウト） */
 .react-calendar__month-view__days__day--neighboringMonth {
-  color: var(--color-text-disabled); /* 薄いグレー */
+  color: #bdbdbd; /* 薄いグレー（無効化テキスト色） */
 }
 
 /* 日付タイル内の服用予定マーク */
@@ -147,32 +143,32 @@
   display: flex; /* フレックスボックスレイアウト */
   flex-direction: column; /* 縦方向に配置 */
   align-items: center; /* 中央揃え */
-  gap: var(--spacing-xs); /* 要素間の余白 */
+  gap: 0.25rem; /* 要素間の余白（4px） */
 }
 
 /* 服用予定数のバッジ */
 .schedule-badge {
   display: inline-block; /* インラインブロック要素 */
-  background-color: var(--color-primary); /* プライマリカラー背景 */
+  background-color: #4a90e2; /* プライマリカラー（青）背景 */
   color: white; /* 白文字 */
-  border-radius: var(--border-radius-full); /* 完全な円形 */
+  border-radius: 9999px; /* 完全な円形 */
   padding: 2px 8px; /* 内側の余白 */
-  font-size: var(--font-size-xs); /* フォントサイズを極小に */
-  font-weight: var(--font-weight-bold); /* 太字 */
-  margin-top: var(--spacing-xs); /* 上側の余白 */
+  font-size: 0.75rem; /* フォントサイズを極小に（12px） */
+  font-weight: 700; /* 太字 */
+  margin-top: 0.25rem; /* 上側の余白（4px） */
 }
 
 /* 完了済みの服用予定がある日 */
 .schedule-badge.completed {
-  background-color: var(--color-secondary); /* 成功色（緑） */
+  background-color: #50c878; /* 成功色（緑） */
 }
 
 /* 未完了の服用予定がある日 */
 .schedule-badge.pending {
-  background-color: var(--color-warning); /* 警告色（オレンジ） */
+  background-color: #ffa726; /* 警告色（オレンジ） */
 }
 
 /* 全て完了済みの日 */
 .schedule-badge.all-completed {
-  background-color: var(--color-secondary); /* 成功色（緑） */
+  background-color: #50c878; /* 成功色（緑） */
 }

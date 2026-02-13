@@ -2,72 +2,72 @@
 .medication-form {
   display: flex; /* フレックスボックスレイアウト */
   flex-direction: column; /* 縦方向に配置 */
-  gap: var(--spacing-lg); /* 要素間の余白 */
+  gap: 1.5rem; /* 要素間の余白（24px） */
 }
 
 /* フォームグループ - 各入力項目のコンテナ */
 .form-group {
   display: flex; /* フレックスボックスレイアウト */
   flex-direction: column; /* 縦方向に配置 */
-  gap: var(--spacing-sm); /* ラベルと入力欄の間の余白 */
+  gap: 0.5rem; /* ラベルと入力欄の間の余白（8px） */
 }
 
 /* フォームラベル */
 .form-label {
-  font-weight: var(--font-weight-medium); /* フォントを少し太く */
-  color: var(--color-text-primary); /* テキスト色 */
-  font-size: var(--font-size-base); /* フォントサイズ */
+  font-weight: 500; /* フォントを少し太く */
+  color: #212121; /* テキスト色（濃い黒） */
+  font-size: 1rem; /* フォントサイズ（16px） */
 }
 
 /* 必須マーク */
 .required {
-  color: var(--color-error); /* 赤色 */
-  margin-left: var(--spacing-xs); /* 左側に少し余白 */
+  color: #ef5350; /* 赤色（エラー色） */
+  margin-left: 0.25rem; /* 左側に少し余白（4px） */
 }
 
 /* フォーム入力欄（テキスト、数値、日付、時刻） */
 .form-input {
-  padding: var(--spacing-sm) var(--spacing-md); /* 内側の余白 */
-  border: 1px solid var(--color-border); /* ボーダー */
-  border-radius: var(--border-radius-md); /* 角丸 */
-  font-size: var(--font-size-base); /* フォントサイズ */
-  transition: border-color var(--transition-fast); /* ボーダー色の変化をアニメーション */
+  padding: 0.5rem 1rem; /* 内側の余白（上下8px、左右16px） */
+  border: 1px solid #e0e0e0; /* ボーダー（デフォルトボーダー色） */
+  border-radius: 0.5rem; /* 角丸（8px） */
+  font-size: 1rem; /* フォントサイズ（16px） */
+  transition: border-color 150ms ease-in-out; /* ボーダー色の変化をアニメーション */
 }
 
 /* フォーカス時の入力欄 */
 .form-input:focus {
   outline: none; /* デフォルトのアウトラインを削除 */
-  border-color: var(--color-primary); /* ボーダー色をプライマリカラーに */
+  border-color: #4a90e2; /* ボーダー色をプライマリカラー（青）に */
   box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1); /* 薄い青色の影を追加 */
 }
 
 /* エラー時の入力欄 */
 .form-input.error {
-  border-color: var(--color-error); /* ボーダー色を赤に */
+  border-color: #ef5350; /* ボーダー色を赤に */
 }
 
 /* テキストエリア */
 .form-textarea {
-  padding: var(--spacing-sm) var(--spacing-md); /* 内側の余白 */
-  border: 1px solid var(--color-border); /* ボーダー */
-  border-radius: var(--border-radius-md); /* 角丸 */
-  font-size: var(--font-size-base); /* フォントサイズ */
+  padding: 0.5rem 1rem; /* 内側の余白（上下8px、左右16px） */
+  border: 1px solid #e0e0e0; /* ボーダー（デフォルトボーダー色） */
+  border-radius: 0.5rem; /* 角丸（8px） */
+  font-size: 1rem; /* フォントサイズ（16px） */
   font-family: inherit; /* フォントを継承 */
   resize: vertical; /* 縦方向のリサイズのみ許可 */
-  transition: border-color var(--transition-fast); /* ボーダー色の変化をアニメーション */
+  transition: border-color 150ms ease-in-out; /* ボーダー色の変化をアニメーション */
 }
 
 /* フォーカス時のテキストエリア */
 .form-textarea:focus {
   outline: none; /* デフォルトのアウトラインを削除 */
-  border-color: var(--color-primary); /* ボーダー色をプライマリカラーに */
+  border-color: #4a90e2; /* ボーダー色をプライマリカラー（青）に */
   box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1); /* 薄い青色の影を追加 */
 }
 
 /* エラーメッセージ */
 .error-message {
-  color: var(--color-error); /* 赤色 */
-  font-size: var(--font-size-sm); /* 小さめのフォント */
+  color: #ef5350; /* 赤色（エラー色） */
+  font-size: 0.875rem; /* 小さめのフォント（14px） */
   margin: 0; /* マージンなし */
 }
 
@@ -75,27 +75,27 @@
 .times-container {
   display: flex; /* フレックスボックスレイアウト */
   flex-direction: column; /* 縦方向に配置 */
-  gap: var(--spacing-md); /* 各時間入力欄の間の余白 */
+  gap: 1rem; /* 各時間入力欄の間の余白（16px） */
 }
 
 /* 個別の時間入力グループ */
 .time-input-group {
   display: flex; /* フレックスボックスレイアウト */
   flex-direction: column; /* 縦方向に配置 */
-  gap: var(--spacing-sm); /* ラベルと入力欄の間の余白 */
+  gap: 0.5rem; /* ラベルと入力欄の間の余白（8px） */
 }
 
 /* 時間ラベル */
 .time-label {
-  font-size: var(--font-size-sm); /* 小さめのフォント */
-  color: var(--color-text-secondary); /* グレー */
-  font-weight: var(--font-weight-medium); /* フォントを少し太く */
+  font-size: 0.875rem; /* 小さめのフォント（14px） */
+  color: #757575; /* グレー（サブテキスト色） */
+  font-weight: 500; /* フォントを少し太く */
 }
 
 /* フォームアクション（ボタンエリア） */
 .form-actions {
   display: flex; /* フレックスボックスレイアウト */
   justify-content: flex-end; /* 右揃え */
-  gap: var(--spacing-md); /* ボタン間の余白 */
-  margin-top: var(--spacing-md); /* 上側の余白 */
+  gap: 1rem; /* ボタン間の余白（16px） */
+  margin-top: 1rem; /* 上側の余白（16px） */
 }

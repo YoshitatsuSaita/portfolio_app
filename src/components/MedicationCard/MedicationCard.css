@@ -5,7 +5,6 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 影を追加 - カードを浮き上がらせる */
   padding: 1.5rem; /* 内側の余白を設定 - コンテンツとの余白 */
   margin-bottom: 1rem; /* 下の余白を設定 - カード間のスペース */
-  transition: box-shadow 0.3s ease; /* 影の変化をアニメーション - ホバー時の効果 */
 }
 
 /* ホバー時のスタイル */
@@ -74,26 +73,19 @@
 
 /* 編集ボタンのスタイル */
 .btn-secondary {
-  background-color: var(
-    --color-primary
-  ); /* 背景色を青系に設定 - プライマリカラーを使用 */
+  background-color: #4a90e2; /* 背景色をプライマリカラー（青）に設定 */
   color: white; /* 文字色を白に設定 - 可読性を確保 */
-  padding: var(--spacing-sm) var(--spacing-md); /* 内側の余白を設定 - ボタンのサイズ調整 */
+  padding: 0.5rem 1rem; /* 内側の余白を設定（上下8px、左右16px） */
   border: none; /* ボーダーなし - シンプルなデザイン */
-  border-radius: var(--border-radius-md); /* 角丸を適用 - 柔らかい印象 */
-  font-size: var(--font-size-sm); /* フォントサイズを小さめに設定 */
-  font-weight: var(--font-weight-medium); /* フォントを少し太く - 視認性向上 */
+  border-radius: 0.5rem; /* 角丸（8px）を適用 - 柔らかい印象 */
+  font-size: 0.875rem; /* フォントサイズを小さめに設定（14px） */
+  font-weight: 500; /* フォントを少し太く - 視認性向上 */
   cursor: pointer; /* カーソルをポインターに変更 - クリック可能を示す */
-  transition:
-    background-color var(--transition-fast),
-    transform var(--transition-fast); /* 背景色と変形のアニメーション - スムーズな視覚効果 */
 }
 
 /* 編集ボタンのホバー時スタイル */
 .btn-secondary:hover:not(:disabled) {
-  background-color: var(
-    --color-primary-dark
-  ); /* 背景色をより濃い青に変更 - ホバー効果 */
+  background-color: #357abd; /* 背景色をより濃い青に変更 - ホバー効果 */
   transform: translateY(-1px); /* ボタンを少し上に移動 - 浮き上がる効果 */
 }
 
@@ -105,19 +97,14 @@
 
 /* 削除ボタンのスタイル */
 .btn-danger {
-  background-color: var(
-    --color-error
-  ); /* 背景色を赤系に設定 - 危険な操作を視覚的に示す */
+  background-color: #ef5350; /* 背景色をエラー色（赤）に設定 - 危険な操作を視覚的に示す */
   color: white; /* 文字色を白に設定 - 可読性を確保 */
-  padding: var(--spacing-sm) var(--spacing-md); /* 内側の余白を設定 - ボタンのサイズ調整 */
+  padding: 0.5rem 1rem; /* 内側の余白を設定（上下8px、左右16px） */
   border: none; /* ボーダーなし - シンプルなデザイン */
-  border-radius: var(--border-radius-md); /* 角丸を適用 - 柔らかい印象 */
-  font-size: var(--font-size-sm); /* フォントサイズを小さめに設定 */
-  font-weight: var(--font-weight-medium); /* フォントを少し太く - 視認性向上 */
+  border-radius: 0.5rem; /* 角丸（8px）を適用 - 柔らかい印象 */
+  font-size: 0.875rem; /* フォントサイズを小さめに設定（14px） */
+  font-weight: 500; /* フォントを少し太く - 視認性向上 */
   cursor: pointer; /* カーソルをポインターに変更 - クリック可能を示す */
-  transition:
-    background-color var(--transition-fast),
-    transform var(--transition-fast); /* 背景色と変形のアニメーション - スムーズな視覚効果 */
 }
 
 /* 削除ボタンのホバー時スタイル */
