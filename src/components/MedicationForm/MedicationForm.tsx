@@ -1,8 +1,9 @@
 // src/components/MedicationForm/MedicationForm.tsx
 
-import { useForm } from "react-hook-form"; // React Hook Formをインポート
+import { useForm } from "react-hook-form"; // React Hook Formをインポート - フォームの状態管理と送信処理
 import { useEffect } from "react"; // useEffectフックをインポート - 編集モード時の初期値設定用
-import { useMedicationStore } from "../../store/medicationStore"; // Zustandストアをインポート
+import dayjs from "dayjs"; // Day.jsをインポート - 日付の加算・差分計算に使用（既存の依存関係）
+import { useMedicationStore } from "../../store/medicationStore"; // Zustandストアをインポート - 登録・更新関数を取得
 import { Medication } from "../../types"; // Medication型をインポート - 編集モード用
 import "./MedicationForm.css"; // CSSをインポート
 
@@ -10,11 +11,11 @@ import "./MedicationForm.css"; // CSSをインポート
 interface MedicationFormData {
   name: string; // 薬品名（商品名）
   dosage: string; // 服用量
-  frequency: number; // 服用回数
-  times: string[]; // 服用時間の配列
-  startDate: string; // 開始日
-  endDate: string; // 終了日
-  memo: string; // メモ
+  frequency: number; // 服用回数（1日何回）
+  times: string[]; // 服用時間の配列（frequencyの数だけ要素を持つ）
+  startDate: string; // 開始日（YYYY-MM-DD形式）
+  prescriptionDays: number; // 処方期間（日数）- 0の場合は終了日なし（継続中）
+  memo: string; // メモ（任意）
 }
 
 // MedicationFormコンポーネントのpropsの型定義
@@ -34,20 +35,19 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
 
   // React Hook Formの初期化
   const {
-    register, // 入力欄を登録する関数
-    handleSubmit, // フォーム送信時の処理を登録する関数
-    watch, // フォームの値を監視する関数
-    reset, // フォームをリセットする関数
+    register, // 入力欄をReact Hook Formに登録する関数
+    handleSubmit, // フォーム送信時の処理をラップする関数
+    watch, // フォームの値をリアルタイムで監視する関数
+    reset, // フォームの値を指定した値にリセットする関数
     formState: { errors, isSubmitting }, // エラー情報と送信中フラグ
   } = useForm<MedicationFormData>({
     defaultValues: {
-      // デフォルト値を設定
       name: "", // 薬品名（商品名）は空文字
       dosage: "", // 服用量は空文字
       frequency: 1, // 服用回数は1回
       times: ["08:00"], // 服用時間は朝8時をデフォルト
-      startDate: new Date().toISOString().split("T")[0], // 開始日は今日
-      endDate: "", // 終了日は空（未設定）
+      startDate: new Date().toISOString().split("T")[0], // 開始日は今日の日付
+      prescriptionDays: 0, // 処方期間は0（=終了日なし・継続中）
       memo: "", // メモは空文字
     },
   });
@@ -56,47 +56,59 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
   useEffect(() => {
     if (medication) {
       // medicationが存在する場合（編集モード）
+
+      // 既存データのendDateからprescriptionDaysを逆算する
+      // endDateがある場合はdayjsで差分日数を計算し、ない場合は0（継続中）を設定
+      const prescriptionDays = medication.endDate
+        ? dayjs(medication.endDate).diff(dayjs(medication.startDate), "day") // 終了日 - 開始日の日数差を計算
+        : 0; // 終了日が未設定の場合は0（継続中）
+
       reset({
-        // フォームの値をリセットして既存データを設定
-        name: medication.name, // 薬品名（商品名）
-        dosage: medication.dosage, // 服用量
-        frequency: medication.frequency, // 服用回数
-        times: medication.times, // 服用時間の配列
-        startDate: medication.startDate, // 開始日
-        endDate: medication.endDate || "", // 終了日（nullの場合は空文字）
-        memo: medication.memo, // メモ
+        name: medication.name, // 薬品名（商品名）を設定
+        dosage: medication.dosage, // 服用量を設定
+        frequency: medication.frequency, // 服用回数を設定
+        times: medication.times, // 服用時間の配列を設定
+        startDate: medication.startDate, // 開始日を設定
+        prescriptionDays, // 逆算した処方期間（日数）を設定
+        memo: medication.memo, // メモを設定
       });
     }
   }, [medication, reset]); // medicationまたはresetが変更された時に再実行
 
-  const frequency = watch("frequency"); // 服用回数の値を監視
+  const frequency = watch("frequency"); // 服用回数の値をリアルタイムで監視（時間欄の数を動的に変えるため）
 
   // フォーム送信時の処理
   const onSubmit = async (data: MedicationFormData) => {
     try {
+      // prescriptionDaysが1以上の場合、startDateに日数を加算してendDateを計算する
+      // 0または未入力の場合はnullを設定（終了日なし = 継続中）
+      const endDate =
+        data.prescriptionDays > 0
+          ? dayjs(data.startDate)
+              .add(data.prescriptionDays, "day") // 開始日に処方期間（日数）を加算
+              .format("YYYY-MM-DD") // YYYY-MM-DD形式の文字列に変換
+          : null; // 処方期間が0の場合は終了日なし
+
       if (isEditMode) {
-        // 編集モードの場合
-        // ZustandストアのupdateMedication関数を呼び出して薬剤を更新
+        // 編集モードの場合 - 既存薬剤を更新
         await updateMedication(medication.id, {
-          // 薬剤IDを指定
           name: data.name, // 薬品名（商品名）
           dosage: data.dosage, // 服用量
           frequency: data.frequency, // 服用回数
           times: data.times.slice(0, data.frequency), // 服用回数分の時間のみ取得
           startDate: data.startDate, // 開始日
-          endDate: data.endDate || null, // 終了日（空の場合はnull）
+          endDate, // 計算されたendDate（またはnull）
           memo: data.memo, // メモ
         });
       } else {
-        // 新規登録モードの場合
-        // ZustandストアのaddMedication関数を呼び出して薬剤を登録
+        // 新規登録モードの場合 - 薬剤を新たに登録
         await addMedication({
           name: data.name, // 薬品名（商品名）
           dosage: data.dosage, // 服用量
           frequency: data.frequency, // 服用回数
           times: data.times.slice(0, data.frequency), // 服用回数分の時間のみ取得
           startDate: data.startDate, // 開始日
-          endDate: data.endDate || null, // 終了日（空の場合はnull）
+          endDate, // 計算されたendDate（またはnull）
           memo: data.memo, // メモ
         });
       }
@@ -108,34 +120,31 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
 
   return (
     <form className="medication-form" onSubmit={handleSubmit(onSubmit)}>
-      {" "}
       {/* フォーム全体 */}
+
       {/* 薬品名入力欄 */}
       <div className="form-group">
-        {" "}
-        {/* フォームグループ */}
         <label htmlFor="name" className="form-label">
-          {" "}
-          {/* ラベル */}
           薬品名 <span className="required">*</span> {/* 必須マーク */}
         </label>
         <input
           id="name" // ラベルとの紐づけ用ID
           type="text" // テキスト入力
-          className={`form-input ${errors.name ? "error" : ""}`} // エラー時にerrorクラスを追加
-          placeholder="例: ロキソニン" // プレースホルダー
+          className={`form-input ${errors.name ? "error" : ""}`} // エラー時にerrorクラスを付与
+          placeholder="例: トラネキサム酸錠250mg"
           {...register("name", {
-            // React Hook Formに登録
-            required: "薬品名は必須です", // 必須バリデーション
+            required: "薬品名は必須です", // 未入力の場合のエラーメッセージ
           })}
         />
-        {errors.name && <p className="error-message">{errors.name.message}</p>}{" "}
-        {/* エラーメッセージ表示 */}
+        {errors.name && (
+          <p className="error-message">{errors.name.message}</p> // エラーメッセージを表示
+        )}
       </div>
+
       {/* 服用量入力欄 */}
       <div className="form-group">
         <label htmlFor="dosage" className="form-label">
-          服用量 <span className="required">*</span>
+          1回の服用量 <span className="required">*</span>
         </label>
         <input
           id="dosage"
@@ -143,107 +152,114 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
           className={`form-input ${errors.dosage ? "error" : ""}`}
           placeholder="例: 1錠"
           {...register("dosage", {
-            required: "服用量は必須です",
+            required: "服用量は必須です", // 未入力の場合のエラーメッセージ
           })}
         />
         {errors.dosage && (
           <p className="error-message">{errors.dosage.message}</p>
         )}
       </div>
+
       {/* 服用回数入力欄 */}
       <div className="form-group">
         <label htmlFor="frequency" className="form-label">
-          服用回数（1日あたり） <span className="required">*</span>
+          1日の服用回数 <span className="required">*</span>
         </label>
-        <input
-          id="frequency"
-          type="number"
-          min="1" // 最小値は1
-          max="10" // 最大値は10
-          className={`form-input ${errors.frequency ? "error" : ""}`}
-          {...register("frequency", {
-            required: "服用回数は必須です",
-            min: { value: 1, message: "1回以上を指定してください" }, // 最小値バリデーション
-            max: { value: 10, message: "10回以下を指定してください" }, // 最大値バリデーション
-          })}
-        />
+        <div className="input-with-unit">
+          <input
+            id="frequency"
+            type="number" // 数値入力
+            className={`form-input ${errors.frequency ? "error" : ""}`}
+            min={1} // 最小値1（1日1回以上）
+            max={10} // 最大値10（1日10回まで）
+            {...register("frequency", {
+              required: "服用回数は必須です",
+              min: { value: 1, message: "1以上の値を入力してください" }, // 最小値バリデーション
+              max: { value: 10, message: "10以下の値を入力してください" }, // 最大値バリデーション
+              valueAsNumber: true, // 数値として扱う（文字列変換を防ぐ）
+            })}
+          />
+          <span className="input-unit">回</span>
+        </div>
         {errors.frequency && (
           <p className="error-message">{errors.frequency.message}</p>
         )}
       </div>
-      {/* 服用時間入力欄（動的生成） */}
+
+      {/* 服用時間入力欄（服用回数分だけ動的に表示） */}
       <div className="form-group">
         <label className="form-label">
           服用時間 <span className="required">*</span>
         </label>
-        <div className="times-container">
-          {" "}
-          {/* 時間入力欄のコンテナ */}
-          {Array.from({ length: frequency }).map((_, index) => (
-            // 服用回数分の入力欄を生成
-            <div key={index} className="time-input-group">
-              {" "}
-              {/* 各時間入力欄 */}
-              <label htmlFor={`time-${index}`} className="time-label">
-                {index + 1}回目 {/* 何回目かを表示 */}
-              </label>
-              <input
-                id={`time-${index}`}
-                type="time" // 時刻入力
-                className={`form-input ${errors.times?.[index] ? "error" : ""}`}
-                {...register(`times.${index}`, {
-                  // 配列の要素として登録
-                  required: "服用時間は必須です",
-                })}
-              />
-              {errors.times?.[index] && (
-                <p className="error-message">{errors.times[index]?.message}</p>
-              )}
-            </div>
-          ))}
-        </div>
+        {Array.from({ length: frequency }).map((_, index) => (
+          // 服用回数分のインデックスで配列を生成してループ
+          <div key={index} className="time-input-group">
+            <label htmlFor={`times.${index}`} className="time-label">
+              {index + 1}回目 {/* 何回目の服用かを表示 */}
+            </label>
+            <input
+              id={`times.${index}`}
+              type="time" // 時刻入力
+              className={`form-input ${errors.times?.[index] ? "error" : ""}`}
+              {...register(`times.${index}`, {
+                required: "服用時間は必須です", // 未入力の場合のエラーメッセージ
+              })}
+            />
+            {errors.times?.[index] && (
+              <p className="error-message">{errors.times[index]?.message}</p>
+            )}
+          </div>
+        ))}
       </div>
+
       {/* 開始日入力欄 */}
       <div className="form-group">
         <label htmlFor="startDate" className="form-label">
-          開始日 <span className="required">*</span>
+          処方日 <span className="required">*</span>
         </label>
         <input
           id="startDate"
           type="date" // 日付入力
           className={`form-input ${errors.startDate ? "error" : ""}`}
           {...register("startDate", {
-            required: "開始日は必須です",
+            required: "開始日は必須です", // 未入力の場合のエラーメッセージ
           })}
         />
         {errors.startDate && (
           <p className="error-message">{errors.startDate.message}</p>
         )}
       </div>
-      {/* 終了日入力欄 */}
+
+      {/* 処方期間入力欄（endDateの代わり） */}
       <div className="form-group">
-        <label htmlFor="endDate" className="form-label">
-          終了日（任意）
+        <label htmlFor="prescriptionDays" className="form-label">
+          処方期間（日数）
         </label>
-        <input
-          id="endDate"
-          type="date"
-          className={`form-input ${errors.endDate ? "error" : ""}`}
-          {...register("endDate", {
-            validate: (value) => {
-              // カスタムバリデーション
-              if (!value) return true; // 空の場合はOK
-              const startDate = watch("startDate"); // 開始日を取得
-              return (
-                value >= startDate || "終了日は開始日以降を指定してください"
-              ); // 開始日以降かチェック
-            },
-          })}
-        />
-        {errors.endDate && (
-          <p className="error-message">{errors.endDate.message}</p>
+        <div className="input-with-unit">
+          {" "}
+          {/* 数値入力と単位ラベルを横並びにするラッパー */}
+          <input
+            id="prescriptionDays"
+            type="number" // 数値入力
+            className={`form-input ${errors.prescriptionDays ? "error" : ""}`}
+            min={0} // 最小値0（0の場合は終了日なし = 継続中）
+            placeholder="0"
+            {...register("prescriptionDays", {
+              min: { value: 0, message: "0以上の値を入力してください" }, // 負の値を防ぐバリデーション
+              valueAsNumber: true, // 数値として扱う（文字列変換を防ぐ）
+            })}
+          />
+          <span className="input-unit">日</span> {/* 単位ラベル */}
+        </div>
+        <p className="form-hint">
+          {/* 入力補助テキスト */}
+          0または未入力の場合は終了日なし（継続中）として保存されます
+        </p>
+        {errors.prescriptionDays && (
+          <p className="error-message">{errors.prescriptionDays.message}</p>
         )}
       </div>
+
       {/* メモ入力欄 */}
       <div className="form-group">
         <label htmlFor="memo" className="form-label">
@@ -257,23 +273,22 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
           {...register("memo")}
         />
       </div>
+
       {/* 送信ボタン */}
       <div className="form-actions">
-        {" "}
-        {/* ボタンエリア */}
         <button
-          type="submit" // フォーム送信
-          className="btn btn-primary" // プライマリボタンスタイル
-          disabled={isSubmitting} // 送信中は無効化
+          type="submit" // フォーム送信ボタン
+          className="btn btn-primary"
+          disabled={isSubmitting} // 送信処理中は二重送信を防ぐため無効化
         >
           {
             isSubmitting
               ? isEditMode
-                ? "更新中..."
-                : "登録中..." // 送信中は処理中メッセージを表示
+                ? "更新中..." // 送信中かつ編集モードのメッセージ
+                : "登録中..." // 送信中かつ新規登録モードのメッセージ
               : isEditMode
-                ? "更新"
-                : "登録" // 通常時は編集モードか新規登録モードかでボタンテキストを変更
+                ? "更新" // 通常時の編集モードのボタンテキスト
+                : "登録" // 通常時の新規登録モードのボタンテキスト
           }
         </button>
       </div>
@@ -281,4 +296,4 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
   );
 }
 
-export default MedicationForm; // エクスポート
+export default MedicationForm; // 他のファイルから使用できるようにエクスポート

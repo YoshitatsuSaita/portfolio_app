@@ -7,8 +7,6 @@
 
 .calendar-page h1 {
   margin-bottom: 2rem; /* タイトル下の余白（32px） */
-  color: #212121; /* 文字色（濃い黒） */
-  text-align: center; /* テキストを中央揃え */
 }
 
 /* カレンダーコンテナ */
@@ -158,13 +156,13 @@
   margin-top: 0.25rem; /* 上側の余白（4px） */
 }
 
-/* 完了済みの服用予定がある日 */
-.schedule-badge.completed {
-  background-color: #50c878; /* 成功色（緑） */
+/* 全て未完了の服用予定がある日 */
+.schedule-badge.pending {
+  background-color: #4a90e2; /* 未然色（青） */
 }
 
-/* 未完了の服用予定がある日 */
-.schedule-badge.pending {
+/* 1つでも完了済みの服用予定がある日 */
+.schedule-badge.completed {
   background-color: #ffa726; /* 警告色（オレンジ） */
 }
 

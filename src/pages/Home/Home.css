@@ -5,12 +5,6 @@
   margin: 0 auto; /* 左右中央揃え */
 }
 
-.home h1 {
-  margin-bottom: 2rem; /* タイトル下の余白（32px） */
-  color: #212121; /* 文字色（濃い黒） */
-  text-align: center; /* テキストを中央揃え */
-}
-
 /* ===== 天気設定セクション（Settings.tsxから統合） ===== */
 
 /* 天気セクション全体のコンテナ */
