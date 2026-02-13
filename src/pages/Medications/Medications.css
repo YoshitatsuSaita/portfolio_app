@@ -22,16 +22,3 @@
   grid-column: 3; /* 3カラムの3番目（右エリア）に配置 */
   justify-self: end; /* グリッドセル内で右端に寄せる */
 }
-
-/* レスポンシブ対応 - モバイル */
-@media (max-width: 768px) {
-  .medications-header {
-    flex-direction: column; /* 縦方向に配置 */
-    align-items: flex-start; /* 左揃え */
-    gap: var(--spacing-md); /* 要素間の余白 */
-  }
-
-  .medications-header .btn {
-    width: 100%; /* ボタンを幅いっぱいに */
-  }
-}

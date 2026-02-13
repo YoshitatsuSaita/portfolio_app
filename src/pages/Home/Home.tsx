@@ -42,59 +42,49 @@ function Home() {
       // OFF → ONにする場合: 位置情報の許可が必要
       try {
         const { getCurrentPosition } = await import("../../api"); // 位置情報API関数を動的インポート
-        await getCurrentPosition(); // ブラウザの位置情報許可ダイアログを表示・取得を試行
-        await updateSettings({ enabled: true }); // 許可が得られたら天気連携を有効化
-        await fetchWeatherData(); // 有効化直後にAPIから天気データを取得
-      } catch (err) {
-        // 位置情報の取得に失敗した場合（ユーザー拒否・タイムアウト等）
+        await getCurrentPosition(); // ブラウザの位置情報パーミッションを確認・取得
+        await updateSettings({ enabled: true }); // 位置情報が許可されたら天気連携を有効化
+        await fetchWeatherData(); // 天気データを即座に取得
+      } catch {
+        // 位置情報の取得に失敗した場合（ユーザーが拒否、またはAPI不対応）
         setLocationError(
           "位置情報の取得に失敗しました。ブラウザの設定を確認してください。",
         );
-        console.error("位置情報エラー:", err); // デバッグ用にコンソール出力
       }
     } else {
-      // ON → OFFにする場合: 単純に無効化
-      await updateSettings({ enabled: false }); // 天気連携を無効化してIndexedDBに保存
+      // ON → OFFにする場合: 単純にフラグを無効化
+      await updateSettings({ enabled: false });
     }
   };
 
-  // 手動で天気データを再取得するハンドラー（Settings.tsxから移植）
+  // 天気データ手動取得ハンドラー
   const handleFetchWeather = async () => {
     setLocationError(null); // 前回のエラーメッセージをクリア
-    try {
-      await fetchWeatherData(); // APIから天気データを取得
-    } catch (err) {
-      // 取得失敗時のエラーハンドリング
-      setLocationError("天気の取得に失敗しました。もう一度お試しください。");
-      console.error("天気取得エラー:", err); // デバッグ用にコンソール出力
-    }
+    await fetchWeatherData(); // APIから天気データを再取得
   };
 
-  // 最終取得日時を「○時間○分前」形式にフォーマットする関数（Settings.tsxから移植）
-  const formatLastFetched = (timestamp: string | null): string => {
-    if (!timestamp) return "未取得"; // nullの場合は「未取得」と表示
+  // 最終取得日時のフォーマット関数（相対時間表示）
+  const formatLastFetched = (dateStr: string | null): string => {
+    if (!dateStr) return "未取得"; // 未取得の場合はそのまま表示
 
-    const date = new Date(timestamp); // ISO文字列をDateオブジェクトに変換
     const now = new Date(); // 現在時刻を取得
-    const diff = now.getTime() - date.getTime(); // 経過ミリ秒を計算
-    const hours = Math.floor(diff / (1000 * 60 * 60)); // ミリ秒を時間に変換（切り捨て）
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)); // 残りを分に変換（切り捨て）
+    const fetched = new Date(dateStr); // 最終取得日時をDateオブジェクトに変換
+    const diffMs = now.getTime() - fetched.getTime(); // 差分をミリ秒で計算
+    const diffMinutes = Math.floor(diffMs / (1000 * 60)); // 分に変換
 
-    if (hours > 0) {
-      return `${hours}時間${minutes}分前`; // 1時間以上経過: 例「2時間15分前」
-    } else if (minutes > 0) {
-      return `${minutes}分前`; // 1時間未満: 例「30分前」
-    } else {
-      return "たった今"; // 1分未満
-    }
+    if (diffMinutes < 1) return "たった今"; // 1分未満
+    if (diffMinutes < 60) return `${diffMinutes}分前`; // 60分未満
+    const diffHours = Math.floor(diffMinutes / 60); // 時間に変換
+    if (diffHours < 24) return `${diffHours}時間前`; // 24時間未満
+    const diffDays = Math.floor(diffHours / 24); // 日数に変換
+    return `${diffDays}日前`; // 24時間以上
   };
 
   return (
     <div className="home">
       {" "}
       {/* ホーム画面全体のコンテナ */}
-      <h1>今日の服用予定</h1> {/* ページメインタイトル */}
-      {/* 天気設定セクション（Settings.tsxから統合） */}
+      {/* 天気設定セクション */}
       <section className="home-weather-section">
         {" "}
         {/* 天気連携の有効/無効トグル */}
@@ -110,7 +100,9 @@ function Home() {
               onChange={handleToggleEnabled} // 切り替え時にハンドラーを実行
               className="home-weather-checkbox" // スタイル用クラス
             />
-            <span className="home-weather-label-text">天気情報を使用する</span>{" "}
+            <span className="home-weather-label-text">
+              天気情報を取得し、薬品の状態を管理する
+            </span>{" "}
             {/* ラベルテキスト */}
           </label>
         </div>
@@ -119,7 +111,7 @@ function Home() {
           <div className="home-weather-error">
             {" "}
             {/* エラー表示コンテナ */}
-            ⚠️ {locationError} {/* 警告アイコン＋エラー文言 */}
+            {locationError} {/* エラー文言 */}
           </div>
         )}
         {/* ストアレベルのエラーメッセージ表示（エラーがある場合のみ） */}
@@ -127,76 +119,88 @@ function Home() {
           <div className="home-weather-error">
             {" "}
             {/* エラー表示コンテナ */}
-            ⚠️ {error} {/* 警告アイコン＋エラー文言 */}
+            {error} {/* エラー文言 */}
           </div>
         )}
         {/* 天気連携が有効 かつ 天気データが存在する場合のみ天気情報カードを表示 */}
         {weatherSettings.enabled && weatherData && (
           <div className="home-weather-info">
             {" "}
-            {/* 天気情報カード全体のコンテナ */}
-            <div className="home-weather-info-header">
+            {/* 天気情報カード全体のコンテナ（2カラムレイアウト） */}
+            <div className="home-weather-info-left">
               {" "}
-              {/* カードヘッダー部（アイコン＋概要） */}
-              <span className="home-weather-icon">
+              {/* 左列: 天気データ（アイコン・気温・湿度・最終取得日時） */}
+              <div className="home-weather-info-header">
                 {" "}
-                {/* 天気絵文字アイコン */}
-                {getWeatherIcon(weatherData.description)}{" "}
-                {/* 天気概要テキストから対応する絵文字を取得 */}
-              </span>
-              <span className="home-weather-description">
-                {" "}
-                {/* 天気概要テキスト（例: 「晴れ」「曇り」） */}
-                {weatherData.description}
-              </span>
-            </div>
-            <div className="home-weather-info-details">
-              {" "}
-              {/* 気温・湿度の詳細表示エリア */}
-              <div className="home-weather-detail">
-                {" "}
-                {/* 気温表示ブロック */}
-                <span className="home-weather-detail-label">気温:</span>{" "}
-                {/* ラベル */}
-                <span className="home-weather-detail-value">
-                  {weatherData.temperature}度
-                </span>{" "}
-                {/* 値 */}
+                {/* カードヘッダー部（アイコン＋概要） */}
+                <span className="home-weather-icon">
+                  {" "}
+                  {/* 天気絵文字アイコン */}
+                  {getWeatherIcon(weatherData.description)}{" "}
+                  {/* 天気概要テキストから対応する絵文字を取得 */}
+                </span>
+                <span className="home-weather-description">
+                  {" "}
+                  {/* 天気概要テキスト（例: 「晴れ」「曇り」） */}
+                  {weatherData.description}
+                </span>
               </div>
-              <div className="home-weather-detail">
+              <div className="home-weather-info-details">
                 {" "}
-                {/* 湿度表示ブロック */}
-                <span className="home-weather-detail-label">湿度:</span>{" "}
-                {/* ラベル */}
-                <span className="home-weather-detail-value">
-                  {weatherData.humidity}%
-                </span>{" "}
-                {/* 値 */}
+                {/* 気温・湿度の詳細表示エリア */}
+                <div className="home-weather-detail">
+                  {" "}
+                  {/* 気温表示ブロック */}
+                  <span className="home-weather-detail-label">気温:</span>{" "}
+                  {/* ラベル */}
+                  <span className="home-weather-detail-value">
+                    {weatherData.temperature}度
+                  </span>{" "}
+                  {/* 値 */}
+                </div>
+                <div className="home-weather-detail">
+                  {" "}
+                  {/* 湿度表示ブロック */}
+                  <span className="home-weather-detail-label">湿度:</span>{" "}
+                  {/* ラベル */}
+                  <span className="home-weather-detail-value">
+                    {weatherData.humidity}%
+                  </span>{" "}
+                  {/* 値 */}
+                </div>
+                <div>
+                  <button
+                    className="home-weather-fetch-btn" // 固有スタイル
+                    onClick={handleFetchWeather} // クリック時にAPIから天気を再取得
+                    disabled={loading} // 取得中はボタンを無効化（二重送信防止）
+                  >
+                    {"🔁"}
+                  </button>
+                </div>
               </div>
+              <p className="home-weather-last-updated">
+                {" "}
+                {/* 最終取得日時の表示 */}
+                最終取得: {formatLastFetched(
+                  weatherSettings.lastFetchedAt,
+                )}{" "}
+                {/* 相対時間にフォーマットして表示 */}
+              </p>
             </div>
-            <p className="home-weather-last-updated">
+            <div className="home-weather-info-right">
               {" "}
-              {/* 最終取得日時の表示 */}
-              最終取得: {formatLastFetched(weatherSettings.lastFetchedAt)}{" "}
-              {/* 相対時間にフォーマットして表示 */}
-            </p>
+              {/* 右列: 警告/良好バナー（インラインモードで埋め込み） */}
+              <WeatherAlert
+                weather={weatherData} // 天気データを渡す
+                settings={weatherSettings} // 天気設定を渡す
+                inline // インラインモードを有効化（カード内表示用スタイルを適用）
+              />
+            </div>
           </div>
         )}
-        {/* 天気連携が有効な場合のみ手動更新ボタンを表示 */}
-        {weatherSettings.enabled && (
-          <button
-            className="btn btn-primary home-weather-fetch-btn" // プライマリボタン＋固有スタイル
-            onClick={handleFetchWeather} // クリック時にAPIから天気を再取得
-            disabled={loading} // 取得中はボタンを無効化（二重送信防止）
-          >
-            {loading ? "取得中..." : "天気を今すぐ取得"}{" "}
-            {/* ローディング状態に応じてテキストを切り替え */}
-          </button>
-        )}
       </section>
-      {/* 天気警告バナー（既存） - 閾値超過時に警告メッセージを表示 */}
-      <WeatherAlert weather={weatherData} settings={weatherSettings} />
-      {/* 今日の服用予定リスト（既存） - dateプロパティ未指定で今日の予定を表示 */}
+      <h1>今日の処方箋</h1> {/* ページタイトル */}
+      {/* 今日の服用予定リスト - dateプロパティ未指定で今日の予定を表示 */}
       <ScheduleList />
     </div>
   );

@@ -49,16 +49,3 @@
   font-size: 0.875rem; /* フォントサイズを小さく - ヒントは控えめに */
   color: #adb5bd; /* 文字色をより薄いグレーに設定 - さらに控えめに */
 }
-
-/* レスポンシブデザイン - モバイル対応 */
-@media (max-width: 768px) {
-  /* 画面幅が768px以下の場合（スマートフォン） */
-  .medication-list-container {
-    padding: 0.5rem; /* パディングを小さく - 画面が狭い場合の調整 */
-  }
-
-  .loading,
-  .empty-state {
-    padding: 2rem 1rem; /* パディングを小さく - 画面が狭い場合の調整 */
-  }
-}

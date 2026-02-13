@@ -18,7 +18,7 @@
   background-color: var(--color-bg-primary); /* 白背景で他のセクションと統一 */
   border-radius: var(--border-radius-lg); /* 大きめの角丸で柔らかい印象に */
   padding: var(--spacing-xl); /* 内側に十分な余白を確保 */
-  margin-bottom: var(--spacing-xl); /* 下のWeatherAlert・ScheduleListとの間隔 */
+  margin-bottom: var(--spacing-xl); /* 下のScheduleListとの間隔 */
   box-shadow: var(--shadow-md); /* 中程度の影でカード感を演出 */
 }
 
@@ -69,14 +69,30 @@
   border-left: 4px solid var(--color-error); /* 左に赤いボーダーでアクセント */
 }
 
-/* 天気情報カード（気温・湿度・天気概要を表示） */
+/* 天気情報カード（気温・湿度・天気概要＋警告を2カラムで表示） */
 .home-weather-info {
+  display: flex; /* フレックスボックスで2カラムレイアウトを実現 */
+  gap: var(--spacing-lg); /* 左列と右列の間隔 */
+  align-items: stretch; /* 両列の高さを揃える（短い方が長い方に合わせて伸びる） */
   background-color: var(
     --color-primary-light
   ); /* 薄い青背景で情報カードを識別 */
   border-radius: var(--border-radius-md); /* 角丸 */
   padding: var(--spacing-lg); /* 内側の余白 */
   margin-bottom: var(--spacing-lg); /* 下のボタンとの間隔 */
+}
+
+/* 天気情報カードの左列（天気データ: アイコン・気温・湿度・最終取得日時） */
+.home-weather-info-left {
+  flex: 1; /* 残りのスペースを均等に使用（右列と1:1の比率） */
+  min-width: 0; /* flex子要素のオーバーフロー防止（テキストが長い場合に縮小可能にする） */
+}
+
+/* 天気情報カードの右列（警告/良好バナー） */
+.home-weather-info-right {
+  flex: 1; /* 残りのスペースを均等に使用（左列と1:1の比率） */
+  min-width: 0; /* flex子要素のオーバーフロー防止 */
+  display: flex; /* 内部のWeatherAlertを高さいっぱいに伸ばすためのflex親 */
 }
 
 /* 天気情報カードのヘッダー（アイコン＋概要テキスト） */
@@ -135,27 +151,5 @@
 
 /* 手動更新ボタン */
 .home-weather-fetch-btn {
-  width: 100%; /* 横幅いっぱいに広げてタップしやすく */
-}
-
-/* ===== レスポンシブ対応 - モバイル ===== */
-@media (max-width: 768px) {
-  .home {
-    padding: var(--spacing-md); /* パディングを小さく */
-  }
-
-  .home h1 {
-    font-size: var(--font-size-2xl); /* タイトルを少し小さく */
-  }
-
-  /* 天気セクションのモバイル対応 */
-  .home-weather-section {
-    padding: var(--spacing-md); /* カード内の余白を縮小 */
-  }
-
-  /* 気温・湿度を縦並びに変更（画面幅が狭い場合） */
-  .home-weather-info-details {
-    flex-direction: column; /* 横並び→縦並びに切り替え */
-    gap: var(--spacing-md); /* 縦並び時の間隔を調整 */
-  }
+  font-size: 2.5rem; /* 大きめのサイズで視認性を確保 */
 }

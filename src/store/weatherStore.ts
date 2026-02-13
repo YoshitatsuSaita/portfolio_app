@@ -40,10 +40,6 @@ export const useWeatherStore = create<WeatherState>((set, get) => ({
     // 天気設定のデフォルト値（簡略化: 2プロパティのみ）
     enabled: false, // 天気連携は初期状態でOFF
     lastFetchedAt: null, // 未取得
-    // 削除済み: highTempThreshold — weatherUtils.tsの定数(30度)に移動
-    // 削除済み: highHumidityThreshold — weatherUtils.tsの定数(80%)に移動
-    // 削除済み: notifyHighTemp — 常にON扱い
-    // 削除済み: notifyHighHumidity — 常にON扱い
   },
   loading: false, // ローディング状態の初期値: false
   error: null, // エラー状態の初期値: null

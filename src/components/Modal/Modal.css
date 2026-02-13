@@ -54,7 +54,6 @@
   display: flex; /* フレックスボックスレイアウト */
   align-items: center; /* 垂直方向中央揃え */
   justify-content: center; /* 水平方向中央揃え */
-  transition: color var(--transition-fast); /* 色変化のアニメーション */
 }
 
 /* 閉じるボタンホバー時 */

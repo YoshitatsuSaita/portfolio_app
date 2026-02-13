@@ -37,7 +37,6 @@
   background-color: var(--color-bg-primary); /* 白背景 */
   border-radius: var(--border-radius-md); /* 角丸 */
   box-shadow: var(--shadow-sm); /* 小さい影 */
-  transition: box-shadow var(--transition-fast); /* 影の変化をアニメーション */
 }
 
 .schedule-item:hover {
@@ -115,25 +114,4 @@
   margin: 0; /* マージンなし */
   color: var(--color-text-secondary); /* グレー */
   font-size: var(--font-size-lg); /* フォントサイズを大きく */
-}
-
-/* レスポンシブ対応 - モバイル */
-@media (max-width: 768px) {
-  .schedule-item {
-    flex-direction: column; /* 縦方向に配置 */
-    align-items: flex-start; /* 左揃え */
-    gap: var(--spacing-md); /* 要素間の余白 */
-  }
-
-  .schedule-time {
-    min-width: auto; /* 最小幅の制限を解除 */
-  }
-
-  .schedule-info {
-    margin-left: 0; /* 左側の余白を削除 */
-  }
-
-  .schedule-checkbox {
-    align-self: flex-end; /* 右側に配置 */
-  }
 }

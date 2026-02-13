@@ -1,4 +1,5 @@
 import dayjs from "dayjs"; // Day.jsをインポート - 日時操作ライブラリ
+import "dayjs/locale/ja"; // 日本語ロケールの辞書データを登録する
 import { Medication, MedicationRecord, ScheduleItem } from "../types"; // 型定義をインポート
 
 /**

@@ -30,7 +30,9 @@ function ScheduleList({ date }: ScheduleListProps) {
   const targetDate = date
     ? dayjs(date).format("YYYY-MM-DD")
     : getTodayDateString(); // 表示対象の日付を決定（未指定の場合は今日）
-  const displayDate = dayjs(targetDate).format("YYYY年M月D日（ddd）"); // 表示用の日付文字列（例: 2024年2月9日（金））
+  const displayDate = dayjs(targetDate)
+    .locale("ja")
+    .format("YYYY年M月D日（ddd）"); // 表示用の日付文字列（例: 2024年2月9日（金））
 
   // 服用予定を読み込む関数
   const loadSchedule = async () => {

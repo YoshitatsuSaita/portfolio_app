@@ -176,28 +176,3 @@
 .schedule-badge.all-completed {
   background-color: var(--color-secondary); /* 成功色（緑） */
 }
-
-/* レスポンシブ対応 - モバイル */
-@media (max-width: 768px) {
-  .calendar-page {
-    padding: var(--spacing-md); /* パディングを小さく */
-  }
-
-  .calendar-wrapper {
-    padding: var(--spacing-md); /* パディングを小さく */
-  }
-
-  .calendar-detail {
-    padding: var(--spacing-md); /* パディングを小さく */
-  }
-
-  .react-calendar__tile {
-    padding: var(--spacing-sm); /* パディングを小さく */
-    min-height: 50px; /* 最小高さを小さく */
-    font-size: var(--font-size-sm); /* フォントサイズを小さく */
-  }
-
-  .react-calendar__navigation__label {
-    font-size: var(--font-size-lg); /* フォントサイズを小さく */
-  }
-}

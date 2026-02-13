@@ -11,10 +11,15 @@ import "./WeatherAlert.css"; // CSSをインポート
 interface WeatherAlertProps {
   weather: WeatherData | null; // 天気データ（未取得の場合はnull）
   settings: WeatherSettings; // 天気設定
+  inline?: boolean; // インライン表示モード（天気カード内埋め込み時にtrue、デフォルトfalse）
 }
 
 // 天気警告表示コンポーネント - ホーム画面に警告または良好バナーを表示
-function WeatherAlert({ weather, settings }: WeatherAlertProps) {
+function WeatherAlert({
+  weather,
+  settings,
+  inline = false,
+}: WeatherAlertProps) {
   // 天気データが存在しない、または天気連携が無効の場合は何も表示しない
   if (!weather || !settings.enabled) {
     return null; // nullを返すとReactは何もレンダリングしない
@@ -27,13 +32,15 @@ function WeatherAlert({ weather, settings }: WeatherAlertProps) {
   // 保管環境が良好かどうかを判定（温度・湿度がともに基準値未満か）
   const isGood = isStorageEnvironmentGood(weather);
 
+  // inlineプロップに応じてインライン用クラスを追加するヘルパー関数
+  const inlineClass = inline ? " weather-alert--inline" : ""; // インライン時は修飾子クラスを付与
+
   // 警告が1件以上ある場合は警告バナーを表示
   if (alerts.length > 0) {
     return (
-      <div className="weather-alert weather-alert--warning">
+      <div className={`weather-alert weather-alert--warning${inlineClass}`}>
         {" "}
-        {/* 警告バナー全体のコンテナ（警告スタイル） */}
-        <div className="weather-alert-icon">⚠️</div> {/* 警告アイコン */}
+        {/* 警告バナー全体のコンテナ（警告スタイル＋インライン修飾子） */}
         <div className="weather-alert-content">
           {" "}
           {/* 警告内容のコンテナ */}
@@ -57,10 +64,9 @@ function WeatherAlert({ weather, settings }: WeatherAlertProps) {
   // 警告がなく、かつ保管環境が良好な場合は良好バナーを表示
   if (isGood) {
     return (
-      <div className="weather-alert weather-alert--good">
+      <div className={`weather-alert weather-alert--good${inlineClass}`}>
         {" "}
-        {/* 良好バナー全体のコンテナ（良好スタイル） */}
-        <div className="weather-alert-icon">✅</div> {/* 良好アイコン */}
+        {/* 良好バナー全体のコンテナ（良好スタイル＋インライン修飾子） */}
         <div className="weather-alert-content">
           {" "}
           {/* 内容のコンテナ */}
@@ -70,9 +76,8 @@ function WeatherAlert({ weather, settings }: WeatherAlertProps) {
             {" "}
             {/* メッセージエリア */}
             <p className="weather-alert-message">
-              {/* 現在の気温・湿度を表示しつつ、保管環境の安全性を伝える */}
-              現在の気温は{weather.temperature}度、湿度は{weather.humidity}
-              %です。薬の保管に適した環境です。
+              {/* 保管環境の安全性を伝える */}
+              現在の気温・湿度は薬の保管に適した環境です。
             </p>
           </div>
         </div>
