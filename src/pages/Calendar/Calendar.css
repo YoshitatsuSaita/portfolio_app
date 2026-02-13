@@ -14,7 +14,7 @@
 /* カレンダーコンテナ */
 .calendar-container {
   display: grid; /* グリッドレイアウト */
-  grid-template-columns: 2fr 1fr; /* カレンダー:詳細 = 2:1 */
+  grid-template-columns: 1fr; /* ★変更：1列に統一してカレンダーの下に詳細を配置 */
   gap: var(--spacing-xl); /* 要素間の余白 */
   align-items: start; /* 上揃え */
 }
@@ -33,12 +33,10 @@
   padding: var(--spacing-lg); /* 内側の余白 */
   border-radius: var(--border-radius-lg); /* 角丸 */
   box-shadow: var(--shadow-md); /* 中程度の影 */
-  position: sticky; /* スティッキーポジション（スクロール時に固定） */
-  top: var(--spacing-lg); /* 上から余白分の位置に固定 */
-  max-height: calc(
-    100vh - 120px
-  ); /* 最大高さを画面高さから120pxを引いた値に制限 */
-  overflow-y: auto; /* 縦方向のスクロールを有効化 */
+  /* ★削除：position: sticky → 縦並びのため不要 */
+  /* ★削除：top → 縦並びのため不要 */
+  /* ★削除：max-height → 縦並びのため不要 */
+  /* ★削除：overflow-y: auto → 縦並びのため不要 */
 }
 
 /* React Calendarのカスタムスタイル */
@@ -177,18 +175,6 @@
 /* 全て完了済みの日 */
 .schedule-badge.all-completed {
   background-color: var(--color-secondary); /* 成功色（緑） */
-}
-
-/* レスポンシブ対応 - タブレット */
-@media (max-width: 1024px) {
-  .calendar-container {
-    grid-template-columns: 1fr; /* 1列に変更 */
-  }
-
-  .calendar-detail {
-    position: static; /* スティッキーポジションを解除 */
-    max-height: none; /* 最大高さの制限を解除 */
-  }
 }
 
 /* レスポンシブ対応 - モバイル */

@@ -150,6 +150,7 @@ function CalendarPage() {
               onChange={handleDateClick} // 日付クリック時の処理
               value={selectedDate} // 選択された日付
               onActiveStartDateChange={handleActiveStartDateChange} // 月の切り替え時の処理
+              activeStartDate={activeStartDate} //状態が変更された時の表示月を制御
               tileContent={tileContent} // 各タイルのコンテンツをカスタマイズ
               locale="ja-JP" // ロケールを日本語に設定
               calendarType="gregory" // カレンダータイプをグレゴリオ暦に設定
