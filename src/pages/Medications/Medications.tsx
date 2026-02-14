@@ -51,7 +51,7 @@ function Medications() {
       <div className="medications-header">
         {" "}
         {/* ヘッダー部分 */}
-        <h1>薬剤管理</h1> {/* ページタイトル */}
+        <h1>処方箋管理</h1> {/* ページタイトル */}
         <button className="btn btn-primary" onClick={handleOpenAddModal}>
           {" "}
           {/* 新規登録ボタン */}+ 新規登録 {/* ボタンテキスト */}

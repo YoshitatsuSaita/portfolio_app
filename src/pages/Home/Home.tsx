@@ -1,5 +1,3 @@
-// src/pages/Home/Home.tsx
-
 import { useEffect, useState } from "react"; // useEffect・useStateフックをインポート
 import ScheduleList from "../../components/ScheduleList/ScheduleList"; // 服用予定リストコンポーネントをインポート
 import WeatherAlert from "../../components/WeatherAlert/WeatherAlert"; // 天気警告バナーコンポーネントをインポート

@@ -1,5 +1,3 @@
-// src/utils/weatherUtils.ts
-
 import { WeatherData } from "../types"; // 天気データの型定義のみインポート
 
 // ===== 警告判定の定数定義 =====

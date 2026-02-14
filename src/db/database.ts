@@ -1,5 +1,3 @@
-// src/db/database.ts
-
 import Dexie, { Table } from "dexie"; // Dexieライブラリとテーブル型をインポート
 import {
   Medication,

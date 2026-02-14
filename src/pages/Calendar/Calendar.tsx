@@ -135,7 +135,7 @@ function CalendarPage() {
     <div className="calendar-page">
       {" "}
       {/* カレンダー画面全体のコンテナ */}
-      <h1>服用カレンダー</h1> {/* ページタイトル */}
+      <h1>処方箋カレンダー</h1> {/* ページタイトル */}
       {loading ? ( // ローディング中の表示
         <div className="loading">読み込み中...</div>
       ) : (

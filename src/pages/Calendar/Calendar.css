@@ -158,7 +158,7 @@
 
 /* 全て未完了の服用予定がある日 */
 .schedule-badge.pending {
-  background-color: #4a90e2; /* 未然色（青） */
+  background-color: #9bc2ef; /* 未然色（青） */
 }
 
 /* 1つでも完了済みの服用予定がある日 */

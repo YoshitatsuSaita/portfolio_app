@@ -1,3 +1,4 @@
+import dayjs from "dayjs"; // Day.jsをインポート - endDateと今日の日付を比較するために使用
 import { Medication } from "../../types"; // Medication型をインポート - 薬剤データの型定義
 import { useMedicationStore } from "../../store/medicationStore"; // Zustandストアをインポート - 削除機能を使用
 import "./MedicationCard.css"; // CSSファイルをインポート - カードのスタイル定義
@@ -13,6 +14,11 @@ function MedicationCard({ medication, onEdit }: MedicationCardProps) {
   const deleteMedication = useMedicationStore(
     (state) => state.deleteMedication,
   ); // ストアから削除関数を取得
+
+  const isCompleted =
+    !!medication.endDate && dayjs(medication.endDate).isBefore(dayjs(), "day");
+  // endDateが存在し、かつendDateが今日より前（服用期間が終了済み）の場合にtrueになる
+  // endDateがnull（継続中）や今日以降の場合はfalseになる
 
   // 服用期間を表示用にフォーマットする関数
   const formatDateRange = () => {
@@ -107,18 +113,30 @@ function MedicationCard({ medication, onEdit }: MedicationCardProps) {
       <div className="card-footer">
         {" "}
         {/* カードのフッター部分 - ボタン配置エリア */}
-        <button
-          className="btn btn-secondary" // 編集ボタン用のスタイルクラス - 青系の配色
-          onClick={handleEdit} // クリック時に編集処理を実行
-        >
-          編集 {/* ボタンテキスト */}
-        </button>
-        <button
-          className="btn btn-danger" // 削除ボタン用のスタイルクラス - 赤系の配色で危険な操作を示す
-          onClick={handleDelete} // クリック時に削除処理を実行
-        >
-          削除 {/* ボタンテキスト */}
-        </button>
+        <div className="card-footer-left">
+          {" "}
+          {/* フッター左側のコンテナ - バッジの配置エリア */}
+          {isCompleted && (
+            <span className="medication-status-badge">服用終了</span>
+            // isActiveがtrueの場合のみバッジを表示（条件付きレンダリング）
+          )}
+        </div>
+        <div className="card-footer-right">
+          {" "}
+          {/* フッター右側のコンテナ - ボタンの配置エリア */}
+          <button
+            className="btn btn-secondary" // 編集ボタン用のスタイルクラス - 青系の配色
+            onClick={handleEdit} // クリック時に編集処理を実行
+          >
+            編集 {/* ボタンテキスト */}
+          </button>
+          <button
+            className="btn btn-danger" // 削除ボタン用のスタイルクラス - 赤系の配色で危険な操作を示す
+            onClick={handleDelete} // クリック時に削除処理を実行
+          >
+            削除 {/* ボタンテキスト */}
+          </button>
+        </div>
       </div>
     </div>
   );

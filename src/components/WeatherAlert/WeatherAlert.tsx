@@ -1,5 +1,3 @@
-// src/components/WeatherAlert/WeatherAlert.tsx
-
 import { WeatherData, WeatherSettings } from "../../types"; // 型定義をインポート
 import {
   checkWeatherAlerts,

@@ -66,9 +66,31 @@
   margin-top: 1rem; /* 上のマージンを設定 - 本体との間隔 */
   padding-top: 1rem; /* 上の余白を設定 - 本体との間隔 */
   border-top: 1px solid #e9ecef; /* 上にボーダーを追加 - フッターと本体を区切る */
-  display: flex; /* フレックスボックスレイアウトを使用 - ボタンの配置 */
+  display: flex; /* フレックスボックスレイアウトを使用 - 左右の要素を並べる */
+  justify-content: space-between; /* 左右両端に要素を配置 - バッジを左、ボタンを右に */
+  align-items: center; /* 垂直方向中央揃え - バッジとボタンの高さを揃える */
+}
+
+/* フッター左側（バッジ配置エリア）のスタイル */
+.card-footer-left {
+  display: flex; /* フレックスボックスレイアウトを使用 - バッジを配置 */
+  align-items: center; /* 垂直方向中央揃え */
+}
+
+/* フッター右側（ボタン配置エリア）のスタイル */
+.card-footer-right {
+  display: flex; /* フレックスボックスレイアウトを使用 - ボタンを横並びに */
   gap: 0.5rem; /* ボタン間の間隔を設定 */
-  justify-content: flex-end; /* ボタンを右揃えに配置 */
+}
+
+/* 服用中バッジのスタイル */
+.medication-status-badge {
+  background-color: #e8f5e9; /* 薄い緑の背景色 - 服用中であることを視覚的に示す */
+  color: #388e3c; /* 濃い緑の文字色 - 背景色と対比させて可読性を確保 */
+  padding: 0.5rem 1rem; /* 内側の余白 - 既存のbtnクラスと同じサイズ感 */
+  border-radius: 0.5rem; /* 角丸 - 既存のbtnクラスと同じ形状 */
+  font-size: 0.875rem; /* フォントサイズ - 既存のbtnクラスと同じサイズ */
+  font-weight: 500; /* 中太字 - バッジとして視認性を確保 */
 }
 
 /* 編集ボタンのスタイル */
@@ -78,43 +100,17 @@
   padding: 0.5rem 1rem; /* 内側の余白を設定（上下8px、左右16px） */
   border: none; /* ボーダーなし - シンプルなデザイン */
   border-radius: 0.5rem; /* 角丸（8px）を適用 - 柔らかい印象 */
-  font-size: 0.875rem; /* フォントサイズを小さめに設定（14px） */
-  font-weight: 500; /* フォントを少し太く - 視認性向上 */
-  cursor: pointer; /* カーソルをポインターに変更 - クリック可能を示す */
-}
-
-/* 編集ボタンのホバー時スタイル */
-.btn-secondary:hover:not(:disabled) {
-  background-color: #357abd; /* 背景色をより濃い青に変更 - ホバー効果 */
-  transform: translateY(-1px); /* ボタンを少し上に移動 - 浮き上がる効果 */
-}
-
-/* 編集ボタンの無効化時スタイル */
-.btn-secondary:disabled {
-  opacity: 0.6; /* 透明度を下げる - 無効状態を示す */
-  cursor: not-allowed; /* カーソルを禁止マークに変更 - クリック不可を示す */
+  font-size: 0.875rem; /* フォントサイズを小さめに設定 */
+  cursor: pointer; /* カーソルをポインターに - クリック可能であることを示す */
 }
 
 /* 削除ボタンのスタイル */
 .btn-danger {
-  background-color: #ef5350; /* 背景色をエラー色（赤）に設定 - 危険な操作を視覚的に示す */
+  background-color: #e53935; /* 背景色を赤に設定 - 危険な操作を視覚的に示す */
   color: white; /* 文字色を白に設定 - 可読性を確保 */
   padding: 0.5rem 1rem; /* 内側の余白を設定（上下8px、左右16px） */
   border: none; /* ボーダーなし - シンプルなデザイン */
   border-radius: 0.5rem; /* 角丸（8px）を適用 - 柔らかい印象 */
-  font-size: 0.875rem; /* フォントサイズを小さめに設定（14px） */
-  font-weight: 500; /* フォントを少し太く - 視認性向上 */
-  cursor: pointer; /* カーソルをポインターに変更 - クリック可能を示す */
-}
-
-/* 削除ボタンのホバー時スタイル */
-.btn-danger:hover:not(:disabled) {
-  background-color: #c82333; /* 背景色をより濃い赤に変更 - ホバー効果 */
-  transform: translateY(-1px); /* ボタンを少し上に移動 - 浮き上がる効果 */
-}
-
-/* 削除ボタンの無効化時スタイル */
-.btn-danger:disabled {
-  opacity: 0.6; /* 透明度を下げる - 無効状態を示す */
-  cursor: not-allowed; /* カーソルを禁止マークに変更 - クリック不可を示す */
+  font-size: 0.875rem; /* フォントサイズを小さめに設定 */
+  cursor: pointer; /* カーソルをポインターに - クリック可能であることを示す */
 }

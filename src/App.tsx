@@ -1,5 +1,3 @@
-// src/App.tsx
-
 import { BrowserRouter, Routes, Route } from "react-router-dom"; // ルーティング用のコンポーネントをインポート
 import Layout from "./components/Layout/Layout"; // レイアウトコンポーネントをインポート
 import Home from "./pages/Home/Home"; // ホーム画面をインポート

@@ -1,5 +1,3 @@
-// src/store/weatherStore.ts
-
 import { create } from "zustand"; // Zustandのcreate関数をインポート
 import { WeatherData, WeatherSettings } from "../types"; // 型定義をインポート
 import {

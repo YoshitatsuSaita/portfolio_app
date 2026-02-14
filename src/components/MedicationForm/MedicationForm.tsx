@@ -1,5 +1,3 @@
-// src/components/MedicationForm/MedicationForm.tsx
-
 import { useForm } from "react-hook-form"; // React Hook Formをインポート - フォームの状態管理と送信処理
 import { useEffect } from "react"; // useEffectフックをインポート - 編集モード時の初期値設定用
 import dayjs from "dayjs"; // Day.jsをインポート - 日付の加算・差分計算に使用（既存の依存関係）
