@@ -77,7 +77,6 @@ p {
 a {
   color: #4a90e2; /* プライマリカラー（青）を適用 */
   text-decoration: none; /* 下線を削除 */
-  transition: color 150ms ease-in-out; /* カラー変更時のアニメーション */
 }
 
 a:hover {

@@ -51,6 +51,7 @@ export function checkWeatherAlerts(
  *   console.log("保管環境は良好です");
  * }
  */
+
 export function isStorageEnvironmentGood(weather: WeatherData): boolean {
   const tempIsOk = weather.temperature < HIGH_TEMP_THRESHOLD; // 気温が基準値（30度）未満か判定
   const humidityIsOk = weather.humidity < HIGH_HUMIDITY_THRESHOLD; // 湿度が基準値（80%）未満か判定
