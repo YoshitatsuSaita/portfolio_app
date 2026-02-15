@@ -12,7 +12,7 @@ interface MedicationFormData {
   frequency: number; // 服用回数（1日何回）
   times: string[]; // 服用時間の配列（frequencyの数だけ要素を持つ）
   startDate: string; // 開始日（YYYY-MM-DD形式）
-  prescriptionDays: number; // 処方期間（日数）- 0の場合は終了日なし（継続中）
+  prescriptionDays: number; // 処方期間（日数）
   memo: string; // メモ（任意）
 }
 
@@ -42,10 +42,10 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
     defaultValues: {
       name: "", // 薬品名（商品名）は空文字
       dosage: "", // 服用量は空文字
-      frequency: 1, // 服用回数は1回
+      frequency: 1, // 服用回数は1回をデフォルト
       times: ["08:00"], // 服用時間は朝8時をデフォルト
-      startDate: new Date().toISOString().split("T")[0], // 開始日は今日の日付
-      prescriptionDays: 0, // 処方期間は0（=終了日なし・継続中）
+      startDate: new Date().toISOString().split("T")[0], // 開始日は今日の日付をデフォルト
+      prescriptionDays: 5, //  処方期間は5日をデフォルト
       memo: "", // メモは空文字
     },
   });
@@ -56,10 +56,9 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
       // medicationが存在する場合（編集モード）
 
       // 既存データのendDateからprescriptionDaysを逆算する
-      // endDateがある場合はdayjsで差分日数を計算し、ない場合は0（継続中）を設定
       const prescriptionDays = medication.endDate
         ? dayjs(medication.endDate).diff(dayjs(medication.startDate), "day") // 終了日 - 開始日の日数差を計算
-        : 0; // 終了日が未設定の場合は0（継続中）
+        : undefined; // 終了日が未設定（継続中）の場合は空欄（未入力状態）にする
 
       reset({
         name: medication.name, // 薬品名（商品名）を設定
@@ -67,7 +66,7 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
         frequency: medication.frequency, // 服用回数を設定
         times: medication.times, // 服用時間の配列を設定
         startDate: medication.startDate, // 開始日を設定
-        prescriptionDays, // 逆算した処方期間（日数）を設定
+        prescriptionDays, // 逆算した処方期間（日数）を設定（endDateなしの場合はundefined = 空欄）
         memo: medication.memo, // メモを設定
       });
     }
@@ -78,14 +77,9 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
   // フォーム送信時の処理
   const onSubmit = async (data: MedicationFormData) => {
     try {
-      // prescriptionDaysが1以上の場合、startDateに日数を加算してendDateを計算する
-      // 0または未入力の場合はnullを設定（終了日なし = 継続中）
-      const endDate =
-        data.prescriptionDays > 0
-          ? dayjs(data.startDate)
-              .add(data.prescriptionDays, "day") // 開始日に処方期間（日数）を加算
-              .format("YYYY-MM-DD") // YYYY-MM-DD形式の文字列に変換
-          : null; // 処方期間が0の場合は終了日なし
+      const endDate = dayjs(data.startDate)
+        .add(data.prescriptionDays, "day") // 開始日に処方期間（日数）を加算
+        .format("YYYY-MM-DD"); // YYYY-MM-DD形式の文字列に変換
 
       if (isEditMode) {
         // 編集モードの場合 - 既存薬剤を更新
@@ -95,7 +89,7 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
           frequency: data.frequency, // 服用回数
           times: data.times.slice(0, data.frequency), // 服用回数分の時間のみ取得
           startDate: data.startDate, // 開始日
-          endDate, // 計算されたendDate（またはnull）
+          endDate, // 計算されたendDate
           memo: data.memo, // メモ
         });
       } else {
@@ -106,7 +100,7 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
           frequency: data.frequency, // 服用回数
           times: data.times.slice(0, data.frequency), // 服用回数分の時間のみ取得
           startDate: data.startDate, // 開始日
-          endDate, // 計算されたendDate（またはnull）
+          endDate, // 計算されたendDate
           memo: data.memo, // メモ
         });
       }
@@ -228,31 +222,27 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
         )}
       </div>
 
-      {/* 処方期間入力欄（endDateの代わり） */}
+      {/* 処方期間入力欄 */}
       <div className="form-group">
         <label htmlFor="prescriptionDays" className="form-label">
-          処方期間（日数）
+          処方期間（日数）<span className="required">*</span>
         </label>
         <div className="input-with-unit">
-          {" "}
           {/* 数値入力と単位ラベルを横並びにするラッパー */}
           <input
             id="prescriptionDays"
             type="number" // 数値入力
             className={`form-input ${errors.prescriptionDays ? "error" : ""}`}
-            min={0} // 最小値0（0の場合は終了日なし = 継続中）
-            placeholder="0"
+            min={1} // 最小値を1に指定
+            placeholder="例: 5"
             {...register("prescriptionDays", {
-              min: { value: 0, message: "0以上の値を入力してください" }, // 負の値を防ぐバリデーション
+              required: "処方期間は必須です",
+              min: { value: 1, message: "1以上の値を入力してください" },
               valueAsNumber: true, // 数値として扱う（文字列変換を防ぐ）
             })}
           />
           <span className="input-unit">日</span> {/* 単位ラベル */}
         </div>
-        <p className="form-hint">
-          {/* 入力補助テキスト */}
-          0または未入力の場合は終了日なし（継続中）として保存されます
-        </p>
         {errors.prescriptionDays && (
           <p className="error-message">{errors.prescriptionDays.message}</p>
         )}
