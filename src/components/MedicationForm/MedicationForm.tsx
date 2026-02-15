@@ -148,7 +148,7 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
           id="dosage"
           type="text"
           className={`form-input ${errors.dosage ? "error" : ""}`}
-          placeholder="例: 1錠"
+          placeholder="例: 1"
           {...register("dosage", {
             required: "服用量は必須です", // 未入力の場合のエラーメッセージ
           })}
@@ -169,11 +169,11 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
             type="number" // 数値入力
             className={`form-input ${errors.frequency ? "error" : ""}`}
             min={1} // 最小値1（1日1回以上）
-            max={10} // 最大値10（1日10回まで）
+            max={5} // 最大値5（1日5回まで）
             {...register("frequency", {
               required: "服用回数は必須です",
               min: { value: 1, message: "1以上の値を入力してください" }, // 最小値バリデーション
-              max: { value: 10, message: "10以下の値を入力してください" }, // 最大値バリデーション
+              max: { value: 5, message: "5以下の値を入力してください" }, // 最大値バリデーション
               valueAsNumber: true, // 数値として扱う（文字列変換を防ぐ）
             })}
           />
@@ -220,7 +220,7 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
           type="date" // 日付入力
           className={`form-input ${errors.startDate ? "error" : ""}`}
           {...register("startDate", {
-            required: "開始日は必須です", // 未入力の場合のエラーメッセージ
+            required: "処方日は必須です", // 未入力の場合のエラーメッセージ
           })}
         />
         {errors.startDate && (
