@@ -160,7 +160,10 @@ function CalendarPage() {
           <div className="calendar-detail">
             {" "}
             {/* 詳細表示エリア */}
-            <ScheduleList date={selectedDate} />{" "}
+            <ScheduleList
+              date={selectedDate} // 選択された日付
+              onScheduleUpdated={() => loadMonthSchedule(activeStartDate)} // 服用記録更新時にカレンダーを再読み込み
+            />
             {/* 選択された日付の服用予定を表示 */}
           </div>
         </div>

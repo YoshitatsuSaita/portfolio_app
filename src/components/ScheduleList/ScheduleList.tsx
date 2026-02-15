@@ -19,10 +19,12 @@ import "./ScheduleList.css"; // CSSをインポート
 // ScheduleListコンポーネントのpropsの型定義
 interface ScheduleListProps {
   date?: Date | string; // 表示する日付（任意） - 未指定の場合は今日
+  onScheduleUpdated?: () => void; // 服用記録が更新されたときに呼び出すコールバック（任意）
 }
 
 // 服用予定リストコンポーネント - 指定日の服用予定を表示
-function ScheduleList({ date }: ScheduleListProps) {
+function ScheduleList({ date, onScheduleUpdated }: ScheduleListProps) {
+  // onScheduleUpdatedを追加で受け取る
   const { medications, fetchActiveMedications } = useMedicationStore(); // ストアから薬剤データと取得関数を取得
   const [scheduleItems, setScheduleItems] = useState<ScheduleItem[]>([]); // 服用予定の状態（初期値は空配列）
   const [loading, setLoading] = useState(true); // ローディング状態（初期値はtrue）
@@ -106,6 +108,10 @@ function ScheduleList({ date }: ScheduleListProps) {
 
       // UIを更新（最新の状態を再取得）
       await loadSchedule(); // 予定を再読み込み
+      if (onScheduleUpdated) {
+        // コールバックが渡されている場合のみ
+        onScheduleUpdated(); // 親コンポーネント（CalendarPage）に更新を通知
+      }
     } catch (error) {
       console.error("服用記録の更新に失敗しました:", error); // エラーをコンソールに出力
       alert("服用記録の更新に失敗しました。もう一度お試しください。"); // ユーザーにエラーを通知
@@ -157,8 +163,8 @@ function ScheduleList({ date }: ScheduleListProps) {
                 {item.completed &&
                   item.actualTime && ( // 完了済みで実際の時刻がある場合
                     <div className="actual-time">
-                      ✓ {dayjs(item.actualTime).format("HH:mm")}に服用済み{" "}
-                      {/* 実際の服用時刻を表示 */}
+                      ✓ {dayjs(item.actualTime).format("M月D日 HH:mm")}
+                      に服用済み {/* 実際の服用時刻を表示 */}
                     </div>
                   )}
               </div>
