@@ -1,0 +1,121 @@
+/* 薬剤登録フォームのスタイル */
+.medication-form {
+  display: flex; /* フレックスボックスレイアウト */
+  flex-direction: column; /* 縦方向に配置 */
+  gap: 1.5rem; /* 要素間の余白（24px） */
+}
+
+/* フォームグループ - 各入力項目のコンテナ */
+.form-group {
+  display: flex; /* フレックスボックスレイアウト */
+  flex-direction: column; /* 縦方向に配置 */
+  gap: 0.5rem; /* ラベルと入力欄の間の余白（8px） */
+}
+
+/* フォームラベル */
+.form-label {
+  font-weight: 500; /* フォントを少し太く */
+  color: #212121; /* テキスト色（濃い黒） */
+  font-size: 1rem; /* フォントサイズ（16px） */
+}
+
+/* 必須マーク */
+.required {
+  color: #ef5350; /* 赤色（エラー色） */
+  margin-left: 0.25rem; /* 左側に少し余白（4px） */
+}
+
+/* フォーム入力欄（テキスト、数値、日付、時刻） */
+.form-input {
+  padding: 0.5rem 1rem; /* 内側の余白（上下8px、左右16px） */
+  border: 1px solid #e0e0e0; /* ボーダー（デフォルトボーダー色） */
+  border-radius: 0.5rem; /* 角丸（8px） */
+  font-size: 1rem; /* フォントサイズ（16px） */
+  transition: border-color 150ms ease-in-out; /* ボーダー色の変化をアニメーション */
+}
+
+/* フォーカス時の入力欄 */
+.form-input:focus {
+  outline: none; /* デフォルトのアウトラインを削除 */
+  border-color: #4a90e2; /* ボーダー色をプライマリカラー（青）に */
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1); /* 薄い青色の影を追加 */
+}
+
+/* エラー時の入力欄 */
+.form-input.error {
+  border-color: #ef5350; /* ボーダー色を赤に */
+}
+
+/* テキストエリア */
+.form-textarea {
+  padding: 0.5rem 1rem; /* 内側の余白（上下8px、左右16px） */
+  border: 1px solid #e0e0e0; /* ボーダー（デフォルトボーダー色） */
+  border-radius: 0.5rem; /* 角丸（8px） */
+  font-size: 1rem; /* フォントサイズ（16px） */
+  font-family: inherit; /* フォントを継承 */
+  resize: vertical; /* 縦方向のリサイズのみ許可 */
+  transition: border-color 150ms ease-in-out; /* ボーダー色の変化をアニメーション */
+}
+
+/* フォーカス時のテキストエリア */
+.form-textarea:focus {
+  outline: none; /* デフォルトのアウトラインを削除 */
+  border-color: #4a90e2; /* ボーダー色をプライマリカラー（青）に */
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1); /* 薄い青色の影を追加 */
+}
+
+/* エラーメッセージ */
+.error-message {
+  color: #ef5350; /* 赤色（エラー色） */
+  font-size: 0.875rem; /* 小さめのフォント（14px） */
+  margin: 0; /* マージンなし */
+}
+
+/* 服用時間入力欄のコンテナ */
+.times-container {
+  display: flex; /* フレックスボックスレイアウト */
+  flex-direction: column; /* 縦方向に配置 */
+  gap: 1rem; /* 各時間入力欄の間の余白（16px） */
+}
+
+/* 個別の時間入力グループ */
+.time-input-group {
+  display: flex; /* フレックスボックスレイアウト */
+  flex-direction: column; /* 縦方向に配置 */
+  gap: 0.5rem; /* ラベルと入力欄の間の余白（8px） */
+}
+
+/* 時間ラベル */
+.time-label {
+  font-size: 0.875rem; /* 小さめのフォント（14px） */
+  color: #757575; /* グレー（サブテキスト色） */
+  font-weight: 500; /* フォントを少し太く */
+}
+
+/* フォームアクション（ボタンエリア） */
+.form-actions {
+  display: flex; /* フレックスボックスレイアウト */
+  justify-content: flex-end; /* 右揃え */
+  gap: 1rem; /* ボタン間の余白（16px） */
+  margin-top: 1rem; /* 上側の余白（16px） */
+}
+/* 入力欄と単位ラベルを横並びに表示するコンテナ */
+.input-with-unit {
+  display: flex; /* 横並びレイアウト */
+  align-items: center; /* 垂直方向の中央揃え */
+  gap: 8px; /* 入力欄と単位ラベルの間隔 */
+}
+
+/* 入力補助テキスト */
+.form-hint {
+  margin-top: 4px; /* 上余白 */
+  font-size: 0.75rem; /* 小さめのフォントサイズ */
+  color: #6b7280; /* グレー色 */
+}
+
+/* 単位ラベル（「日」など） */
+.input-unit {
+  font-size: 0.875rem; /* フォントサイズ */
+  color: #374151; /* テキスト色 */
+  white-space: nowrap; /* 折り返し禁止 */
+}

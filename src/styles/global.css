@@ -20,11 +20,13 @@ html {
 /* Body要素の設定 */
 body {
   margin: 0; /* デフォルトのマージンを削除 */
-  font-family: var(--font-family-base); /* CSS変数で定義したフォントを使用 */
-  font-size: var(--font-size-base); /* 基本フォントサイズを適用 */
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; /* システムフォントを優先使用 */
+  font-size: 1rem; /* 基本フォントサイズ（16px）を適用 */
   line-height: 1.6; /* 行間を1.6倍に設定（読みやすさ向上） */
-  color: var(--color-text-primary); /* メインテキストカラーを適用 */
-  background-color: var(--color-bg-secondary); /* 背景色を薄いグレーに設定 */
+  color: #212121; /* メインテキストカラー（濃い黒）を適用 */
+  background-color: #f5f5f5; /* 背景色を薄いグレーに設定 */
   min-height: 100vh; /* 最小高さを画面全体に設定 */
 }
 
@@ -35,50 +37,50 @@ h3,
 h4,
 h5,
 h6 {
+  text-align: center; /* テキストを中央揃え */
   margin-top: 0; /* 上マージンを削除 */
-  margin-bottom: var(--spacing-md); /* 下マージンを設定 */
-  font-weight: var(--font-weight-bold); /* 太字に設定 */
+  margin-bottom: 1rem; /* 下マージン（16px）を設定 */
+  font-weight: 700; /* 太字に設定 */
   line-height: 1.2; /* 見出しの行間を狭めに設定 */
-  color: var(--color-text-primary); /* テキスト色を設定 */
+  color: #212121; /* テキスト色（濃い黒）を設定 */
 }
 
 /* 各見出しのサイズ設定 */
 h1 {
-  font-size: var(--font-size-3xl); /* 32px */
+  font-size: 2rem; /* 32px */
 }
 
 h2 {
-  font-size: var(--font-size-2xl); /* 24px */
+  font-size: 1.5rem; /* 24px */
 }
 
 h3 {
-  font-size: var(--font-size-xl); /* 20px */
+  font-size: 1.25rem; /* 20px */
 }
 
 h4 {
-  font-size: var(--font-size-lg); /* 18px */
+  font-size: 1.125rem; /* 18px */
 }
 
 h5,
 h6 {
-  font-size: var(--font-size-base); /* 16px */
+  font-size: 1rem; /* 16px */
 }
 
 /* 段落要素 */
 p {
   margin-top: 0; /* 上マージンを削除 */
-  margin-bottom: var(--spacing-md); /* 下マージンを設定 */
+  margin-bottom: 1rem; /* 下マージン（16px）を設定 */
 }
 
 /* リンク要素 */
 a {
-  color: var(--color-primary); /* プライマリカラーを適用 */
+  color: #4a90e2; /* プライマリカラー（青）を適用 */
   text-decoration: none; /* 下線を削除 */
-  transition: color var(--transition-fast); /* カラー変更時のアニメーション */
 }
 
 a:hover {
-  color: var(--color-primary-dark); /* ホバー時に濃い色に変更 */
+  color: #357abd; /* ホバー時に濃い青に変更 */
   text-decoration: underline; /* ホバー時に下線を表示 */
 }
 
@@ -136,48 +138,22 @@ table {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: var(--color-bg-secondary); /* トラックの背景色 */
+  background-color: #f5f5f5; /* トラックの背景色（薄いグレー） */
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--color-border-dark); /* スクロールバーの色 */
-  border-radius: var(--border-radius-md); /* 角丸 */
+  background-color: #bdbdbd; /* スクロールバーの色（濃いボーダー色） */
+  border-radius: 0.5rem; /* 角丸（8px） */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: var(--color-text-secondary); /* ホバー時の色 */
+  background-color: #757575; /* ホバー時の色（サブテキスト色） */
 }
 
 /* フォーカス時のアウトライン */
 :focus-visible {
-  outline: 2px solid var(--color-primary); /* プライマリカラーのアウトライン */
+  outline: 2px solid #4a90e2; /* プライマリカラー（青）のアウトライン */
   outline-offset: 2px; /* アウトラインの位置調整 */
-}
-
-/* ユーティリティクラス - よく使うスタイルを定義 */
-.container {
-  max-width: var(--container-max-width); /* 最大幅を制限 */
-  margin-left: auto; /* 左右中央揃え */
-  margin-right: auto; /* 左右中央揃え */
-  padding-left: var(--spacing-md); /* 左パディング */
-  padding-right: var(--spacing-md); /* 右パディング */
-}
-
-.text-center {
-  text-align: center; /* テキストを中央揃え */
-}
-
-.text-right {
-  text-align: right; /* テキストを右揃え */
-}
-
-.text-left {
-  text-align: left; /* テキストを左揃え */
-}
-
-/* 非表示クラス */
-.hidden {
-  display: none; /* 要素を非表示 */
 }
 
 /* スクリーンリーダー専用テキスト（視覚的には非表示、読み上げは可能） */
@@ -187,8 +163,34 @@ table {
   height: 1px; /* 最小サイズ */
   padding: 0; /* パディングなし */
   margin: -1px; /* マイナスマージンで隠す */
-  overflow: hidden; /* はみ出しを隠す */
-  clip: rect(0, 0, 0, 0); /* クリッピング */
   white-space: nowrap; /* 改行なし */
   border-width: 0; /* ボーダーなし */
+}
+
+/* 共通ボタンの基本スタイル */
+.btn {
+  padding: 0.5rem 2rem; /* 内側の余白 - 上下8px、左右32px */
+  border: none; /* ボーダーなし - シンプルなデザイン */
+  border-radius: 0.5rem; /* 角丸（8px）を適用 - 柔らかい印象 */
+  font-size: 1rem; /* フォントサイズを基本サイズ（16px）に */
+  font-weight: 500; /* フォントを少し太く - 視認性向上 */
+  cursor: pointer; /* カーソルをポインターに変更 - クリック可能を示す */
+}
+
+/* プライマリボタン - 主要アクション用（青系） */
+.btn-primary {
+  background-color: #4a90e2; /* 背景色をプライマリカラー（青）に */
+  color: white; /* 文字色を白に - 可読性を確保 */
+}
+
+/* プライマリボタンのホバー時スタイル */
+.btn-primary:hover:not(:disabled) {
+  background-color: #357abd; /* 背景色をより濃い青に変更 - ホバー効果 */
+  transform: translateY(-1px); /* ボタンを少し上に移動 - 浮き上がる効果 */
+}
+
+/* 無効化されたボタン */
+.btn:disabled {
+  opacity: 0.6; /* 透明度を下げる - 無効状態を視覚的に示す */
+  cursor: not-allowed; /* カーソルを禁止マークに変更 - クリック不可を示す */
 }

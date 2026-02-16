@@ -1,5 +1,10 @@
 import Dexie, { Table } from "dexie"; // Dexieライブラリとテーブル型をインポート
-import { Medication, MedicationRecord } from "../types"; // 型定義をインポート
+import {
+  Medication,
+  MedicationRecord,
+  WeatherData,
+  WeatherSettings,
+} from "../types"; // 型定義をインポート
 
 // Dexieを継承したデータベースクラスを定義
 export class MedicationDB extends Dexie {
@@ -7,6 +12,10 @@ export class MedicationDB extends Dexie {
   medications!: Table<Medication>;
   // 服用記録テーブルの型定義
   medicationRecords!: Table<MedicationRecord>;
+  // 天気データテーブルの型定義（新規追加）
+  weatherData!: Table<WeatherData>;
+  // 設定テーブルの型定義（新規追加）
+  settings!: Table<{ key: string; value: any }>;
 
   constructor() {
     // データベース名を指定してDexieを初期化
@@ -19,6 +28,12 @@ export class MedicationDB extends Dexie {
       // medicationRecordsテーブル: id（主キー）、medicationId、scheduledTime、[medicationId+scheduledTime]（複合インデックス）にインデックスを設定
       medicationRecords:
         "id, medicationId, scheduledTime, [medicationId+scheduledTime]",
+      // weatherDataテーブル: id（主キー）、timestampにインデックスを設定（新規追加）
+      // timestampでソートして最新データを取得するため
+      weatherData: "id, timestamp",
+      // settingsテーブル: key（主キー）のみ（新規追加）
+      // キーバリュー形式で各種設定を保存（例: key="weatherSettings", value={...}）
+      settings: "key",
     });
   }
 }
@@ -26,7 +41,7 @@ export class MedicationDB extends Dexie {
 // データベースのシングルトンインスタンスを作成してエクスポート
 export const db = new MedicationDB();
 
-// ===== 薬剤管理用のCRUD操作 =====
+// ===== 薬剤管理用のCRUD操作（既存） =====
 
 /**
  * 薬剤を新規作成
@@ -124,7 +139,7 @@ export const getActiveMedications = async (): Promise<Medication[]> => {
     .toArray(); // 配列として取得
 };
 
-// ===== 服用記録用のCRUD操作 =====
+// ===== 服用記録用のCRUD操作（既存） =====
 
 /**
  * 服用記録を新規作成
@@ -212,25 +227,140 @@ export const markAsCompleted = async (id: string): Promise<number> => {
   });
 };
 
+// ===== 天気データ用のCRUD操作（新規追加） =====
+
 /**
- * 服用遵守率を計算
+ * 天気データを保存
+ * @param weatherData 天気データオブジェクト
+ * @returns 作成された天気データのID
+ */
+export const saveWeatherData = async (
+  weatherData: WeatherData,
+): Promise<string> => {
+  // 天気データをテーブルに追加
+  // IDはweatherData内に既に含まれているため、そのまま保存
+  await db.weatherData.add(weatherData);
+
+  // 保存した天気データのIDを返す
+  return weatherData.id;
+};
+
+/**
+ * 最新の天気データを取得
+ * @returns 最新の天気データ、存在しない場合はundefined
+ */
+export const getLatestWeatherData = async (): Promise<
+  WeatherData | undefined
+> => {
+  // timestampで降順ソート（新しい順）して1件取得
+  const results = await db.weatherData
+    .orderBy("timestamp") // timestampでソート（昇順）
+    .reverse() // 降順に反転（新しい順）
+    .limit(1) // 最初の1件のみ取得
+    .toArray(); // 配列として取得
+
+  // 結果の最初の要素を返す（存在しない場合はundefined）
+  return results[0];
+};
+
+/**
+ * 指定期間の天気データを取得
  * @param startDate 開始日時（ISO 8601形式）
  * @param endDate 終了日時（ISO 8601形式）
- * @returns 服用遵守率（0-100のパーセンテージ）
+ * @returns 該当する天気データの配列
  */
-export const calculateAdherenceRate = async (
+export const getWeatherDataByDateRange = async (
   startDate: string,
   endDate: string,
+): Promise<WeatherData[]> => {
+  // 指定された日付範囲の天気データを取得
+  return await db.weatherData
+    .where("timestamp") // timestampフィールドで検索
+    .between(startDate, endDate, true, true) // 開始日〜終了日（両端含む）
+    .toArray(); // 配列として取得
+};
+
+/**
+ * 古い天気データを削除（過去7日より古いデータ）
+ * @param daysToKeep 保持する日数（デフォルト: 7日）
+ * @returns 削除された件数
+ */
+export const deleteOldWeatherData = async (
+  daysToKeep: number = 7,
 ): Promise<number> => {
-  // 指定された期間の服用記録を全て取得
-  const records = await getRecordsByDateRange(startDate, endDate);
+  // 現在時刻から指定日数前の日時を計算
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - daysToKeep); // 7日前
+  const cutoffTimestamp = cutoffDate.toISOString(); // ISO 8601形式に変換
 
-  // 記録が0件の場合は0%を返す
-  if (records.length === 0) return 0;
+  // cutoffTimestampより古いデータを削除
+  return await db.weatherData
+    .where("timestamp") // timestampフィールドで検索
+    .below(cutoffTimestamp) // 指定日時より古いもの（未満）
+    .delete(); // 削除
+};
 
-  // 服用完了した記録の数をカウント
-  const completedCount = records.filter((r) => r.completed).length;
+// ===== 設定用のCRUD操作（新規追加） =====
 
-  // 遵守率を計算（完了数 / 全体数 × 100）し、小数第1位で四捨五入
-  return Math.round((completedCount / records.length) * 1000) / 10;
+/**
+ * 設定を保存（キーバリュー形式）
+ * @param key 設定キー（例: "weatherSettings"）
+ * @param value 設定値（任意の型、JSONシリアライズ可能なオブジェクト）
+ */
+export const saveSetting = async (key: string, value: any): Promise<void> => {
+  // 既存の設定を上書き保存（put: 存在すれば更新、なければ追加）
+  await db.settings.put({ key, value });
+};
+
+/**
+ * 設定を取得
+ * @param key 設定キー（例: "weatherSettings"）
+ * @returns 設定値、存在しない場合はundefined
+ */
+export const getSetting = async <T = any>(
+  key: string,
+): Promise<T | undefined> => {
+  // 指定されたキーの設定を取得
+  const setting = await db.settings.get(key);
+
+  // 設定が存在する場合はvalueを返す、存在しない場合はundefined
+  return setting?.value as T | undefined;
+};
+
+/**
+ * 設定を削除
+ * @param key 設定キー（例: "weatherSettings"）
+ */
+export const deleteSetting = async (key: string): Promise<void> => {
+  // 指定されたキーの設定を削除
+  await db.settings.delete(key);
+};
+
+/**
+ * 天気設定を取得（デフォルト値付き）
+ * @returns 天気設定オブジェクト
+ */
+export const getWeatherSettings = async (): Promise<WeatherSettings> => {
+  // "weatherSettings"キーで設定を取得
+  const settings = await getSetting<WeatherSettings>("weatherSettings");
+
+  // 設定が存在する場合はそれを返す、存在しない場合はデフォルト値を返す
+  return (
+    settings || {
+      // デフォルト値
+      enabled: false, // 天気連携は初期状態でOFF
+      lastFetchedAt: null, // 未取得
+    }
+  );
+};
+
+/**
+ * 天気設定を保存
+ * @param settings 天気設定オブジェクト
+ */
+export const saveWeatherSettings = async (
+  settings: WeatherSettings,
+): Promise<void> => {
+  // "weatherSettings"キーで設定を保存
+  await saveSetting("weatherSettings", settings);
 };

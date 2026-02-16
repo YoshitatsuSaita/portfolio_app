@@ -1,0 +1,71 @@
+/* モーダルオーバーレイ - 画面全体を覆う半透明の背景 */
+.modal-overlay {
+  position: fixed; /* 画面に固定 */
+  top: 0; /* 上端を画面上端に */
+  left: 0; /* 左端を画面左端に */
+  right: 0; /* 右端を画面右端に */
+  bottom: 0; /* 下端を画面下端に */
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明の黒背景 */
+  display: flex; /* フレックスボックスレイアウト */
+  justify-content: center; /* 水平方向中央揃え */
+  align-items: center; /* 垂直方向中央揃え */
+  z-index: 1050; /* モーダルを最前面に表示 */
+  padding: 1rem; /* 外側の余白（16px） */
+}
+
+/* モーダル本体 - 実際のコンテンツを表示する白いボックス */
+.modal-content {
+  background-color: #ffffff; /* 背景色を白に */
+  border-radius: 1rem; /* 角丸を大きく（16px） */
+  max-width: 600px; /* 最大幅を600pxに制限 */
+  width: 100%; /* 幅を100%に */
+  max-height: 90vh; /* 最大高さを画面高さの90%に制限 */
+  display: flex; /* フレックスボックスレイアウト */
+  flex-direction: column; /* 縦方向に配置 */
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05); /* 大きな影を追加 */
+}
+
+/* モーダルヘッダー - タイトルと閉じるボタンを含む */
+.modal-header {
+  display: flex; /* フレックスボックスレイアウト */
+  justify-content: space-between; /* 両端に配置 */
+  align-items: center; /* 垂直方向中央揃え */
+  padding: 1.5rem; /* 内側の余白（24px） */
+  border-bottom: 1px solid #e0e0e0; /* 下部にボーダー（デフォルトボーダー色） */
+}
+
+/* モーダルタイトル */
+.modal-title {
+  margin: 0; /* デフォルトのマージンを削除 */
+  font-size: 1.25rem; /* フォントサイズを特大に（20px） */
+  color: #212121; /* テキスト色（濃い黒） */
+}
+
+/* 閉じるボタン */
+.modal-close-button {
+  background: none; /* 背景なし */
+  border: none; /* ボーダーなし */
+  font-size: 2rem; /* フォントサイズを大きく */
+  color: #757575; /* テキスト色をグレーに */
+  cursor: pointer; /* カーソルをポインターに */
+  padding: 0; /* パディングなし */
+  width: 2rem; /* 幅を2remに */
+  height: 2rem; /* 高さを2remに */
+  display: flex; /* フレックスボックスレイアウト */
+  align-items: center; /* 垂直方向中央揃え */
+  justify-content: center; /* 水平方向中央揃え */
+}
+
+/* 閉じるボタンホバー時 */
+.modal-close-button:hover {
+  color: #212121; /* テキスト色を濃い黒に */
+}
+
+/* モーダル本体 - スクロール可能なコンテンツエリア */
+.modal-body {
+  padding: 1.5rem; /* 内側の余白（24px） */
+  overflow-y: auto; /* 縦方向のスクロールを有効化 */
+  flex: 1; /* 残りのスペースを使用 */
+}

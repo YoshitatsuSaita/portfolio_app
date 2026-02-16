@@ -22,7 +22,7 @@ function Navigation() {
           isActive ? "nav-link active" : "nav-link"
         } // アクティブ時にactiveクラスを追加
       >
-        薬剤管理 {/* 薬剤管理画面へのリンク */}
+        処方箋管理 {/* 処方箋管理画面へのリンク */}
       </NavLink>
       <NavLink
         to="/calendar"

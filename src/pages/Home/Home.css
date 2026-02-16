@@ -1,9 +1,153 @@
 /* ホーム画面のスタイル定義 */
 .home {
-  padding: 2rem; /* 内側の余白を設定 */
+  padding: 1.5rem; /* 内側の余白を設定（24px） */
+  max-width: 1000px; /* 最大幅を1000pxに制限 */
+  margin: 0 auto; /* 左右中央揃え */
 }
 
-.home h1 {
-  margin-bottom: 1.5rem; /* タイトル下の余白 */
-  color: #333; /* 文字色を濃いグレーに */
+/* ===== 天気設定セクション（Settings.tsxから統合） ===== */
+
+/* 天気セクション全体のコンテナ */
+.home-weather-section {
+  background-color: #ffffff; /* 白背景で他のセクションと統一 */
+  border-radius: 1rem; /* 大きめの角丸（16px）で柔らかい印象に */
+  padding: 2rem; /* 内側に十分な余白を確保（32px） */
+  margin-bottom: 2rem; /* 下のScheduleListとの間隔（32px） */
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06); /* 中程度の影でカード感を演出 */
+}
+
+/* セクションタイトル「天気連携」 */
+.home-weather-title {
+  margin-top: 0; /* カード内上部の不要なマージンを除去 */
+  margin-bottom: 1.5rem; /* タイトルとトグルの間に余白（24px） */
+  color: #212121; /* メインテキスト色（濃い黒） */
+  font-size: 1.25rem; /* 大きめのフォント（20px）でセクションを明示 */
+  border-bottom: 2px solid #e0e0e0; /* 下線（デフォルトボーダー色）でタイトルを区切り */
+  padding-bottom: 0.5rem; /* 下線とテキストの間に余白（8px） */
+}
+
+/* ON/OFFトグル行のコンテナ */
+.home-weather-toggle {
+  margin-bottom: 1.5rem; /* トグルと次の要素の間に余白（24px） */
+}
+
+/* チェックボックス＋ラベルを囲むlabel要素 */
+.home-weather-label {
+  display: flex; /* 横並びレイアウト */
+  align-items: center; /* チェックボックスとテキストを垂直方向中央揃え */
+  gap: 0.5rem; /* チェックボックスとテキストの間隔（8px） */
+  cursor: pointer; /* クリック可能であることを示すポインターカーソル */
+}
+
+/* チェックボックス本体 */
+.home-weather-checkbox {
+  width: 20px; /* 幅を固定してタップしやすいサイズに */
+  height: 20px; /* 高さを固定 */
+  cursor: pointer; /* ポインターカーソル */
+}
+
+/* チェックボックス横のラベルテキスト */
+.home-weather-label-text {
+  font-size: 1rem; /* 標準フォントサイズ（16px） */
+  font-weight: 500; /* やや太字で視認性を向上 */
+  color: #212121; /* メインテキスト色（濃い黒） */
+}
+
+/* エラーメッセージ（位置情報エラー・ストアエラー共通） */
+.home-weather-error {
+  background-color: #fee; /* 薄い赤背景でエラーを視覚的に強調 */
+  color: #ef5350; /* 赤文字（エラー色） */
+  padding: 1rem; /* 内側の余白（16px） */
+  border-radius: 0.5rem; /* 角丸（8px） */
+  margin-bottom: 1rem; /* 下の要素との間隔（16px） */
+  border-left: 4px solid #ef5350; /* 左に赤いボーダー（エラー色）でアクセント */
+}
+
+/* 天気情報カード（気温・湿度・天気概要＋警告を2カラムで表示） */
+.home-weather-info {
+  display: flex; /* フレックスボックスで2カラムレイアウトを実現 */
+  gap: 1.5rem; /* 左列と右列の間隔（24px） */
+  align-items: stretch; /* 両列の高さを揃える（短い方が長い方に合わせて伸びる） */
+  background-color: #e3f2fd; /* 薄い青背景（プライマリライト色）で情報カードを識別 */
+  border-radius: 0.5rem; /* 角丸（8px） */
+  padding: 1.5rem; /* 内側の余白（24px） */
+  margin-bottom: 1.5rem; /* 下のボタンとの間隔（24px） */
+}
+
+/* 天気情報カードの左列（天気データ: アイコン・気温・湿度・最終取得日時） */
+.home-weather-info-left {
+  flex: 1; /* 残りのスペースを均等に使用（右列と1:1の比率） */
+  min-width: 0; /* flex子要素のオーバーフロー防止（テキストが長い場合に縮小可能にする） */
+}
+
+/* 天気情報カードの右列（警告/良好バナー） */
+.home-weather-info-right {
+  flex: 1; /* 残りのスペースを均等に使用（左列と1:1の比率） */
+  min-width: 0; /* flex子要素のオーバーフロー防止 */
+  display: flex; /* 内部のWeatherAlertを高さいっぱいに伸ばすためのflex親 */
+}
+
+/* 天気情報カードのヘッダー（アイコン＋概要テキスト） */
+.home-weather-info-header {
+  display: flex; /* 横並びレイアウト */
+  align-items: center; /* アイコンとテキストを垂直方向中央揃え */
+  gap: 0.5rem; /* アイコンとテキストの間隔（8px） */
+  margin-bottom: 1rem; /* ヘッダーと詳細部分の間隔（16px） */
+}
+
+/* 天気アイコン（絵文字） */
+.home-weather-icon {
+  font-size: 2rem; /* 大きめのサイズで視認性を確保 */
+}
+
+/* 天気概要テキスト（例: 「晴れ」「曇り」） */
+.home-weather-description {
+  font-size: 1.125rem; /* やや大きめのフォント（18px） */
+  font-weight: 500; /* やや太字 */
+  color: #212121; /* メインテキスト色（濃い黒） */
+}
+
+/* 気温・湿度の詳細表示エリア */
+.home-weather-info-details {
+  display: flex; /* 横並びレイアウトで気温と湿度を並列表示 */
+  gap: 2rem; /* 気温ブロックと湿度ブロックの間隔（32px） */
+  margin-bottom: 0.5rem; /* 最終取得日時との間隔（8px） */
+}
+
+/* 気温・湿度の個別ブロック */
+.home-weather-detail {
+  display: flex; /* 横並びまたは縦並びに対応 */
+  flex-direction: column; /* ラベルと値を縦方向に配置 */
+}
+
+/* 「気温:」「湿度:」のラベルテキスト */
+.home-weather-detail-label {
+  font-size: 0.875rem; /* 小さめのフォント（14px）でラベルを控えめに */
+  color: #757575; /* グレー（サブテキスト色）で主張しすぎない色 */
+  margin-bottom: 0.25rem; /* ラベルと値の間に小さな余白（4px） */
+}
+
+/* 気温・湿度の値テキスト */
+.home-weather-detail-value {
+  font-size: 1.25rem; /* 大きめのフォント（20px）で値を強調 */
+  font-weight: 700; /* 太字で目立たせる */
+  color: #4a90e2; /* プライマリカラー（青）で重要度を示す */
+}
+
+/* 最終取得日時のテキスト */
+.home-weather-last-updated {
+  font-size: 0.75rem; /* 極小フォント（12px）で補足情報として控えめに */
+  color: #757575; /* グレー（サブテキスト色） */
+  margin: 0; /* デフォルトのpマージンを除去 */
+}
+
+/* 手動更新ボタン */
+.home-weather-fetch-btn {
+  font-size: 2.5rem; /* 大きめのサイズで視認性を確保 */
+}
+
+.home-weather-fetch-btn:hover {
+  transform: translateY(-1px); /* ボタンを少し上に移動 - 浮き上がる効果 */
 }

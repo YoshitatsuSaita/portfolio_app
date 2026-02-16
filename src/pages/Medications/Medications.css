@@ -3,7 +3,22 @@
   padding: 2rem; /* 内側の余白を設定 */
 }
 
-.medications h1 {
-  margin-bottom: 1.5rem; /* タイトル下の余白 */
+/* ヘッダー部分 - タイトルを中央・ボタンを右端に配置 */
+.medications-header {
+  display: grid; /* グリッドレイアウトに変更（flexから切り替え） */
+  grid-template-columns: 1fr auto 1fr; /* 左スペーサー・タイトル・右エリア の3カラム構成 */
+  align-items: center; /* 垂直方向中央揃え */
+  margin-bottom: 2rem; /* 下側の余白 */
+}
+
+.medications-header h1 {
+  margin: 0; /* デフォルトのマージンを削除 */
   color: #333; /* 文字色を濃いグレーに */
+  text-align: center; /* タイトルテキストを中央揃え */
+  grid-column: 2; /* 3カラムの2番目（中央）に配置 */
+}
+
+.medications-header .btn {
+  grid-column: 3; /* 3カラムの3番目（右エリア）に配置 */
+  justify-self: end; /* グリッドセル内で右端に寄せる */
 }

@@ -1,32 +1,30 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"; // React Routerの必要なコンポーネントをインポート
-import Layout from "./components/Layout/Layout"; // Layoutコンポーネントをインポート
-import Home from "./pages/Home/Home"; // Homeページコンポーネントをインポート
-import Medications from "./pages/Medications/Medications"; // Medicationsページコンポーネントをインポート
-import Calendar from "./pages/Calendar/Calendar"; // Calendarページコンポーネントをインポート
-import "./App.css"; // アプリ全体のCSSをインポート
+import { BrowserRouter, Routes, Route } from "react-router-dom"; // ルーティング用のコンポーネントをインポート
+import Layout from "./components/Layout/Layout"; // レイアウトコンポーネントをインポート
+import Home from "./pages/Home/Home"; // ホーム画面をインポート
+import Medications from "./pages/Medications/Medications"; // 薬剤管理画面をインポート
+import Calendar from "./pages/Calendar/Calendar"; // カレンダー画面をインポート
+import "./App.css"; // CSSをインポート
 
-// アプリケーションのメインコンポーネント - ルーティング設定を定義
 function App() {
   return (
     <BrowserRouter>
       {" "}
-      {/* ブラウザのHistoryAPIを使用したルーティングを有効化 */}
+      {/* ルーティングを有効化 */}
       <Routes>
         {" "}
-        {/* ルート定義の開始 */}
+        {/* ルート定義 */}
         <Route path="/" element={<Layout />}>
           {" "}
-          {/* 共通レイアウトを適用 */}
-          <Route index element={<Home />} />{" "}
-          {/* "/" パスでHomeコンポーネントを表示 */}
+          {/* レイアウトコンポーネントを適用 */}
+          <Route index element={<Home />} /> {/* ホーム画面（/） */}
           <Route path="medications" element={<Medications />} />{" "}
-          {/* "/medications" パスでMedicationsコンポーネントを表示 */}
+          {/* 薬剤管理画面（/medications） */}
           <Route path="calendar" element={<Calendar />} />{" "}
-          {/* "/calendar" パスでCalendarコンポーネントを表示 */}
+          {/* カレンダー画面（/calendar） */}
         </Route>
       </Routes>
     </BrowserRouter>
   );
 }
 
-export default App; // 他のファイルから使用できるようにエクスポート
+export default App; // エクスポート

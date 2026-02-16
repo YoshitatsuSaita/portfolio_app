@@ -6,7 +6,7 @@ function Header() {
     <header className="header">
       {" "}
       {/* ヘッダー全体のコンテナ */}
-      <h1 className="header-title">薬剤服用スケジュール管理</h1>{" "}
+      <h1 className="header-title">処方箋服用スケジュール管理</h1>{" "}
       {/* アプリケーション名 */}
     </header>
   );
