@@ -1,29 +1,45 @@
 import { WeatherData, OpenWeatherMapResponse } from "../types"; // 型定義をインポート
 
-const API_BASE_URL = "/api/weather";
+// 環境変数からAPIキーを取得（.envファイルに VITE_OPENWEATHER_API_KEY として定義）
+const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
+// OpenWeatherMap APIのベースURL（バージョン2.5を使用）
+const API_BASE_URL = "https://api.openweathermap.org/data/2.5";
 
 /**
- * Vercel Serverless Function 経由で天気情報を取得する関数
+ * OpenWeatherMap APIから天気情報を取得する関数
  * @param lat - 緯度（-90 〜 90の範囲、例: 35.6812 = 東京）
  * @param lon - 経度（-180 〜 180の範囲、例: 139.7671 = 東京）
  * @returns Promise<WeatherData> - 天気データオブジェクト
- * @throws Error - HTTP通信エラー、JSONパースエラー時
+ * @throws Error - APIキー未設定、HTTP通信エラー、JSONパースエラー時
+ *
+ * 使用例:
+ * const weather = await fetchWeatherData(35.6812, 139.7671);
+ * console.log(`現在の気温: ${weather.temperature}度`);
  */
 export async function fetchWeatherData(
   lat: number, // 緯度
   lon: number, // 経度
 ): Promise<WeatherData> {
+  // APIキーが環境変数に設定されているかチェック
+  if (!API_KEY) {
+    // APIキーが未設定の場合はエラーをスロー
+    throw new Error(
+      "OpenWeatherMap APIキーが設定されていません。.envファイルにVITE_OPENWEATHER_API_KEYを追加してください。",
+    );
+  }
+
   try {
-    // クエリパラメータに緯度・経度を付与して自サーバーにリクエスト
-    // APIキーはサーバー側で付与されるためここには含めない
-    const url = `${API_BASE_URL}?lat=${lat}&lon=${lon}`;
+    // API呼び出し用のURLを構築
+    // units=metric: 摂氏で気温を取得（デフォルトはケルビン）
+    // lang=ja: 天気概要を日本語で取得
+    const url = `${API_BASE_URL}/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=ja`;
 
     // Fetch APIでHTTPリクエストを送信
     const response = await fetch(url);
 
     // HTTPステータスコードをチェック（200番台以外はエラー）
     if (!response.ok) {
-      // 403: Referer不正、400: パラメータ不正、500: サーバーエラーなど
+      // 例: 401 Unauthorized（APIキー無効）、404 Not Found（不正な座標）など
       throw new Error(
         `天気情報の取得に失敗しました: HTTP ${response.status} ${response.statusText}`,
       );
@@ -41,12 +57,14 @@ export async function fetchWeatherData(
       timestamp: new Date().toISOString(),
 
       // 気温を整数に丸める（小数点以下は不要なため）
+      // Math.round: 四捨五入（25.7度 → 26度）
       temperature: Math.round(data.main.temp),
 
       // 湿度（APIレスポンスは既に整数値）
       humidity: data.main.humidity,
 
       // 天気概要（日本語、例: "晴れ", "薄い雲"）
+      // weather配列の最初の要素を使用（通常は1つのみ）
       description: data.weather[0].description,
 
       // 位置情報（APIレスポンスに含まれる座標）
