@@ -120,7 +120,6 @@ function CalendarPage() {
 
     return (
       <div className="tile-content">
-        {" "}
         {/* タイルコンテンツのコンテナ */}
         <span
           className={`schedule-badge ${allCompleted ? "all-completed" : completedCount > 0 ? "completed" : "pending"}`} // 完了状態に応じてクラスを変更
@@ -133,18 +132,15 @@ function CalendarPage() {
 
   return (
     <div className="calendar-page">
-      {" "}
       {/* カレンダー画面全体のコンテナ */}
       <h1>処方箋カレンダー</h1> {/* ページタイトル */}
       {loading ? ( // ローディング中の表示
         <div className="loading">読み込み中...</div>
       ) : (
         <div className="calendar-container">
-          {" "}
           {/* カレンダーと詳細表示のコンテナ */}
           {/* カレンダー本体 */}
           <div className="calendar-wrapper">
-            {" "}
             {/* カレンダーのラッパー */}
             <Calendar
               onChange={handleDateClick} // 日付クリック時の処理
@@ -158,7 +154,6 @@ function CalendarPage() {
           </div>
           {/* 選択日の詳細表示 */}
           <div className="calendar-detail">
-            {" "}
             {/* 詳細表示エリア */}
             <ScheduleList
               date={selectedDate} // 選択された日付

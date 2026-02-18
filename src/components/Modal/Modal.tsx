@@ -36,13 +36,10 @@ function Modal({ isOpen, onClose, title, children }: ModalProps) {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      {" "}
       {/* オーバーレイ - 背景クリックでモーダルを閉じる */}
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        {" "}
         {/* モーダル本体 - クリックイベントの伝播を止める */}
         <div className="modal-header">
-          {" "}
           {/* モーダルヘッダー */}
           <h2 className="modal-title">{title}</h2> {/* タイトル表示 */}
           <button
@@ -54,7 +51,6 @@ function Modal({ isOpen, onClose, title, children }: ModalProps) {
           </button>
         </div>
         <div className="modal-body">
-          {" "}
           {/* モーダル本体 */}
           {children} {/* 渡されたコンテンツを表示 */}
         </div>

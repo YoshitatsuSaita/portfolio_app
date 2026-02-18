@@ -46,18 +46,15 @@ function Medications() {
 
   return (
     <div className="medications">
-      {" "}
       {/* 薬剤管理画面全体のコンテナ */}
       <div className="medications-header">
-        {" "}
         {/* ヘッダー部分 */}
         <h1>処方箋管理</h1> {/* ページタイトル */}
         <button className="btn btn-primary" onClick={handleOpenAddModal}>
-          {" "}
           {/* 新規登録ボタン */}+ 新規登録 {/* ボタンテキスト */}
         </button>
       </div>
-      <MedicationList onEdit={handleOpenEditModal} />{" "}
+      <MedicationList onEdit={handleOpenEditModal} />
       {/* 薬剤一覧を表示 - 編集コールバックを渡す */}
       {/* 新規登録用モーダル */}
       <Modal
@@ -65,7 +62,7 @@ function Medications() {
         onClose={handleCloseAddModal} // モーダルを閉じる関数
         title="新しい薬剤を登録" // モーダルのタイトル
       >
-        <MedicationForm onSuccess={handleAddSuccess} />{" "}
+        <MedicationForm onSuccess={handleAddSuccess} />
         {/* 薬剤登録フォーム - medicationプロパティなし = 新規登録モード */}
       </Modal>
       {/* 編集用モーダル */}
