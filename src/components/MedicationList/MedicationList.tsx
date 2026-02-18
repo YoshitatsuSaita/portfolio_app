@@ -28,9 +28,8 @@ function MedicationList({ onEdit }: MedicationListProps) {
   if (loading) {
     return (
       <div className="medication-list-container">
-        {" "}
         {/* コンテナ */}
-        <div className="loading">読み込み中...</div>{" "}
+        <div className="loading">読み込み中...</div>
         {/* ローディングメッセージ */}
       </div>
     );
@@ -40,7 +39,6 @@ function MedicationList({ onEdit }: MedicationListProps) {
   if (error) {
     return (
       <div className="medication-list-container">
-        {" "}
         {/* コンテナ */}
         <div className="error">{error}</div> {/* エラーメッセージを表示 */}
       </div>
@@ -51,15 +49,13 @@ function MedicationList({ onEdit }: MedicationListProps) {
   if (medications.length === 0) {
     return (
       <div className="medication-list-container">
-        {" "}
         {/* コンテナ */}
         <div className="empty-state">
-          {" "}
           {/* 空の状態用のコンテナ */}
           <p>登録されている薬剤がありません</p> {/* メッセージを表示 */}
           <p className="empty-hint">
             「新規登録」ボタンから薬剤を追加してください
-          </p>{" "}
+          </p>
           {/* ヒントを表示 */}
         </div>
       </div>
@@ -69,10 +65,8 @@ function MedicationList({ onEdit }: MedicationListProps) {
   // 薬剤が存在する場合の表示
   return (
     <div className="medication-list-container">
-      {" "}
       {/* コンテナ */}
       <div className="medication-list">
-        {" "}
         {/* リスト本体 */}
         {medications.map(
           (

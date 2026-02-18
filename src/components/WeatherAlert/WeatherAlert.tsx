@@ -1,9 +1,9 @@
-import { WeatherData, WeatherSettings } from "../../types"; // 型定義をインポート
+import { WeatherData, WeatherSettings } from '../../types'; // 型定義をインポート
 import {
   checkWeatherAlerts,
   isStorageEnvironmentGood,
-} from "../../utils/weatherUtils"; // 警告判定・良好判定関数をインポート
-import "./WeatherAlert.css"; // CSSをインポート
+} from '../../utils/weatherUtils'; // 警告判定・良好判定関数をインポート
+import './WeatherAlert.css'; // CSSをインポート
 
 // WeatherAlertコンポーネントのpropsの型定義
 interface WeatherAlertProps {
@@ -31,21 +31,18 @@ function WeatherAlert({
   const isGood = isStorageEnvironmentGood(weather);
 
   // inlineプロップに応じてインライン用クラスを追加するヘルパー関数
-  const inlineClass = inline ? " weather-alert--inline" : ""; // インライン時は修飾子クラスを付与
+  const inlineClass = inline ? ' weather-alert--inline' : ''; // インライン時は修飾子クラスを付与
 
   // 警告が1件以上ある場合は警告バナーを表示
   if (alerts.length > 0) {
     return (
       <div className={`weather-alert weather-alert--warning${inlineClass}`}>
-        {" "}
         {/* 警告バナー全体のコンテナ（警告スタイル＋インライン修飾子） */}
         <div className="weather-alert-content">
-          {" "}
           {/* 警告内容のコンテナ */}
-          <h3 className="weather-alert-title">薬の保管環境に注意</h3>{" "}
+          <h3 className="weather-alert-title">薬の保管環境に注意</h3>
           {/* タイトル */}
           <div className="weather-alert-messages">
-            {" "}
             {/* メッセージリスト */}
             {alerts.map((alert, index) => (
               // 各警告メッセージを表示（複数ある場合もあり）
@@ -63,15 +60,12 @@ function WeatherAlert({
   if (isGood) {
     return (
       <div className={`weather-alert weather-alert--good${inlineClass}`}>
-        {" "}
         {/* 良好バナー全体のコンテナ（良好スタイル＋インライン修飾子） */}
         <div className="weather-alert-content">
-          {" "}
           {/* 内容のコンテナ */}
-          <h3 className="weather-alert-title">保管環境は良好です</h3>{" "}
+          <h3 className="weather-alert-title">保管環境は良好です</h3>
           {/* タイトル */}
           <div className="weather-alert-messages">
-            {" "}
             {/* メッセージエリア */}
             <p className="weather-alert-message">
               {/* 保管環境の安全性を伝える */}

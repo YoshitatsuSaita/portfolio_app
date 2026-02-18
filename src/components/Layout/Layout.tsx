@@ -7,14 +7,12 @@ import "./Layout.css"; // CSSファイルをインポート
 function Layout() {
   return (
     <div className="layout">
-      {" "}
       {/* レイアウト全体のコンテナ */}
       <Header /> {/* ヘッダーを表示 */}
       <Navigation /> {/* ナビゲーションバーを表示 */}
       <main className="main-content">
-        {" "}
         {/* メインコンテンツエリア */}
-        <Outlet />{" "}
+        <Outlet />
         {/* 現在のルートに対応するページコンポーネントをここに表示 */}
       </main>
     </div>

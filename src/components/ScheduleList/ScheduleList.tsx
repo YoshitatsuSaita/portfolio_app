@@ -150,15 +150,15 @@ function ScheduleList({ date, onScheduleUpdated }: ScheduleListProps) {
             >
               {/* 時刻表示 */}
               <div className="schedule-time">
-                {dayjs(item.scheduledTime).format("HH:mm")}{" "}
+                {dayjs(item.scheduledTime).format("HH:mm")}
                 {/* 時刻をHH:mm形式で表示（例: 08:00） */}
               </div>
 
               {/* 薬剤情報 */}
               <div className="schedule-info">
-                <div className="medication-name">{item.medicationName}</div>{" "}
+                <div className="medication-name">{item.medicationName}</div>
                 {/* 薬品名 */}
-                <div className="medication-dosage">{item.dosage}</div>{" "}
+                <div className="medication-dosage">{item.dosage}</div>
                 {/* 服用量 */}
                 {item.completed &&
                   item.actualTime && ( // 完了済みで実際の時刻がある場合
@@ -178,7 +178,7 @@ function ScheduleList({ date, onScheduleUpdated }: ScheduleListProps) {
                   onChange={(e) => handleCheckboxChange(item, e.target.checked)} // チェックボックスの変更を処理
                 />
                 <label htmlFor={`check-${item.id}`}>
-                  {item.completed ? "服用済み" : "未服用"}{" "}
+                  {item.completed ? "服用済み" : "未服用"}
                   {/* ラベルテキスト */}
                 </label>
               </div>
