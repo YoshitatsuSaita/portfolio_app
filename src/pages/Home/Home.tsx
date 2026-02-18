@@ -80,17 +80,13 @@ function Home() {
 
   return (
     <div className="home">
-      {" "}
       {/* ホーム画面全体のコンテナ */}
       {/* 天気設定セクション */}
       <section className="home-weather-section">
-        {" "}
         {/* 天気連携の有効/無効トグル */}
         <div className="home-weather-toggle">
-          {" "}
           {/* トグル行のコンテナ */}
           <label className="home-weather-label">
-            {" "}
             {/* チェックボックス＋ラベルを囲むlabel要素 */}
             <input
               type="checkbox" // チェックボックスとして表示
@@ -100,14 +96,13 @@ function Home() {
             />
             <span className="home-weather-label-text">
               天気情報を取得し、薬品の状態を管理する
-            </span>{" "}
+            </span>
             {/* ラベルテキスト */}
           </label>
         </div>
         {/* 位置情報エラーメッセージの表示（エラーがある場合のみ） */}
         {locationError && (
           <div className="home-weather-error">
-            {" "}
             {/* エラー表示コンテナ */}
             {locationError} {/* エラー文言 */}
           </div>
@@ -115,7 +110,6 @@ function Home() {
         {/* ストアレベルのエラーメッセージ表示（エラーがある場合のみ） */}
         {error && (
           <div className="home-weather-error">
-            {" "}
             {/* エラー表示コンテナ */}
             {error} {/* エラー文言 */}
           </div>
@@ -123,47 +117,39 @@ function Home() {
         {/* 天気連携が有効 かつ 天気データが存在する場合のみ天気情報カードを表示 */}
         {weatherSettings.enabled && weatherData && (
           <div className="home-weather-info">
-            {" "}
             {/* 天気情報カード全体のコンテナ（2カラムレイアウト） */}
             <div className="home-weather-info-left">
-              {" "}
               {/* 左列: 天気データ（アイコン・気温・湿度・最終取得日時） */}
               <div className="home-weather-info-header">
-                {" "}
                 {/* カードヘッダー部（アイコン＋概要） */}
                 <span className="home-weather-icon">
-                  {" "}
                   {/* 天気絵文字アイコン */}
-                  {getWeatherIcon(weatherData.description)}{" "}
+                  {getWeatherIcon(weatherData.description)}
                   {/* 天気概要テキストから対応する絵文字を取得 */}
                 </span>
                 <span className="home-weather-description">
-                  {" "}
                   {/* 天気概要テキスト（例: 「晴れ」「曇り」） */}
                   {weatherData.description}
                 </span>
               </div>
               <div className="home-weather-info-details">
-                {" "}
                 {/* 気温・湿度の詳細表示エリア */}
                 <div className="home-weather-detail">
-                  {" "}
                   {/* 気温表示ブロック */}
-                  <span className="home-weather-detail-label">気温:</span>{" "}
+                  <span className="home-weather-detail-label">気温:</span>
                   {/* ラベル */}
                   <span className="home-weather-detail-value">
                     {weatherData.temperature}度
-                  </span>{" "}
+                  </span>
                   {/* 値 */}
                 </div>
                 <div className="home-weather-detail">
-                  {" "}
                   {/* 湿度表示ブロック */}
-                  <span className="home-weather-detail-label">湿度:</span>{" "}
+                  <span className="home-weather-detail-label">湿度:</span>
                   {/* ラベル */}
                   <span className="home-weather-detail-value">
                     {weatherData.humidity}%
-                  </span>{" "}
+                  </span>
                   {/* 値 */}
                 </div>
                 <div>
@@ -177,16 +163,12 @@ function Home() {
                 </div>
               </div>
               <p className="home-weather-last-updated">
-                {" "}
                 {/* 最終取得日時の表示 */}
-                最終取得: {formatLastFetched(
-                  weatherSettings.lastFetchedAt,
-                )}{" "}
+                最終取得: {formatLastFetched(weatherSettings.lastFetchedAt)}
                 {/* 相対時間にフォーマットして表示 */}
               </p>
             </div>
             <div className="home-weather-info-right">
-              {" "}
               {/* 右列: 警告/良好バナー（インラインモードで埋め込み） */}
               <WeatherAlert
                 weather={weatherData} // 天気データを渡す

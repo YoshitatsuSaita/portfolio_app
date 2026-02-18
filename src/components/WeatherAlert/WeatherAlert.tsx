@@ -37,15 +37,12 @@ function WeatherAlert({
   if (alerts.length > 0) {
     return (
       <div className={`weather-alert weather-alert--warning${inlineClass}`}>
-        {" "}
         {/* 警告バナー全体のコンテナ（警告スタイル＋インライン修飾子） */}
         <div className="weather-alert-content">
-          {" "}
           {/* 警告内容のコンテナ */}
-          <h3 className="weather-alert-title">薬の保管環境に注意</h3>{" "}
+          <h3 className="weather-alert-title">薬の保管環境に注意</h3>
           {/* タイトル */}
           <div className="weather-alert-messages">
-            {" "}
             {/* メッセージリスト */}
             {alerts.map((alert, index) => (
               // 各警告メッセージを表示（複数ある場合もあり）
@@ -63,15 +60,12 @@ function WeatherAlert({
   if (isGood) {
     return (
       <div className={`weather-alert weather-alert--good${inlineClass}`}>
-        {" "}
         {/* 良好バナー全体のコンテナ（良好スタイル＋インライン修飾子） */}
         <div className="weather-alert-content">
-          {" "}
           {/* 内容のコンテナ */}
-          <h3 className="weather-alert-title">保管環境は良好です</h3>{" "}
+          <h3 className="weather-alert-title">保管環境は良好です</h3>
           {/* タイトル */}
           <div className="weather-alert-messages">
-            {" "}
             {/* メッセージエリア */}
             <p className="weather-alert-message">
               {/* 保管環境の安全性を伝える */}

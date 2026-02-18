@@ -57,64 +57,52 @@ function MedicationCard({ medication, onEdit }: MedicationCardProps) {
 
   return (
     <div className="medication-card">
-      {" "}
       {/* カード全体のコンテナ */}
       <div className="card-header">
-        {" "}
         {/* カードのヘッダー部分 */}
-        <h3 className="medication-name">{medication.name}</h3>{" "}
+        <h3 className="medication-name">{medication.name}</h3>
         {/* 薬品名を大きく表示 */}
       </div>
       <div className="card-body">
-        {" "}
         {/* カードの本体部分 */}
         <div className="medication-detail">
-          {" "}
           {/* 詳細情報の1項目 */}
           <span className="detail-label">服用量:</span> {/* ラベル - 項目名 */}
-          <span className="detail-value">{medication.dosage}</span>{" "}
+          <span className="detail-value">{medication.dosage}</span>
           {/* 値 - 服用量（例: "1錠"） */}
         </div>
         <div className="medication-detail">
-          {" "}
           {/* 詳細情報の1項目 */}
-          <span className="detail-label">服用回数:</span>{" "}
+          <span className="detail-label">服用回数:</span>
           {/* ラベル - 項目名 */}
-          <span className="detail-value">1日{medication.frequency}回</span>{" "}
+          <span className="detail-value">1日{medication.frequency}回</span>
           {/* 値 - 服用回数（例: "1日2回"） */}
         </div>
         <div className="medication-detail">
-          {" "}
           {/* 詳細情報の1項目 */}
-          <span className="detail-label">服用時間:</span>{" "}
+          <span className="detail-label">服用時間:</span>
           {/* ラベル - 項目名 */}
-          <span className="detail-value">
-            {medication.times.join(", ")}
-          </span>{" "}
+          <span className="detail-value">{medication.times.join(", ")}</span>
           {/* 値 - 服用時間の配列をカンマ区切りで表示（例: "08:00, 20:00"） */}
         </div>
         <div className="medication-detail">
-          {" "}
           {/* 詳細情報の1項目 */}
           <span className="detail-label">期間:</span> {/* ラベル - 項目名 */}
-          <span className="detail-value">{formatDateRange()}</span>{" "}
+          <span className="detail-value">{formatDateRange()}</span>
           {/* 値 - フォーマットした服用期間 */}
         </div>
         {medication.memo && ( // メモが存在する場合のみ表示（条件付きレンダリング）
           <div className="medication-detail memo">
-            {" "}
             {/* メモ用のクラスを追加 */}
             <span className="detail-label">メモ:</span> {/* ラベル - 項目名 */}
-            <span className="detail-value">{medication.memo}</span>{" "}
+            <span className="detail-value">{medication.memo}</span>
             {/* 値 - メモの内容 */}
           </div>
         )}
       </div>
       <div className="card-footer">
-        {" "}
         {/* カードのフッター部分 - ボタン配置エリア */}
         <div className="card-footer-left">
-          {" "}
           {/* フッター左側のコンテナ - バッジの配置エリア */}
           {isCompleted && (
             <span className="medication-status-badge">服用終了</span>
@@ -122,7 +110,6 @@ function MedicationCard({ medication, onEdit }: MedicationCardProps) {
           )}
         </div>
         <div className="card-footer-right">
-          {" "}
           {/* フッター右側のコンテナ - ボタンの配置エリア */}
           <button
             className="btn btn-secondary" // 編集ボタン用のスタイルクラス - 青系の配色

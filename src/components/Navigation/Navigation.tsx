@@ -5,7 +5,6 @@ import "./Navigation.css"; // CSSファイルをインポート
 function Navigation() {
   return (
     <nav className="navigation">
-      {" "}
       {/* ナビゲーション全体のコンテナ */}
       {/* NavLinkは現在のページに応じて自動的にactiveクラスを付与 */}
       <NavLink

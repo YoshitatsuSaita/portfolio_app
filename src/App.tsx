@@ -8,18 +8,15 @@ import "./App.css"; // CSSをインポート
 function App() {
   return (
     <BrowserRouter>
-      {" "}
       {/* ルーティングを有効化 */}
       <Routes>
-        {" "}
         {/* ルート定義 */}
         <Route path="/" element={<Layout />}>
-          {" "}
           {/* レイアウトコンポーネントを適用 */}
           <Route index element={<Home />} /> {/* ホーム画面（/） */}
-          <Route path="medications" element={<Medications />} />{" "}
+          <Route path="medications" element={<Medications />} />
           {/* 薬剤管理画面（/medications） */}
-          <Route path="calendar" element={<Calendar />} />{" "}
+          <Route path="calendar" element={<Calendar />} />
           {/* カレンダー画面（/calendar） */}
         </Route>
       </Routes>
