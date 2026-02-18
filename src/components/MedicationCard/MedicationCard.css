@@ -1,116 +1,101 @@
-/* 薬剤カードのスタイル定義 */
 .medication-card {
-  background-color: #ffffff; /* 背景色を白に設定 - カードを目立たせる */
-  border-radius: 8px; /* 角を丸くする - 柔らかい印象 */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 影を追加 - カードを浮き上がらせる */
-  padding: 1.5rem; /* 内側の余白を設定 - コンテンツとの余白 */
-  margin-bottom: 1rem; /* 下の余白を設定 - カード間のスペース */
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
 }
 
-/* ホバー時のスタイル */
 .medication-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* 影を強くする - ホバー時の視覚効果 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* カードヘッダーのスタイル */
 .card-header {
-  border-bottom: 2px solid #e9ecef; /* 下にボーダーを追加 - ヘッダーと本体を区切る */
-  padding-bottom: 0.75rem; /* 下の余白を設定 - ボーダーとの間隔 */
-  margin-bottom: 1rem; /* 下のマージンを設定 - 本体との間隔 */
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
 }
 
-/* 薬品名のスタイル */
 .medication-name {
-  font-size: 1.25rem; /* フォントサイズを大きく - 薬品名を目立たせる */
-  font-weight: 600; /* フォントを太字に - 重要性を強調 */
-  color: #212529; /* 文字色を濃い黒に設定 - 可読性向上 */
-  margin: 0; /* デフォルトのマージンを削除 - レイアウト調整 */
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #212529;
+  margin: 0;
 }
 
-/* カード本体のスタイル */
 .card-body {
-  display: flex; /* フレックスボックスレイアウトを使用 - 要素の配置を柔軟に */
-  flex-direction: column; /* 縦方向に要素を配置 - 詳細情報を縦に並べる */
-  gap: 0.5rem; /* 要素間の間隔を設定 - 詳細情報の間隔 */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-/* 詳細情報1項目のスタイル */
 .medication-detail {
-  display: flex; /* フレックスボックスレイアウトを使用 - ラベルと値を横に並べる */
-  align-items: flex-start; /* 要素を上揃えに - テキストが折り返した場合の対応 */
+  display: flex;
+  align-items: flex-start;
 }
 
-/* ラベルのスタイル */
 .detail-label {
-  font-weight: 500; /* フォントを中太字に - ラベルを目立たせる */
-  color: #6c757d; /* 文字色をグレーに設定 - 値と区別 */
-  min-width: 90px; /* 最小幅を設定 - ラベルの幅を揃える */
-  margin-right: 0.5rem; /* 右のマージンを設定 - 値との間隔 */
+  font-weight: 500;
+  color: #6c757d;
+  min-width: 90px;
+  margin-right: 0.5rem;
 }
 
-/* 値のスタイル */
 .detail-value {
-  color: #212529; /* 文字色を濃い黒に設定 - 可読性向上 */
-  flex: 1; /* 残りのスペースを全て使用 - 長いテキストに対応 */
+  color: #212529;
+  flex: 1;
 }
 
-/* メモのスタイル */
 .medication-detail.memo {
-  margin-top: 0.5rem; /* 上のマージンを追加 - 他の項目と区別 */
-  padding-top: 0.5rem; /* 上の余白を追加 - 他の項目と区別 */
-  border-top: 1px solid #e9ecef; /* 上にボーダーを追加 - 視覚的に区切る */
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e9ecef;
 }
 
-/* カードフッターのスタイル */
 .card-footer {
-  margin-top: 1rem; /* 上のマージンを設定 - 本体との間隔 */
-  padding-top: 1rem; /* 上の余白を設定 - 本体との間隔 */
-  border-top: 1px solid #e9ecef; /* 上にボーダーを追加 - フッターと本体を区切る */
-  display: flex; /* フレックスボックスレイアウトを使用 - 左右の要素を並べる */
-  justify-content: space-between; /* 左右両端に要素を配置 - バッジを左、ボタンを右に */
-  align-items: center; /* 垂直方向中央揃え - バッジとボタンの高さを揃える */
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e9ecef;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* フッター左側（バッジ配置エリア）のスタイル */
 .card-footer-left {
-  display: flex; /* フレックスボックスレイアウトを使用 - バッジを配置 */
-  align-items: center; /* 垂直方向中央揃え */
+  display: flex;
+  align-items: center;
 }
 
-/* フッター右側（ボタン配置エリア）のスタイル */
 .card-footer-right {
-  display: flex; /* フレックスボックスレイアウトを使用 - ボタンを横並びに */
-  gap: 0.5rem; /* ボタン間の間隔を設定 */
+  display: flex;
+  gap: 0.5rem;
 }
 
-/* 服用中バッジのスタイル */
 .medication-status-badge {
-  background-color: #e8f5e9; /* 薄い緑の背景色 - 服用中であることを視覚的に示す */
-  color: #388e3c; /* 濃い緑の文字色 - 背景色と対比させて可読性を確保 */
-  padding: 0.5rem 1rem; /* 内側の余白 - 既存のbtnクラスと同じサイズ感 */
-  border-radius: 0.5rem; /* 角丸 - 既存のbtnクラスと同じ形状 */
-  font-size: 0.875rem; /* フォントサイズ - 既存のbtnクラスと同じサイズ */
-  font-weight: 500; /* 中太字 - バッジとして視認性を確保 */
+  background-color: #e8f5e9;
+  color: #388e3c;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
-/* 編集ボタンのスタイル */
 .btn-secondary {
-  background-color: #4a90e2; /* 背景色をプライマリカラー（青）に設定 */
-  color: white; /* 文字色を白に設定 - 可読性を確保 */
-  padding: 0.5rem 1rem; /* 内側の余白を設定（上下8px、左右16px） */
-  border: none; /* ボーダーなし - シンプルなデザイン */
-  border-radius: 0.5rem; /* 角丸（8px）を適用 - 柔らかい印象 */
-  font-size: 0.875rem; /* フォントサイズを小さめに設定 */
-  cursor: pointer; /* カーソルをポインターに - クリック可能であることを示す */
+  background-color: #4a90e2;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  cursor: pointer;
 }
 
-/* 削除ボタンのスタイル */
 .btn-danger {
-  background-color: #e53935; /* 背景色を赤に設定 - 危険な操作を視覚的に示す */
-  color: white; /* 文字色を白に設定 - 可読性を確保 */
-  padding: 0.5rem 1rem; /* 内側の余白を設定（上下8px、左右16px） */
-  border: none; /* ボーダーなし - シンプルなデザイン */
-  border-radius: 0.5rem; /* 角丸（8px）を適用 - 柔らかい印象 */
-  font-size: 0.875rem; /* フォントサイズを小さめに設定 */
-  cursor: pointer; /* カーソルをポインターに - クリック可能であることを示す */
+  background-color: #e53935;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  cursor: pointer;
 }

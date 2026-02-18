@@ -1,9 +1,7 @@
-import { WeatherData, OpenWeatherMapResponse } from "../types"; // 型定義をインポート
-
-// API_KEY の定数は不要になったため削除（サーバー側で管理）
+import { WeatherData, OpenWeatherMapResponse } from '../types'; // 型定義をインポート
 
 // 自前の Vercel Function のエンドポイント（APIキーを含まない）
-const API_BASE_URL = "/api/weather";
+const API_BASE_URL = '/api/weather';
 
 /**
  * Vercel Function 経由で天気情報を取得する関数
@@ -14,7 +12,7 @@ const API_BASE_URL = "/api/weather";
  */
 export async function fetchWeatherData(
   lat: number, // 緯度
-  lon: number, // 経度
+  lon: number // 経度
 ): Promise<WeatherData> {
   try {
     // リクエスト先を Vercel Function に変更（APIキーはURLに含まれない）
@@ -27,7 +25,7 @@ export async function fetchWeatherData(
     if (!response.ok) {
       // 例: 401 Unauthorized（APIキー無効）、404 Not Found（不正な座標）など
       throw new Error(
-        `天気情報の取得に失敗しました: HTTP ${response.status} ${response.statusText}`,
+        `天気情報の取得に失敗しました: HTTP ${response.status} ${response.statusText}`
       );
     }
 
@@ -62,7 +60,7 @@ export async function fetchWeatherData(
     return weatherData;
   } catch (error) {
     // エラーをコンソールに出力（デバッグ用）
-    console.error("天気情報の取得に失敗しました:", error);
+    console.error('天気情報の取得に失敗しました:', error);
 
     // エラーを再スロー（呼び出し側でtry-catchしてハンドリング）
     throw error;
@@ -71,12 +69,11 @@ export async function fetchWeatherData(
 
 /**
  * ブラウザのGeolocation APIを使って現在位置を取得する関数
- * ※ この関数は変更なし
  */
 export function getCurrentPosition(): Promise<{ lat: number; lon: number }> {
   return new Promise((resolve, reject) => {
     if (!navigator.geolocation) {
-      reject(new Error("このブラウザは位置情報に対応していません"));
+      reject(new Error('このブラウザは位置情報に対応していません'));
       return;
     }
 
@@ -94,7 +91,7 @@ export function getCurrentPosition(): Promise<{ lat: number; lon: number }> {
         enableHighAccuracy: false, // 高精度は不要（天気情報は市区町村レベルで十分）
         timeout: 10000, // タイムアウト時間: 10秒
         maximumAge: 600000, // キャッシュの有効期限: 10分
-      },
+      }
     );
   });
 }

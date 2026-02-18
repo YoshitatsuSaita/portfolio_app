@@ -1,9 +1,9 @@
-import { WeatherData, WeatherSettings } from "../../types"; // 型定義をインポート
+import { WeatherData, WeatherSettings } from '../../types'; // 型定義をインポート
 import {
   checkWeatherAlerts,
   isStorageEnvironmentGood,
-} from "../../utils/weatherUtils"; // 警告判定・良好判定関数をインポート
-import "./WeatherAlert.css"; // CSSをインポート
+} from '../../utils/weatherUtils'; // 警告判定・良好判定関数をインポート
+import './WeatherAlert.css'; // CSSをインポート
 
 // WeatherAlertコンポーネントのpropsの型定義
 interface WeatherAlertProps {
@@ -31,7 +31,7 @@ function WeatherAlert({
   const isGood = isStorageEnvironmentGood(weather);
 
   // inlineプロップに応じてインライン用クラスを追加するヘルパー関数
-  const inlineClass = inline ? " weather-alert--inline" : ""; // インライン時は修飾子クラスを付与
+  const inlineClass = inline ? ' weather-alert--inline' : ''; // インライン時は修飾子クラスを付与
 
   // 警告が1件以上ある場合は警告バナーを表示
   if (alerts.length > 0) {
