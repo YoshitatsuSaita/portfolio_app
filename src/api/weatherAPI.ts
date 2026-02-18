@@ -1,4 +1,4 @@
-import { WeatherData, OpenWeatherMapResponse } from '../types';
+import { WeatherData, OpenWeatherMapResponse } from '../types'; // 型定義をインポート
 
 // 自前の Vercel Function のエンドポイント（APIキーを含まない）
 const API_BASE_URL = '/api/weather';
@@ -69,7 +69,6 @@ export async function fetchWeatherData(
 
 /**
  * ブラウザのGeolocation APIを使って現在位置を取得する関数
- * ※ この関数は変更なし
  */
 export function getCurrentPosition(): Promise<{ lat: number; lon: number }> {
   return new Promise((resolve, reject) => {
