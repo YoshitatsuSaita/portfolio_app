@@ -1,8 +1,15 @@
 {
-  "name": "vite-project",
+  "name": "medication-schedule-app",
+  "version": "1.0.0",
+  "description": "処方箋服用スケジュール管理アプリ - 薬の飲み忘れを防ぐWebアプリケーション",
+  "author": "YoshitatsuSaita",
+  "license": "MIT",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YoshitatsuSaita/portfolio_app"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
