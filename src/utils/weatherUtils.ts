@@ -1,4 +1,4 @@
-import { WeatherData } from "../types"; // 天気データの型定義のみインポート
+import { WeatherData } from '../types'; // 天気データの型定義のみインポート
 
 // ===== 警告判定の定数定義 =====
 const HIGH_TEMP_THRESHOLD = 30; // 高温警告の基準温度（摂氏30度以上で警告）
@@ -10,7 +10,7 @@ const HIGH_HUMIDITY_THRESHOLD = 80; // 高湿度警告の基準湿度（80%以�
  * @returns string[] - 警告メッセージの配列（警告がない場合は空配列）
  */
 export function checkWeatherAlerts(
-  weather: WeatherData, // 天気データ（引数）
+  weather: WeatherData // 天気データ（引数）
 ): string[] {
   const alerts: string[] = []; // 警告メッセージを格納する配列（初期値は空配列）
 
@@ -19,7 +19,7 @@ export function checkWeatherAlerts(
     // 現在気温が基準温度（30度）以上か判定
     alerts.push(
       // 条件を満たしたら警告メッセージを配列に追加
-      `高温注意: 現在${weather.temperature}度です。薬の保管場所を確認してください。`,
+      `高温注意: 現在${weather.temperature}度です。薬の保管場所を確認してください。`
     );
   }
 
@@ -28,7 +28,7 @@ export function checkWeatherAlerts(
     // 現在湿度が基準湿度（80%）以上か判定
     alerts.push(
       // 条件を満たしたら警告メッセージを配列に追加
-      `高湿度注意: 湿度${weather.humidity}%です。薬は密閉容器で保管してください。`,
+      `高湿度注意: 湿度${weather.humidity}%です。薬は密閉容器で保管してください。`
     );
   }
 
@@ -67,13 +67,13 @@ export function isStorageEnvironmentGood(weather: WeatherData): boolean {
 export function getWeatherIcon(description: string): string {
   // 天気概要の文字列に特定のキーワードが含まれているかチェック
 
-  if (description.includes("晴")) return "☀️"; // 晴れ（快晴、晴天など）
-  if (description.includes("曇")) return "☁️"; // 曇り（薄曇り、曇天など）
-  if (description.includes("雨")) return "🌧️"; // 雨（小雨、大雨など）
-  if (description.includes("雪")) return "❄️"; // 雪（小雪、大雪など）
-  if (description.includes("雷")) return "⚡"; // 雷雨
+  if (description.includes('晴')) return '☀️'; // 晴れ（快晴、晴天など）
+  if (description.includes('曇')) return '☁️'; // 曇り（薄曇り、曇天など）
+  if (description.includes('雨')) return '🌧️'; // 雨（小雨、大雨など）
+  if (description.includes('雪')) return '❄️'; // 雪（小雪、大雪など）
+  if (description.includes('雷')) return '⚡'; // 雷雨
 
-  return "🌤️"; // どのキーワードにも一致しない場合のデフォルト
+  return '🌤️'; // どのキーワードにも一致しない場合のデフォルト
 }
 
 /**
@@ -84,7 +84,7 @@ export function getWeatherIcon(description: string): string {
  */
 export function isWeatherDataStale(
   timestamp: string, // データ取得日時（ISO 8601形式）
-  maxAgeHours: number = 6, // デフォルト: 6時間
+  maxAgeHours: number = 24 // デフォルト: 24時間
 ): boolean {
   const now = new Date(); // 現在時刻を取得
   const dataTime = new Date(timestamp); // データ取得時刻をDateオブジェクトに変換

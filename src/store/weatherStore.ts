@@ -1,17 +1,16 @@
-import { create } from "zustand"; // Zustandのcreate関数をインポート
-import { WeatherData, WeatherSettings } from "../types"; // 型定義をインポート
+import { create } from 'zustand'; // Zustandのcreate関数をインポート
+import { WeatherData, WeatherSettings } from '../types'; // 型定義をインポート
 import {
   fetchWeatherData as apiFetchWeatherData, // API関数（名前の衝突を避けるためエイリアス使用）
-  getCurrentPosition, // 位置情報取得関数
-} from "../api"; // APIフォルダからインポート
+} from '../api'; // APIフォルダからインポート
 import {
   saveWeatherData, // 天気データの保存
   getLatestWeatherData, // 最新の天気データ取得
   getWeatherSettings, // 天気設定の取得
   saveWeatherSettings, // 天気設定の保存
   deleteOldWeatherData, // 古い天気データの削除
-} from "../db/database"; // データベース操作関数をインポート
-import { isWeatherDataStale } from "../utils/weatherUtils"; // データの鮮度チェック関数
+} from '../db/database'; // データベース操作関数をインポート
+import { isWeatherDataStale } from '../utils/weatherUtils'; // データの鮮度チェック関数
 
 // ストアの状態（State）の型定義
 interface WeatherState {
@@ -22,7 +21,7 @@ interface WeatherState {
   error: string | null; // エラーメッセージ（エラーがない場合はnull）
 
   // ===== アクション（Actions） =====
-  fetchWeatherData: () => Promise<void>; // 天気データをAPIから取得してIndexedDBに保存
+  fetchWeatherData: (lat?: number, lon?: number) => Promise<void>; // 天気データをAPIから取得してIndexedDBに保存（未指定時は東京デフォルト）
   loadSettings: () => Promise<void>; // IndexedDBから設定を読み込み
   updateSettings: (settings: Partial<WeatherSettings>) => Promise<void>; // 設定を更新してIndexedDBに保存
   loadLatestWeatherData: () => Promise<void>; // IndexedDBから最新の天気データを読み込み
@@ -43,17 +42,19 @@ export const useWeatherStore = create<WeatherState>((set, get) => ({
   error: null, // エラー状態の初期値: null
 
   // ===== アクション: 天気データの取得 =====
-  fetchWeatherData: async () => {
+  // lat/lon 未指定時は東京（35.6812, 139.7671）をデフォルト使用
+  fetchWeatherData: async (lat?: number, lon?: number) => {
     set({ loading: true, error: null }); // ローディング開始、エラーをクリア
 
     try {
-      // ステップ1: 位置情報を取得
-      const position = await getCurrentPosition(); // Geolocation APIを使用して現在地を取得
+      // ステップ1: 座標を決定（引数があればそれを使用、なければ東京のデフォルト値）
+      const targetLat = lat ?? 35.6812;
+      const targetLon = lon ?? 139.7671;
 
       // ステップ2: APIから天気データを取得
       const weatherData = await apiFetchWeatherData(
-        position.lat, // 緯度
-        position.lon, // 経度
+        targetLat, // 緯度
+        targetLon // 経度
       ); // OpenWeatherMap APIを呼び出しWeatherData型のオブジェクトを返す
 
       // ステップ3: 取得した天気データをIndexedDBに保存
@@ -79,13 +80,13 @@ export const useWeatherStore = create<WeatherState>((set, get) => ({
 
       set({ weatherSettings: updatedSettings }); // 状態も更新
     } catch (error) {
-      console.error("天気データの取得に失敗しました:", error); // コンソールにエラーを出力
+      console.error('天気データの取得に失敗しました:', error); // コンソールにエラーを出力
 
       set({
         error:
           error instanceof Error
             ? error.message // Errorオブジェクトの場合はメッセージを使用
-            : "天気データの取得に失敗しました", // その他の場合はデフォルトメッセージ
+            : '天気データの取得に失敗しました', // その他の場合はデフォルトメッセージ
         loading: false, // ローディング終了
       });
     }
@@ -97,7 +98,7 @@ export const useWeatherStore = create<WeatherState>((set, get) => ({
       const settings = await getWeatherSettings(); // IndexedDBから天気設定を取得（デフォルト値付き）
       set({ weatherSettings: settings }); // 状態を更新
     } catch (error) {
-      console.error("設定の読み込みに失敗しました:", error); // コンソールにエラーを出力
+      console.error('設定の読み込みに失敗しました:', error); // コンソールにエラーを出力
       // エラーが発生してもデフォルト値を使用（アプリの動作を継続）
     }
   },
@@ -115,13 +116,13 @@ export const useWeatherStore = create<WeatherState>((set, get) => ({
       await saveWeatherSettings(newSettings); // IndexedDBに保存
       set({ weatherSettings: newSettings }); // 状態を更新
     } catch (error) {
-      console.error("設定の更新に失敗しました:", error); // コンソールにエラーを出力
+      console.error('設定の更新に失敗しました:', error); // コンソールにエラーを出力
 
       set({
         error:
           error instanceof Error
             ? error.message // Errorオブジェクトの場合はメッセージを使用
-            : "設定の更新に失敗しました", // その他の場合はデフォルトメッセージ
+            : '設定の更新に失敗しました', // その他の場合はデフォルトメッセージ
       });
     }
   },
@@ -136,7 +137,7 @@ export const useWeatherStore = create<WeatherState>((set, get) => ({
         set({ weatherData: latestData });
       }
     } catch (error) {
-      console.error("天気データの読み込みに失敗しました:", error); // コンソールにエラーを出力
+      console.error('天気データの読み込みに失敗しました:', error); // コンソールにエラーを出力
       // エラーが発生してもアプリの動作を継続（weatherDataはnullのまま）
     }
   },
@@ -146,18 +147,13 @@ export const useWeatherStore = create<WeatherState>((set, get) => ({
     try {
       const settings = get().weatherSettings; // 現在の天気設定を取得
 
-      if (!settings.enabled) {
-        // 天気連携が無効の場合は何もしない
-        return;
-      }
-
       if (!settings.lastFetchedAt) {
-        // 最終取得日時が存在しない場合（初回）
+        // 最終取得日時が存在しない場合（初回）: 東京のデフォルト座標で取得
         await get().fetchWeatherData(); // 天気データを取得
         return;
       }
 
-      const isStale = isWeatherDataStale(settings.lastFetchedAt, 6); // 6時間を基準に鮮度チェック
+      const isStale = isWeatherDataStale(settings.lastFetchedAt, 24); // 24時間を基準に鮮度チェック
 
       if (isStale) {
         // データが古い場合（6時間以上経過）
@@ -167,7 +163,7 @@ export const useWeatherStore = create<WeatherState>((set, get) => ({
         await get().loadLatestWeatherData(); // IndexedDBから読み込むのみ
       }
     } catch (error) {
-      console.error("天気データのチェックに失敗しました:", error); // コンソールにエラーを出力
+      console.error('天気データのチェックに失敗しました:', error); // コンソールにエラーを出力
       // エラーが発生してもアプリの動作を継続
     }
   },
@@ -177,7 +173,7 @@ export const useWeatherStore = create<WeatherState>((set, get) => ({
     try {
       await deleteOldWeatherData(7); // 7日前より古い天気データを削除
     } catch (error) {
-      console.error("古いデータの削除に失敗しました:", error); // コンソールにエラーを出力
+      console.error('古いデータの削除に失敗しました:', error); // コンソールにエラーを出力
       // エラーが発生してもアプリの動作を継続
     }
   },
