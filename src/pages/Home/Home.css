@@ -5,7 +5,7 @@
   margin: 0 auto; /* 左右中央揃え */
 }
 
-/* ===== 天気設定セクション（Settings.tsxから統合） ===== */
+/* ===== 天気設定セクション ===== */
 
 /* 天気セクション全体のコンテナ */
 .home-weather-section {
@@ -18,43 +18,6 @@
     0 2px 4px -1px rgba(0, 0, 0, 0.06); /* 中程度の影でカード感を演出 */
 }
 
-/* セクションタイトル「天気連携」 */
-.home-weather-title {
-  margin-top: 0; /* カード内上部の不要なマージンを除去 */
-  margin-bottom: 1.5rem; /* タイトルとトグルの間に余白（24px） */
-  color: #212121; /* メインテキスト色（濃い黒） */
-  font-size: 1.25rem; /* 大きめのフォント（20px）でセクションを明示 */
-  border-bottom: 2px solid #e0e0e0; /* 下線（デフォルトボーダー色）でタイトルを区切り */
-  padding-bottom: 0.5rem; /* 下線とテキストの間に余白（8px） */
-}
-
-/* ON/OFFトグル行のコンテナ */
-.home-weather-toggle {
-  margin-bottom: 1.5rem; /* トグルと次の要素の間に余白（24px） */
-}
-
-/* チェックボックス＋ラベルを囲むlabel要素 */
-.home-weather-label {
-  display: flex; /* 横並びレイアウト */
-  align-items: center; /* チェックボックスとテキストを垂直方向中央揃え */
-  gap: 0.5rem; /* チェックボックスとテキストの間隔（8px） */
-  cursor: pointer; /* クリック可能であることを示すポインターカーソル */
-}
-
-/* チェックボックス本体 */
-.home-weather-checkbox {
-  width: 20px; /* 幅を固定してタップしやすいサイズに */
-  height: 20px; /* 高さを固定 */
-  cursor: pointer; /* ポインターカーソル */
-}
-
-/* チェックボックス横のラベルテキスト */
-.home-weather-label-text {
-  font-size: 1rem; /* 標準フォントサイズ（16px） */
-  font-weight: 500; /* やや太字で視認性を向上 */
-  color: #212121; /* メインテキスト色（濃い黒） */
-}
-
 /* エラーメッセージ（位置情報エラー・ストアエラー共通） */
 .home-weather-error {
   background-color: #fee; /* 薄い赤背景でエラーを視覚的に強調 */
@@ -63,6 +26,13 @@
   border-radius: 0.5rem; /* 角丸（8px） */
   margin-bottom: 1rem; /* 下の要素との間隔（16px） */
   border-left: 4px solid #ef5350; /* 左に赤いボーダー（エラー色）でアクセント */
+}
+
+/* ローディング中テキスト */
+.home-weather-loading {
+  color: #757575; /* グレー（サブテキスト色） */
+  font-size: 0.875rem; /* 小さめのフォント（14px） */
+  margin-bottom: 1rem; /* 下の要素との間隔（16px） */
 }
 
 /* 天気情報カード（気温・湿度・天気概要＋警告を2カラムで表示） */
@@ -143,11 +113,28 @@
   margin: 0; /* デフォルトのpマージンを除去 */
 }
 
-/* 手動更新ボタン */
-.home-weather-fetch-btn {
-  font-size: 2.5rem; /* 大きめのサイズで視認性を確保 */
+/* 現在地の天気を取得するボタン */
+.home-weather-location-btn {
+  display: inline-flex; /* テキストとアイコンを横並びにする */
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem; /* 上下10px・左右20px */
+  background-color: #4a90e2; /* プライマリカラー（青） */
+  color: #ffffff; /* 白文字 */
+  font-size: 0.9375rem; /* 15px */
+  font-weight: 600; /* やや太字 */
+  border: none;
+  border-radius: 0.5rem; /* 角丸（8px） */
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-.home-weather-fetch-btn:hover {
-  transform: translateY(-1px); /* ボタンを少し上に移動 - 浮き上がる効果 */
+.home-weather-location-btn:hover:not(:disabled) {
+  background-color: #357abd; /* ホバー時に少し暗くする */
+  transform: translateY(-1px); /* 浮き上がる効果 */
+}
+
+.home-weather-location-btn:disabled {
+  opacity: 0.6; /* 無効時は薄く表示 */
+  cursor: not-allowed;
 }

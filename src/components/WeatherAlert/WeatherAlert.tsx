@@ -1,4 +1,4 @@
-import { WeatherData, WeatherSettings } from '../../types'; // 型定義をインポート
+import { WeatherData } from '../../types'; // 型定義をインポート
 import {
   checkWeatherAlerts,
   isStorageEnvironmentGood,
@@ -8,18 +8,16 @@ import './WeatherAlert.css'; // CSSをインポート
 // WeatherAlertコンポーネントのpropsの型定義
 interface WeatherAlertProps {
   weather: WeatherData | null; // 天気データ（未取得の場合はnull）
-  settings: WeatherSettings; // 天気設定
   inline?: boolean; // インライン表示モード（天気カード内埋め込み時にtrue、デフォルトfalse）
 }
 
 // 天気警告表示コンポーネント - ホーム画面に警告または良好バナーを表示
 function WeatherAlert({
   weather,
-  settings,
   inline = false,
 }: WeatherAlertProps) {
-  // 天気データが存在しない、または天気連携が無効の場合は何も表示しない
-  if (!weather || !settings.enabled) {
+  // 天気データが存在しない場合は何も表示しない
+  if (!weather) {
     return null; // nullを返すとReactは何もレンダリングしない
   }
 
