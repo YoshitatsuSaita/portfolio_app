@@ -29,7 +29,7 @@ function Home() {
       loadLatestWeatherData(); // 設定読み込み後、保存済みの天気データを復元
       checkAndFetchWeatherIfNeeded(); // 24時間以上経過していればAPIから再取得（未取得なら東京デフォルトで取得）
     });
-  }, []); // 空の依存配列: マウント時に1回だけ実行
+  }, [loadSettings, loadLatestWeatherData, checkAndFetchWeatherIfNeeded]); // データの更新時に再読み込み
 
   // 「現在地の天気を取得する」ボタンのハンドラー: このボタン押下時のみ位置情報の許可を求める
   const handleFetchCurrentLocation = async () => {

@@ -1,16 +1,16 @@
-import { useState, useEffect } from "react"; // useState、useEffectフックをインポート
-import Calendar from "react-calendar"; // React Calendarライブラリをインポート
-import "react-calendar/dist/Calendar.css"; // React Calendarのデフォルトスタイルをインポート
-import dayjs from "dayjs"; // Day.jsをインポート
-import { useMedicationStore } from "../../store/medicationStore"; // Zustandストアをインポート
+import { useState, useEffect, useCallback } from 'react'; // useState、useEffectフックをインポート
+import Calendar from 'react-calendar'; // React Calendarライブラリをインポート
+import 'react-calendar/dist/Calendar.css'; // React Calendarのデフォルトスタイルをインポート
+import dayjs from 'dayjs'; // Day.jsをインポート
+import { useMedicationStore } from '../../store/medicationStore'; // Zustandストアをインポート
 import {
   generateScheduleForRange, // 日付範囲の予定を生成する関数
   mergeScheduleWithRecords, // 予定と記録をマージする関数
-} from "../../utils/scheduleUtils"; // スケジュールユーティリティ関数をインポート
-import { getRecordsByDateRange } from "../../db/database"; // データベース操作関数をインポート
-import { ScheduleItem } from "../../types"; // ScheduleItem型をインポート
-import ScheduleList from "../../components/ScheduleList/ScheduleList"; // ScheduleListコンポーネントをインポート
-import "./Calendar.css"; // CSSをインポート
+} from '../../utils/scheduleUtils'; // スケジュールユーティリティ関数をインポート
+import { getRecordsByDateRange } from '../../db/database'; // データベース操作関数をインポート
+import { ScheduleItem } from '../../types'; // ScheduleItem型をインポート
+import ScheduleList from '../../components/ScheduleList/ScheduleList'; // ScheduleListコンポーネントをインポート
+import './Calendar.css'; // CSSをインポート
 
 // ValuePiecesの型定義（React Calendarの日付選択の型）
 type ValuePiece = Date | null; // 単一の日付またはnull
@@ -27,58 +27,61 @@ function CalendarPage() {
   const [loading, setLoading] = useState(true); // ローディング状態
 
   // カレンダーに表示する月の服用予定を読み込む関数
-  const loadMonthSchedule = async (monthStart: Date) => {
-    setLoading(true); // ローディング開始
-    try {
-      // 服用中の薬剤を取得（まだ取得していない場合）
-      if (medications.length === 0) {
-        await fetchActiveMedications(); // 服用中の薬剤のみを取得
+  const loadMonthSchedule = useCallback(
+    async (monthStart: Date) => {
+      setLoading(true); // ローディング開始
+      try {
+        // 服用中の薬剤を取得（まだ取得していない場合）
+        if (medications.length === 0) {
+          await fetchActiveMedications(); // 服用中の薬剤のみを取得
+        }
+
+        // 表示中の月の開始日と終了日を計算
+        const startDate = dayjs(monthStart).startOf('month').toDate(); // 月の1日
+        const endDate = dayjs(monthStart).endOf('month').toDate(); // 月の最終日
+
+        // 現在の薬剤データから月全体の服用予定を生成
+        const currentMedications = useMedicationStore.getState().medications; // 最新の薬剤データを取得
+        const generatedScheduleMap = generateScheduleForRange(
+          currentMedications, // 薬剤データ
+          startDate, // 開始日
+          endDate // 終了日
+        ); // 日付ごとの予定マップを生成
+
+        // 月全体の服用記録を取得
+        const records = await getRecordsByDateRange(
+          startDate.toISOString(), // 開始日時（ISO 8601形式）
+          endDate.toISOString() // 終了日時（ISO 8601形式）
+        ); // IndexedDBから服用記録を取得
+
+        // 各日付の予定と記録をマージ
+        const mergedScheduleMap: Record<string, ScheduleItem[]> = {}; // マージ後のマップを格納するオブジェクト
+        Object.keys(generatedScheduleMap).forEach((dateKey) => {
+          // 各日付について処理
+          const daySchedule = generatedScheduleMap[dateKey]; // その日の予定を取得
+          const dayRecords = records.filter(
+            (r) => r.scheduledTime.startsWith(dateKey) // その日の記録のみをフィルタ（scheduledTimeが "YYYY-MM-DD" で始まるもの）
+          );
+          mergedScheduleMap[dateKey] = mergeScheduleWithRecords(
+            daySchedule,
+            dayRecords
+          ); // 予定と記録をマージ
+        });
+
+        setScheduleMap(mergedScheduleMap); // 状態を更新
+      } catch (error) {
+        console.error('カレンダー予定の読み込みに失敗しました:', error); // エラーをコンソールに出力
+      } finally {
+        setLoading(false); // ローディング終了
       }
-
-      // 表示中の月の開始日と終了日を計算
-      const startDate = dayjs(monthStart).startOf("month").toDate(); // 月の1日
-      const endDate = dayjs(monthStart).endOf("month").toDate(); // 月の最終日
-
-      // 現在の薬剤データから月全体の服用予定を生成
-      const currentMedications = useMedicationStore.getState().medications; // 最新の薬剤データを取得
-      const generatedScheduleMap = generateScheduleForRange(
-        currentMedications, // 薬剤データ
-        startDate, // 開始日
-        endDate, // 終了日
-      ); // 日付ごとの予定マップを生成
-
-      // 月全体の服用記録を取得
-      const records = await getRecordsByDateRange(
-        startDate.toISOString(), // 開始日時（ISO 8601形式）
-        endDate.toISOString(), // 終了日時（ISO 8601形式）
-      ); // IndexedDBから服用記録を取得
-
-      // 各日付の予定と記録をマージ
-      const mergedScheduleMap: Record<string, ScheduleItem[]> = {}; // マージ後のマップを格納するオブジェクト
-      Object.keys(generatedScheduleMap).forEach((dateKey) => {
-        // 各日付について処理
-        const daySchedule = generatedScheduleMap[dateKey]; // その日の予定を取得
-        const dayRecords = records.filter(
-          (r) => r.scheduledTime.startsWith(dateKey), // その日の記録のみをフィルタ（scheduledTimeが "YYYY-MM-DD" で始まるもの）
-        );
-        mergedScheduleMap[dateKey] = mergeScheduleWithRecords(
-          daySchedule,
-          dayRecords,
-        ); // 予定と記録をマージ
-      });
-
-      setScheduleMap(mergedScheduleMap); // 状態を更新
-    } catch (error) {
-      console.error("カレンダー予定の読み込みに失敗しました:", error); // エラーをコンソールに出力
-    } finally {
-      setLoading(false); // ローディング終了
-    }
-  };
+    },
+    [medications.length, fetchActiveMedications]
+  );
 
   // コンポーネントのマウント時と表示月変更時に予定を読み込む
   useEffect(() => {
     loadMonthSchedule(activeStartDate); // 表示中の月の予定を読み込む
-  }, [activeStartDate]); // activeStartDateが変更されたら再実行
+  }, [loadMonthSchedule, activeStartDate]); // activeStartDateが変更されたら再実行
 
   // 日付クリック時の処理
   const handleDateClick = (value: Value) => {
@@ -103,9 +106,9 @@ function CalendarPage() {
   // カレンダーのタイルコンテンツをカスタマイズする関数（各日付にマークを表示）
   const tileContent = ({ date, view }: { date: Date; view: string }) => {
     // 月表示の場合のみマークを表示
-    if (view !== "month") return null; // 年表示や10年表示の場合は何も表示しない
+    if (view !== 'month') return null; // 年表示や10年表示の場合は何も表示しない
 
-    const dateKey = dayjs(date).format("YYYY-MM-DD"); // 日付キーを YYYY-MM-DD 形式で生成
+    const dateKey = dayjs(date).format('YYYY-MM-DD'); // 日付キーを YYYY-MM-DD 形式で生成
     const daySchedule = scheduleMap[dateKey] || []; // その日の予定を取得（存在しない場合は空配列）
 
     // 予定がない場合は何も表示しない
@@ -122,7 +125,7 @@ function CalendarPage() {
       <div className="tile-content">
         {/* タイルコンテンツのコンテナ */}
         <span
-          className={`schedule-badge ${allCompleted ? "all-completed" : completedCount > 0 ? "completed" : "pending"}`} // 完了状態に応じてクラスを変更
+          className={`schedule-badge ${allCompleted ? 'all-completed' : completedCount > 0 ? 'completed' : 'pending'}`} // 完了状態に応じてクラスを変更
         >
           {completedCount}/{totalCount} {/* "完了数/総数" 形式で表示 */}
         </span>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'; // useEffect、useStateフックをインポート
+import { useEffect, useState, useCallback } from 'react'; // useEffect、useStateフックをインポート
 import dayjs from 'dayjs'; // Day.jsをインポート - 日時フォーマット用
 import { ScheduleItem } from '../../types'; // ScheduleItem型をインポート
 import { useMedicationStore } from '../../store/medicationStore'; // Zustandストアをインポート
@@ -35,7 +35,7 @@ function ScheduleList({ date, onScheduleUpdated }: ScheduleListProps) {
     .format('YYYY年M月D日（ddd）'); // 表示用の日付文字列（例: 2024年2月9日（金））
 
   // 服用予定を読み込む関数
-  const loadSchedule = async () => {
+  const loadSchedule = useCallback(async () => {
     setLoading(true); // ローディング開始
     try {
       // 服用中の薬剤を取得（まだ取得していない場合）
@@ -67,12 +67,12 @@ function ScheduleList({ date, onScheduleUpdated }: ScheduleListProps) {
     } finally {
       setLoading(false); // ローディング終了（成功・失敗に関わらず実行）
     }
-  };
+  }, [medications.length, fetchActiveMedications, targetDate]);
 
   // コンポーネントのマウント時と日付変更時に予定を読み込む
   useEffect(() => {
     loadSchedule(); // 予定を読み込む
-  }, [targetDate]); // targetDateが変更されたら再実行
+  }, [loadSchedule]);
 
   // 服用完了チェックボックスの変更処理
   const handleCheckboxChange = async (item: ScheduleItem, checked: boolean) => {

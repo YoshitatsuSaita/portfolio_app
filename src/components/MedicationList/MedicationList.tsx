@@ -14,15 +14,10 @@ function MedicationList({ onEdit }: MedicationListProps) {
   // Zustandストアから必要な状態とアクションを取得
   const { medications, loading, error, fetchMedications } =
     useMedicationStore();
-  // medications: 薬剤データの配列
-  // loading: データ読み込み中フラグ（true/false）
-  // error: エラーメッセージ（文字列またはnull）
-  // fetchMedications: IndexedDBから薬剤を取得する関数
 
-  // コンポーネントの初回レンダリング時にデータを取得
   useEffect(() => {
     fetchMedications(); // IndexedDBから全薬剤を取得してストアに保存
-  }, []); // 依存配列が空なので、コンポーネントのマウント時に1回だけ実行
+  }, [fetchMedications]);
 
   // ローディング中の表示
   if (loading) {
