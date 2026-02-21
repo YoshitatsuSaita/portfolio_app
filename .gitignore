@@ -23,7 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 
-# 環境変数ファイル（追記）
+# 環境変数ファイル
 .env
 .env.local
 .env.production
