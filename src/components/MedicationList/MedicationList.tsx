@@ -1,8 +1,8 @@
-import { useEffect } from "react"; // useEffectフックをインポート - コンポーネントのライフサイクル管理
-import { useMedicationStore } from "../../store/medicationStore"; // Zustandストアをインポート - 薬剤データと操作関数を取得
-import { Medication } from "../../types"; // Medication型をインポート - 編集コールバックの型定義に使用
-import MedicationCard from "../MedicationCard/MedicationCard"; // MedicationCardコンポーネントをインポート - 個別の薬剤カードを表示
-import "./MedicationList.css"; // CSSファイルをインポート - リストのスタイル定義
+import { useEffect } from 'react'; // useEffectフックをインポート - コンポーネントのライフサイクル管理
+import { useMedicationStore } from '../../store/medicationStore'; // Zustandストアをインポート - 薬剤データと操作関数を取得
+import { Medication } from '../../types'; // Medication型をインポート - 編集コールバックの型定義に使用
+import MedicationCard from '../MedicationCard/MedicationCard'; // MedicationCardコンポーネントをインポート - 個別の薬剤カードを表示
+import './MedicationList.css'; // CSSファイルをインポート - リストのスタイル定義
 
 // MedicationListコンポーネントのプロパティの型定義
 interface MedicationListProps {
@@ -70,14 +70,14 @@ function MedicationList({ onEdit }: MedicationListProps) {
         {/* リスト本体 */}
         {medications.map(
           (
-            medication, // 薬剤の配列をループして各薬剤のカードを生成
+            medication // 薬剤の配列をループして各薬剤のカードを生成
           ) => (
             <MedicationCard
               key={medication.id} // Reactのkey属性 - 各要素を一意に識別（再レンダリングの最適化）
               medication={medication} // 薬剤データをMedicationCardコンポーネントに渡す
               onEdit={onEdit} // 編集コールバック関数をMedicationCardに渡す
             />
-          ),
+          )
         )}
       </div>
     </div>
