@@ -1,20 +1,18 @@
-import { useEffect, useState } from "react"; // useEffect、useStateフックをインポート
-import dayjs from "dayjs"; // Day.jsをインポート - 日時フォーマット用
-import { ScheduleItem } from "../../types"; // ScheduleItem型をインポート
-import { useMedicationStore } from "../../store/medicationStore"; // Zustandストアをインポート
+import { useEffect, useState } from 'react'; // useEffect、useStateフックをインポート
+import dayjs from 'dayjs'; // Day.jsをインポート - 日時フォーマット用
+import { ScheduleItem } from '../../types'; // ScheduleItem型をインポート
+import { useMedicationStore } from '../../store/medicationStore'; // Zustandストアをインポート
 import {
   generateScheduleForDate, // 指定日の予定を生成する関数
   mergeScheduleWithRecords, // 予定と記録をマージする関数
   getTodayDateString, // 今日の日付を取得する関数
-  getTodayStart, // 今日の開始時刻を取得する関数
-  getTodayEnd, // 今日の終了時刻を取得する関数
-} from "../../utils/scheduleUtils"; // スケジュールユーティリティ関数をインポート
+} from '../../utils/scheduleUtils'; // スケジュールユーティリティ関数をインポート
 import {
   getRecordsByDateRange, // 日付範囲で服用記録を取得する関数
   createMedicationRecord, // 新規服用記録を作成する関数
   updateMedicationRecord, // 服用記録を更新する関数
-} from "../../db/database"; // データベース操作関数をインポート
-import "./ScheduleList.css"; // CSSをインポート
+} from '../../db/database'; // データベース操作関数をインポート
+import './ScheduleList.css'; // CSSをインポート
 
 // ScheduleListコンポーネントのpropsの型定義
 interface ScheduleListProps {
@@ -30,11 +28,11 @@ function ScheduleList({ date, onScheduleUpdated }: ScheduleListProps) {
   const [loading, setLoading] = useState(true); // ローディング状態（初期値はtrue）
 
   const targetDate = date
-    ? dayjs(date).format("YYYY-MM-DD")
+    ? dayjs(date).format('YYYY-MM-DD')
     : getTodayDateString(); // 表示対象の日付を決定（未指定の場合は今日）
   const displayDate = dayjs(targetDate)
-    .locale("ja")
-    .format("YYYY年M月D日（ddd）"); // 表示用の日付文字列（例: 2024年2月9日（金））
+    .locale('ja')
+    .format('YYYY年M月D日（ddd）'); // 表示用の日付文字列（例: 2024年2月9日（金））
 
   // 服用予定を読み込む関数
   const loadSchedule = async () => {
@@ -49,7 +47,7 @@ function ScheduleList({ date, onScheduleUpdated }: ScheduleListProps) {
       const currentMedications = useMedicationStore.getState().medications; // 最新の薬剤データを取得
       const generatedSchedule = generateScheduleForDate(
         currentMedications,
-        targetDate,
+        targetDate
       ); // 指定日の予定を生成
 
       // その日の服用記録を取得
@@ -60,12 +58,12 @@ function ScheduleList({ date, onScheduleUpdated }: ScheduleListProps) {
       // 予定と記録をマージ
       const mergedSchedule = mergeScheduleWithRecords(
         generatedSchedule,
-        records,
+        records
       ); // 予定に記録情報を統合
 
       setScheduleItems(mergedSchedule); // 状態を更新
     } catch (error) {
-      console.error("服用予定の読み込みに失敗しました:", error); // エラーをコンソールに出力
+      console.error('服用予定の読み込みに失敗しました:', error); // エラーをコンソールに出力
     } finally {
       setLoading(false); // ローディング終了（成功・失敗に関わらず実行）
     }
@@ -113,8 +111,8 @@ function ScheduleList({ date, onScheduleUpdated }: ScheduleListProps) {
         onScheduleUpdated(); // 親コンポーネント（CalendarPage）に更新を通知
       }
     } catch (error) {
-      console.error("服用記録の更新に失敗しました:", error); // エラーをコンソールに出力
-      alert("服用記録の更新に失敗しました。もう一度お試しください。"); // ユーザーにエラーを通知
+      console.error('服用記録の更新に失敗しました:', error); // エラーをコンソールに出力
+      alert('服用記録の更新に失敗しました。もう一度お試しください。'); // ユーザーにエラーを通知
     }
   };
 
@@ -146,11 +144,11 @@ function ScheduleList({ date, onScheduleUpdated }: ScheduleListProps) {
           {scheduleItems.map((item) => (
             <div
               key={item.id} // Reactのkey属性
-              className={`schedule-item ${item.completed ? "completed" : ""}`} // 完了済みの場合はcompletedクラスを追加
+              className={`schedule-item ${item.completed ? 'completed' : ''}`} // 完了済みの場合はcompletedクラスを追加
             >
               {/* 時刻表示 */}
               <div className="schedule-time">
-                {dayjs(item.scheduledTime).format("HH:mm")}
+                {dayjs(item.scheduledTime).format('HH:mm')}
                 {/* 時刻をHH:mm形式で表示（例: 08:00） */}
               </div>
 
@@ -163,7 +161,7 @@ function ScheduleList({ date, onScheduleUpdated }: ScheduleListProps) {
                 {item.completed &&
                   item.actualTime && ( // 完了済みで実際の時刻がある場合
                     <div className="actual-time">
-                      ✓ {dayjs(item.actualTime).format("M月D日 HH:mm")}
+                      ✓ {dayjs(item.actualTime).format('M月D日 HH:mm')}
                       に服用済み {/* 実際の服用時刻を表示 */}
                     </div>
                   )}
@@ -178,7 +176,7 @@ function ScheduleList({ date, onScheduleUpdated }: ScheduleListProps) {
                   onChange={(e) => handleCheckboxChange(item, e.target.checked)} // チェックボックスの変更を処理
                 />
                 <label htmlFor={`check-${item.id}`}>
-                  {item.completed ? "服用済み" : "未服用"}
+                  {item.completed ? '服用済み' : '未服用'}
                   {/* ラベルテキスト */}
                 </label>
               </div>

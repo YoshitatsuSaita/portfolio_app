@@ -137,8 +137,6 @@ describe('isWeatherDataStale', () => {
   });
 
   it('25時間前のデータはデフォルト（24時間）で古いと判定する', () => {
-    const timestamp = '2024-01-01T11:00:00.000Z'; // 1時間前（24時間以内）
-    // 25時間前に相当するタイムスタンプ
     const staleTimestamp = new Date('2024-01-01T12:00:00.000Z');
     staleTimestamp.setHours(staleTimestamp.getHours() - 25);
     expect(isWeatherDataStale(staleTimestamp.toISOString())).toBe(true);
@@ -163,7 +161,6 @@ describe('isWeatherDataStale', () => {
   });
 
   it('ちょうど24時間前のデータは古いと判定する（境界値）', () => {
-    const timestamp = '2024-01-01T12:00:00.000Z';
     const exactTimestamp = new Date('2024-01-01T12:00:00.000Z');
     exactTimestamp.setHours(exactTimestamp.getHours() - 24);
     expect(isWeatherDataStale(exactTimestamp.toISOString())).toBe(true);
