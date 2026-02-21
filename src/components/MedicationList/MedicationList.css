@@ -1,51 +1,46 @@
-/* 薬剤リストのスタイル定義 */
 .medication-list-container {
-  width: 100%; /* 幅を100%に設定 - 親要素いっぱいに広げる */
-  max-width: 800px; /* 最大幅を800pxに制限 - 可読性を確保 */
-  margin: 0 auto; /* 左右中央揃え - コンテンツを中央に配置 */
-  padding: 1rem; /* 内側の余白を設定 - 画面端との余白 */
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
 }
 
-/* リスト本体のスタイル */
 .medication-list {
-  display: flex; /* フレックスボックスレイアウトを使用 - 要素の配置を柔軟に */
-  flex-direction: column; /* 縦方向に要素を配置 - カードを縦に並べる */
-  gap: 1rem; /* 要素間の間隔を設定 - カード間のスペース */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-/* ローディング表示のスタイル */
 .loading {
-  text-align: center; /* テキストを中央揃え - ローディングメッセージを中央に */
-  padding: 3rem; /* 内側の余白を設定 - メッセージの周りにスペース */
-  font-size: 1.125rem; /* フォントサイズを少し大きく - 可読性向上 */
-  color: #6c757d; /* 文字色をグレーに設定 - 目立ちすぎないように */
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.125rem;
+  color: #6c757d;
 }
 
-/* エラー表示のスタイル */
 .error {
-  text-align: center; /* テキストを中央揃え - エラーメッセージを中央に */
-  padding: 2rem; /* 内側の余白を設定 - メッセージの周りにスペース */
-  background-color: #f8d7da; /* 背景色を薄い赤に設定 - エラーを視覚的に強調 */
-  color: #721c24; /* 文字色を濃い赤に設定 - エラーを強調 */
-  border-radius: 8px; /* 角を丸くする - 柔らかい印象 */
-  border: 1px solid #f5c6cb; /* ボーダーを追加 - エラー領域を明確に */
+  text-align: center;
+  padding: 2rem;
+  background-color: #f8d7da;
+  color: #721c24;
+  border-radius: 8px;
+  border: 1px solid #f5c6cb;
 }
 
-/* 空の状態の表示スタイル */
 .empty-state {
-  text-align: center; /* テキストを中央揃え - メッセージを中央に */
-  padding: 3rem; /* 内側の余白を設定 - メッセージの周りにスペース */
-  background-color: #f8f9fa; /* 背景色を薄いグレーに設定 - 空の状態を視覚化 */
-  border-radius: 8px; /* 角を丸くする - 柔らかい印象 */
-  border: 2px dashed #dee2e6; /* 破線のボーダーを追加 - 空の状態を示す */
+  text-align: center;
+  padding: 3rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 2px dashed #dee2e6;
 }
 
 .empty-state p {
-  margin: 0.5rem 0; /* 上下のマージンを設定 - テキスト間の間隔 */
-  color: #6c757d; /* 文字色をグレーに設定 - 目立ちすぎないように */
+  margin: 0.5rem 0;
+  color: #6c757d;
 }
 
 .empty-hint {
-  font-size: 0.875rem; /* フォントサイズを小さく - ヒントは控えめに */
-  color: #adb5bd; /* 文字色をより薄いグレーに設定 - さらに控えめに */
+  font-size: 0.875rem;
+  color: #adb5bd;
 }

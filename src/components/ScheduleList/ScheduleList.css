@@ -1,119 +1,110 @@
-/* 服用予定リストのスタイル定義 */
 .schedule-list-container {
-  width: 100%; /* 幅を100%に設定 */
-  max-width: 800px; /* 最大幅を800pxに制限 */
-  margin: 0 auto; /* 左右中央揃え */
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-/* 日付ヘッダーのスタイル */
 .date-header {
-  display: flex; /* フレックスボックスレイアウト */
-  align-items: center; /* 垂直方向中央揃え */
-  gap: 1rem; /* アイコンとテキストの間隔（16px） */
-  margin-bottom: 1.5rem; /* 下側の余白（24px） */
-  padding: 1rem; /* 内側の余白（16px） */
-  background-color: #e3f2fd; /* 薄い青背景（プライマリライト色） */
-  border-radius: 0.5rem; /* 角丸（8px） */
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #e3f2fd;
+  border-radius: 0.5rem;
 }
 
 .date-header h2 {
   margin: 0; /* デフォルトのマージンを削除 */
-  font-size: 1.25rem; /* フォントサイズを特大に（20px） */
-  color: #212121; /* テキスト色（濃い黒） */
+  font-size: 1.25rem;
+  color: #212121;
 }
 
-/* 服用予定リスト本体 */
 .schedule-list {
-  display: flex; /* フレックスボックスレイアウト */
-  flex-direction: column; /* 縦方向に配置 */
-  gap: 1rem; /* 各項目間の余白（16px） */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 /* 服用予定項目（カード形式） */
 .schedule-item {
-  display: flex; /* フレックスボックスレイアウト */
-  align-items: center; /* 垂直方向中央揃え */
-  padding: 1.5rem; /* 内側の余白（24px） */
-  background-color: #ffffff; /* 白背景 */
-  border-radius: 0.5rem; /* 角丸（8px） */
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* 小さい影 */
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .schedule-item:hover {
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06); /* ホバー時に影を強く（中程度の影） */
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-/* 服用完了済みの項目 */
 .schedule-item.completed {
-  background-color: #f0f9ff; /* 薄い青背景（完了を示す） */
-  opacity: 0.8; /* 少し透明に */
+  background-color: #f0f9ff; /* 完了を示す */
+  opacity: 0.8;
 }
 
-/* 時刻表示部分 */
 .schedule-time {
-  min-width: 80px; /* 最小幅を設定（時刻が揃うように） */
-  font-size: 1.125rem; /* フォントサイズを大きく（18px） */
-  font-weight: 700; /* 太字 */
-  color: #4a90e2; /* プライマリカラー（青） */
+  min-width: 80px; /* 時刻が揃うように */
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #4a90e2;
 }
 
-/* 薬剤情報部分 */
 .schedule-info {
-  flex: 1; /* 残りのスペースを使用 */
-  margin-left: 1.5rem; /* 左側の余白（24px） */
+  flex: 1;
+  margin-left: 1.5rem;
 }
 
 .medication-name {
-  font-size: 1.125rem; /* フォントサイズを大きく（18px） */
-  font-weight: 500; /* 中太字 */
-  color: #212121; /* テキスト色（濃い黒） */
-  margin-bottom: 0.25rem; /* 下側の余白（4px） */
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #212121;
+  margin-bottom: 0.25rem;
 }
 
 .medication-dosage {
-  font-size: 0.875rem; /* フォントサイズを小さく（14px） */
-  color: #757575; /* グレー（サブテキスト色） */
+  font-size: 0.875rem;
+  color: #757575;
 }
 
-/* チェックボックス部分 */
 .schedule-checkbox {
-  display: flex; /* フレックスボックスレイアウト */
-  align-items: center; /* 垂直方向中央揃え */
-  gap: 0.5rem; /* チェックボックスとラベルの間隔（8px） */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .schedule-checkbox input[type="checkbox"] {
-  width: 24px; /* チェックボックスの幅 */
-  height: 24px; /* チェックボックスの高さ */
-  cursor: pointer; /* カーソルをポインターに */
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
 }
 
 .schedule-checkbox label {
-  font-size: 0.875rem; /* フォントサイズを小さく（14px） */
-  color: #757575; /* グレー（サブテキスト色） */
-  cursor: pointer; /* カーソルをポインターに */
+  font-size: 0.875rem;
+  color: #757575;
+  cursor: pointer;
 }
 
-/* 完了時刻表示 */
 .actual-time {
-  font-size: 0.75rem; /* フォントサイズを極小に（12px） */
-  color: #50c878; /* 成功色（緑） */
-  margin-top: 0.25rem; /* 上側の余白（4px） */
+  font-size: 0.75rem;
+  color: #50c878; /* 成功色 */
+  margin-top: 0.25rem;
 }
 
-/* 空の状態の表示 */
 .empty-schedule {
-  text-align: center; /* テキストを中央揃え */
-  padding: 3rem; /* 内側の余白（48px） */
-  background-color: #f5f5f5; /* 薄いグレー背景 */
-  border-radius: 0.5rem; /* 角丸（8px） */
-  border: 2px dashed #e0e0e0; /* 破線のボーダー（デフォルトボーダー色） */
+  text-align: center;
+  padding: 3rem;
+  background-color: #f5f5f5;
+  border-radius: 0.5rem;
+  border: 2px dashed #e0e0e0;
 }
 
 .empty-schedule p {
-  margin: 0; /* マージンなし */
-  color: #757575; /* グレー（サブテキスト色） */
-  font-size: 1.125rem; /* フォントサイズを大きく（18px） */
+  margin: 0;
+  color: #757575;
+  font-size: 1.125rem;
 }

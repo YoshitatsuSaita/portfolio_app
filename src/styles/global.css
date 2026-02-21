@@ -1,196 +1,177 @@
-/* Global Styles - アプリ全体に適用される基本スタイル */
-
-/* リセットCSS - ブラウザのデフォルトスタイルを統一 */
 *,
 *::before,
 *::after {
-  box-sizing: border-box; /* パディングとボーダーを幅に含める */
-  margin: 0; /* デフォルトのマージンをリセット */
-  padding: 0; /* デフォルトのパディングをリセット */
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* HTML要素の基本設定 */
 html {
-  font-size: 16px; /* 基準フォントサイズを16pxに設定 */
-  -webkit-font-smoothing: antialiased; /* macOSでのフォント描画を滑らかに */
-  -moz-osx-font-smoothing: grayscale; /* Firefoxでのフォント描画を滑らかに */
-  text-rendering: optimizeLegibility; /* テキストの可読性を最適化 */
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-/* Body要素の設定 */
 body {
-  margin: 0; /* デフォルトのマージンを削除 */
+  margin: 0;
   font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
-    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; /* システムフォントを優先使用 */
-  font-size: 1rem; /* 基本フォントサイズ（16px）を適用 */
-  line-height: 1.6; /* 行間を1.6倍に設定（読みやすさ向上） */
-  color: #212121; /* メインテキストカラー（濃い黒）を適用 */
-  background-color: #f5f5f5; /* 背景色を薄いグレーに設定 */
-  min-height: 100vh; /* 最小高さを画面全体に設定 */
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #212121;
+  background-color: #f5f5f5;
+  min-height: 100vh;
 }
 
-/* 見出し要素の共通スタイル */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  text-align: center; /* テキストを中央揃え */
-  margin-top: 0; /* 上マージンを削除 */
-  margin-bottom: 1rem; /* 下マージン（16px）を設定 */
-  font-weight: 700; /* 太字に設定 */
-  line-height: 1.2; /* 見出しの行間を狭めに設定 */
-  color: #212121; /* テキスト色（濃い黒）を設定 */
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #212121;
 }
 
-/* 各見出しのサイズ設定 */
 h1 {
-  font-size: 2rem; /* 32px */
+  font-size: 2rem;
 }
 
 h2 {
-  font-size: 1.5rem; /* 24px */
+  font-size: 1.5rem;
 }
 
 h3 {
-  font-size: 1.25rem; /* 20px */
+  font-size: 1.25rem;
 }
 
 h4 {
-  font-size: 1.125rem; /* 18px */
+  font-size: 1.125rem;
 }
 
 h5,
 h6 {
-  font-size: 1rem; /* 16px */
+  font-size: 1rem;
 }
 
-/* 段落要素 */
 p {
-  margin-top: 0; /* 上マージンを削除 */
-  margin-bottom: 1rem; /* 下マージン（16px）を設定 */
+  margin-top: 0;
+  margin-bottom: 1rem;
 }
 
-/* リンク要素 */
 a {
-  color: #4a90e2; /* プライマリカラー（青）を適用 */
-  text-decoration: none; /* 下線を削除 */
+  color: #4a90e2;
+  text-decoration: none;
 }
 
 a:hover {
-  color: #357abd; /* ホバー時に濃い青に変更 */
-  text-decoration: underline; /* ホバー時に下線を表示 */
+  color: #357abd;
+  text-decoration: underline;
 }
 
-/* ボタン要素の基本スタイル */
 button {
-  font-family: inherit; /* 親要素のフォントを継承 */
-  font-size: inherit; /* 親要素のフォントサイズを継承 */
-  line-height: inherit; /* 親要素の行間を継承 */
-  cursor: pointer; /* カーソルをポインターに変更 */
-  border: none; /* デフォルトのボーダーを削除 */
-  background-color: transparent; /* デフォルトの背景色を透明に */
-  padding: 0; /* デフォルトのパディングを削除 */
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  padding: 0;
 }
 
 button:disabled {
-  cursor: not-allowed; /* 無効化時のカーソル */
-  opacity: 0.6; /* 無効化時の透明度 */
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
-/* 入力要素の基本スタイル */
 input,
 textarea,
 select {
-  font-family: inherit; /* 親要素のフォントを継承 */
-  font-size: inherit; /* 親要素のフォントサイズを継承 */
-  line-height: inherit; /* 親要素の行間を継承 */
-  color: inherit; /* 親要素のテキスト色を継承 */
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
 }
 
-/* リスト要素のスタイルリセット */
 ul,
 ol {
-  margin: 0; /* マージンをリセット */
-  padding: 0; /* パディングをリセット */
-  list-style: none; /* リストマーカーを削除 */
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-/* 画像要素 */
 img {
-  max-width: 100%; /* 親要素の幅を超えないように */
-  height: auto; /* アスペクト比を維持 */
+  max-width: 100%;
+  height: auto;
   display: block; /* インライン要素のスペースを削除 */
 }
 
-/* テーブル要素 */
 table {
-  border-collapse: collapse; /* ボーダーを結合 */
-  width: 100%; /* 幅を100%に設定 */
+  border-collapse: collapse;
+  width: 100%;
 }
 
 /* スクロールバーのカスタマイズ（Webkit系ブラウザ用） */
 ::-webkit-scrollbar {
-  width: 8px; /* スクロールバーの幅 */
-  height: 8px; /* 横スクロールバーの高さ */
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #f5f5f5; /* トラックの背景色（薄いグレー） */
+  background-color: #f5f5f5;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #bdbdbd; /* スクロールバーの色（濃いボーダー色） */
-  border-radius: 0.5rem; /* 角丸（8px） */
+  background-color: #bdbdbd;
+  border-radius: 0.5rem;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #757575; /* ホバー時の色（サブテキスト色） */
+  background-color: #757575;
 }
 
-/* フォーカス時のアウトライン */
 :focus-visible {
-  outline: 2px solid #4a90e2; /* プライマリカラー（青）のアウトライン */
-  outline-offset: 2px; /* アウトラインの位置調整 */
+  outline: 2px solid #4a90e2;
+  outline-offset: 2px;
 }
 
 /* スクリーンリーダー専用テキスト（視覚的には非表示、読み上げは可能） */
 .sr-only {
-  position: absolute; /* 通常のレイアウトから除外 */
-  width: 1px; /* 最小サイズ */
-  height: 1px; /* 最小サイズ */
-  padding: 0; /* パディングなし */
-  margin: -1px; /* マイナスマージンで隠す */
-  white-space: nowrap; /* 改行なし */
-  border-width: 0; /* ボーダーなし */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  white-space: nowrap;
+  border-width: 0;
 }
 
-/* 共通ボタンの基本スタイル */
 .btn {
-  padding: 0.5rem 2rem; /* 内側の余白 - 上下8px、左右32px */
-  border: none; /* ボーダーなし - シンプルなデザイン */
-  border-radius: 0.5rem; /* 角丸（8px）を適用 - 柔らかい印象 */
-  font-size: 1rem; /* フォントサイズを基本サイズ（16px）に */
-  font-weight: 500; /* フォントを少し太く - 視認性向上 */
-  cursor: pointer; /* カーソルをポインターに変更 - クリック可能を示す */
+  padding: 0.5rem 2rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
 }
 
-/* プライマリボタン - 主要アクション用（青系） */
 .btn-primary {
-  background-color: #4a90e2; /* 背景色をプライマリカラー（青）に */
-  color: white; /* 文字色を白に - 可読性を確保 */
+  background-color: #4a90e2;
+  color: white;
 }
 
-/* プライマリボタンのホバー時スタイル */
 .btn-primary:hover:not(:disabled) {
-  background-color: #357abd; /* 背景色をより濃い青に変更 - ホバー効果 */
-  transform: translateY(-1px); /* ボタンを少し上に移動 - 浮き上がる効果 */
+  background-color: #357abd;
+  transform: translateY(-1px);
 }
 
-/* 無効化されたボタン */
 .btn:disabled {
-  opacity: 0.6; /* 透明度を下げる - 無効状態を視覚的に示す */
-  cursor: not-allowed; /* カーソルを禁止マークに変更 - クリック不可を示す */
+  opacity: 0.6;
+  cursor: not-allowed;
 }

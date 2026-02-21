@@ -1,17 +1,14 @@
-import { useEffect } from 'react'; // useEffectフックをインポート - コンポーネントのライフサイクル管理
-import { useMedicationStore } from '../../store/medicationStore'; // Zustandストアをインポート - 薬剤データと操作関数を取得
-import { Medication } from '../../types'; // Medication型をインポート - 編集コールバックの型定義に使用
-import MedicationCard from '../MedicationCard/MedicationCard'; // MedicationCardコンポーネントをインポート - 個別の薬剤カードを表示
-import './MedicationList.css'; // CSSファイルをインポート - リストのスタイル定義
+import { useEffect } from 'react';
+import { useMedicationStore } from '../../store/medicationStore';
+import { Medication } from '../../types';
+import MedicationCard from '../MedicationCard/MedicationCard';
+import './MedicationList.css';
 
-// MedicationListコンポーネントのプロパティの型定義
 interface MedicationListProps {
-  onEdit: (medication: Medication) => void; // 編集ボタンクリック時のコールバック関数 - 親コンポーネントで編集モーダルを開く
+  onEdit: (medication: Medication) => void;
 }
 
-// MedicationListコンポーネント - 薬剤の一覧を表示
 function MedicationList({ onEdit }: MedicationListProps) {
-  // Zustandストアから必要な状態とアクションを取得
   const { medications, loading, error, fetchMedications } =
     useMedicationStore();
 
@@ -19,64 +16,48 @@ function MedicationList({ onEdit }: MedicationListProps) {
     fetchMedications(); // IndexedDBから全薬剤を取得してストアに保存
   }, [fetchMedications]);
 
-  // ローディング中の表示
   if (loading) {
     return (
       <div className="medication-list-container">
-        {/* コンテナ */}
         <div className="loading">読み込み中...</div>
-        {/* ローディングメッセージ */}
       </div>
     );
   }
 
-  // エラー発生時の表示
   if (error) {
     return (
       <div className="medication-list-container">
-        {/* コンテナ */}
-        <div className="error">{error}</div> {/* エラーメッセージを表示 */}
+        <div className="error">{error}</div>
       </div>
     );
   }
 
-  // 薬剤が0件の場合の表示
   if (medications.length === 0) {
     return (
       <div className="medication-list-container">
-        {/* コンテナ */}
         <div className="empty-state">
-          {/* 空の状態用のコンテナ */}
-          <p>登録されている薬剤がありません</p> {/* メッセージを表示 */}
+          <p>登録されている薬剤がありません</p>
           <p className="empty-hint">
             「新規登録」ボタンから薬剤を追加してください
           </p>
-          {/* ヒントを表示 */}
         </div>
       </div>
     );
   }
 
-  // 薬剤が存在する場合の表示
   return (
     <div className="medication-list-container">
-      {/* コンテナ */}
       <div className="medication-list">
-        {/* リスト本体 */}
-        {medications.map(
-          (
-            medication // 薬剤の配列をループして各薬剤のカードを生成
-          ) => (
-            <MedicationCard
-              key={medication.id} // Reactのkey属性 - 各要素を一意に識別（再レンダリングの最適化）
-              medication={medication} // 薬剤データをMedicationCardコンポーネントに渡す
-              onEdit={onEdit} // 編集コールバック関数をMedicationCardに渡す
-            />
-          )
-        )}
+        {medications.map((medication) => (
+          <MedicationCard
+            key={medication.id}
+            medication={medication}
+            onEdit={onEdit}
+          />
+        ))}
       </div>
     </div>
   );
 }
 
-export default MedicationList; // 他のファイルから使用できるようにエクスポート
+export default MedicationList;
