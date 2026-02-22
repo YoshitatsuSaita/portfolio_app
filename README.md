@@ -42,23 +42,30 @@
 ---
 
 ## ディレクトリ構成
-
 ```
 /
-├── index.html                        
-├── vite.config.ts                    
-├── tsconfig.json                     
-├── package.json                      
+├── index.html
+├── vite.config.ts
+├── tsconfig.json
+├── tsconfig.node.json
+├── package.json
 ├── .env                              # 環境変数（要作成）
+├── api/
+│   └── weather.ts                    # Vercel Serverless Functions（天気API プロキシ）
+├── public/
 └── src/
-    ├── main.tsx                      
-    ├── App.tsx                       
-    ├── App.css                       
-    ├── index.css                     
+    ├── main.tsx
+    ├── App.tsx
+    ├── App.css
+    ├── index.css
+    ├── vite-env.d.ts                 # Vite 環境変数の型定義
     ├── types/
     │   └── index.ts                  # 全型定義
+    ├── styles/
+    │   └── global.css                # グローバルスタイル
     ├── db/
-    │   └── database.ts               # Dexie DB 定義 + CRUD 操作関数
+    │   ├── database.ts               # Dexie DB 定義 + CRUD 操作関数
+    │   └── database.test.ts
     ├── api/
     │   ├── weatherAPI.ts             # OpenWeatherMap API 呼び出し + 位置情報取得
     │   └── index.ts                  # API モジュールの再エクスポート
@@ -67,7 +74,11 @@
     │   └── weatherStore.ts           # 天気データ・設定の Zustand ストア
     ├── utils/
     │   ├── scheduleUtils.ts          # スケジュール生成・マージユーティリティ
-    │   └── weatherUtils.ts           # 天気警告判定・アイコン取得ユーティリティ
+    │   ├── scheduleUtils.test.ts
+    │   ├── weatherUtils.ts           # 天気警告判定・アイコン取得ユーティリティ
+    │   └── weatherUtils.test.ts
+    ├── test/
+    │   └── setup.ts                  # テストセットアップ（vitest）
     ├── pages/
     │   ├── Home/
     │   │   ├── Home.tsx              # ホーム画面（今日の服用予定 + 天気情報）
@@ -75,9 +86,12 @@
     │   ├── Medications/
     │   │   ├── Medications.tsx       # 薬剤管理画面（一覧・登録・編集・削除）
     │   │   └── Medications.css
-    │   └── Calendar/
-    │       ├── Calendar.tsx          # カレンダー画面（月表示 + 日別詳細）
-    │       └── Calendar.css
+    │   ├── Calendar/
+    │   │   ├── Calendar.tsx          # カレンダー画面（月表示 + 日別詳細）
+    │   │   └── Calendar.css
+    │   └── NotFound/
+    │       ├── NotFound.tsx          # 404 ページ
+    │       └── NotFound.css
     └── components/
         ├── Layout/
         │   ├── Layout.tsx            # 共通レイアウト（ヘッダー + ナビゲーション）
@@ -85,15 +99,31 @@
         ├── Header/
         │   ├── Header.tsx            # ヘッダーコンポーネント
         │   └── Header.css
+        ├── Navigation/
+        │   ├── Navigation.tsx        # ナビゲーションコンポーネント
+        │   └── Navigation.css
+        ├── ErrorBoundary/
+        │   ├── ErrorBoundary.tsx     # エラーバウンダリーコンポーネント
+        │   └── ErrorBoundary.css
         ├── MedicationCard/
         │   ├── MedicationCard.tsx    # 薬剤情報カードコンポーネント
         │   └── MedicationCard.css
+        ├── MedicationForm/
+        │   ├── MedicationForm.tsx    # 薬剤登録・編集フォームコンポーネント
+        │   └── MedicationForm.css
+        ├── MedicationList/
+        │   ├── MedicationList.tsx    # 薬剤一覧コンポーネント
+        │   └── MedicationList.css
+        ├── Modal/
+        │   ├── Modal.tsx             # 汎用モーダルコンポーネント
+        │   └── Modal.css
         ├── ScheduleList/
         │   ├── ScheduleList.tsx      # 服用予定リストコンポーネント
         │   └── ScheduleList.css
         └── WeatherAlert/
             ├── WeatherAlert.tsx      # 天気警告 / 良好バナーコンポーネント
             └── WeatherAlert.css
+```
 ```
 ■ ストアの責務
 
@@ -176,6 +206,8 @@ VITE_OPENWEATHER_API_KEY=(あなたのAPIキー)
  - 天気連携が有効な場合、現在地の気温・湿度・天気概要を表示
  - 保管環境に問題がある場合は警告バナー、良好な場合は良好バナーを表示
 
+![ホーム画面](docs/screenshots/home.png)
+
 ### 薬剤管理画面 (`/medications`)
 
 - 登録済み薬剤の一覧カード表示
@@ -183,12 +215,17 @@ VITE_OPENWEATHER_API_KEY=(あなたのAPIキー)
 - 既存薬剤の編集・削除
 - 服用期間が終了した薬剤には「服用終了」バッジを表示
 
+![薬剤管理画面](docs/screenshots/medications.png)
+![新規登録画面](docs/screenshots/medications2.png)
+
 ### カレンダー画面 (`/calendar`)
 
 - 月カレンダーで各日付の服用状況を確認
   - `完了数/総数` バッジを各日付に表示
   - 全完了：緑バッジ、一部完了：黄バッジ、未完了：青バッジ
 - 日付クリックでその日の服用予定詳細を下部に表示
+
+![カレンダー画面](docs/screenshots/calendar.png)
 
 ---
 
