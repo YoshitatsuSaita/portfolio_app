@@ -30,15 +30,18 @@
 |---|---|---|
 | UI フレームワーク | React 18.2.0 | コンポーネント単位での UI 管理が複数画面の構成に適しており、エコシステムが充実しているため採用 |
 | 言語 | TypeScript 5.4.0 | 薬剤データ・天気データなど構造が明確な型を定義し、null 参照や誤ったプロパティアクセスによるバグを開発時点で検出するために採用 |
-| ビルドツール | Vite 4.0.0 |起動・HMR が高速であるため採用 |
+| ビルドツール | Vite 7.3.1 |起動・HMR が高速であるため採用 |
 | ルーティング | React Router DOM 7.13.0 | SPA 構成でホーム・薬剤管理・カレンダーの 3 画面を独立したルートとして管理するために採用 |
 | 状態管理 | Zustand 5.0.11 | Redux も検討したが、このアプリの規模にはボイラープレートが多すぎるため、シンプルな API で扱えるZustand を採用 |
 | ローカル DB | Dexie (IndexedDB ラッパー) 4.3.0 | 生の IndexedDB API も検討したが、非同期処理の記述が複雑になりすぎるため、直感的な API を持つ Dexie を採用。オフライン動作の実現にも寄与 |
 | 日時操作 | Day.js 1.11.19 | Moment.js も検討したが、バンドルサイズが大きく開発が終了しているため、軽量で同等の操作性を持つ Day.js を採用 |
 | カレンダー UI | React Calendar 6.0.0 | 各日付へのカスタムコンテンツ（服用状況バッジ）を差し込める柔軟性を持ち、自前実装のコストを避けるために採用 |
 | フォーム管理 | React Hook Form 7.71.1 | 非制御コンポーネントベースで再レンダリングが最小限に抑えられ、バリデーション定義も宣言的に書けるため採用 |
+| トースト通知 | React Hot Toast 2.6.0 | react-toastifyも検討したが、このアプリの規模にはボイラープレートが多すぎる点と非同期処理との相性の良さを考えて採用 |
 | 天気 API | OpenWeatherMap API (v2.5) | 当初は openFDA API で薬品詳細情報を取得する機能を検討したが、日本語非対応のため断念。代替として無料枠で気温・湿度を取得できる OpenWeatherMap API を採用し、薬の保管環境アラート機能に転換 |
-| Linter | ESLint 9 + typescript-eslint + eslint-plugin-react | TypeScript に対応したルールセットで `any` 型の使用などコード品質に関わる問題を自動検出するために採用 |
+| テスト | Vitest 4.0.18 + @testing-library/react 16.3.2 + @testing-library/jest-dom 6.9.1 + fake-indexeddb 6.2.5 | Vite と統合でき設定がシンプルであるため採用。@testing-library でコンポーネントテスト、fake-indexeddb で IndexedDB のモックを実現 |
+| Linter | ESLint 9 + typescript-eslint + eslint-plugin-react + eslint-plugin-react-hooks | TypeScript に対応したルールセットで `any` 型の使用などコード品質に関わる問題を自動検出するために採用。Hooks のルール違反も検出できるよう eslint-plugin-react-hooks を追加 |
+| フォーマッター | Prettier 3.8.1 + eslint-config-prettier | コードスタイルを自動統一し、ESLint との競合ルールを eslint-config-prettier で無効化するために採用 |
 ---
 
 ## ディレクトリ構成
@@ -230,6 +233,11 @@ VITE_OPENWEATHER_API_KEY=(あなたのAPIキー)
 カレンダー画面
 ![カレンダー画面](docs/screenshots/calendar.png)
 
+### 404ページ (`/NotFound`)
+
+- ユーザーが間違ったURLにアクセスした時の画面
+  - 警告文とホーム画面へのリンクを含むボタンを表示
+  - 本画面への到達は想定していないためスクリーンショットは割愛
 ---
 
 ## 天気連携機能
@@ -270,4 +278,6 @@ VITE_OPENWEATHER_API_KEY=(あなたのAPIキー)
   - 予期しないエラーでアプリ全体がクラッシュすることを防ぐため、ErrorBoundary と NotFoundページを導入しユーザーフレンドリーな復帰導線を用意した
 - ID生成形式の変更
   - 当初はID生成に Math.random() を使用していたが、衝突リスクと非推奨メソッドの使用を解消するため crypto.randomUUID() に移行した
+- エラーハンドリングの統一
+　- 当初はブラウザ標準のポップアップを使っていたが、  画面デザイン向上のためトースト通知に統合した
 
