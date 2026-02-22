@@ -12,12 +12,6 @@
 
 ---
 
-## デモ
-
-🔗 **ライブデモ**: https://portfolio-app-two-gamma.vercel.app/
-
----
-
 ## 主な機能
 
 | 機能             | 説明                                                             |
@@ -145,20 +139,6 @@
  - Zustand Store が状態管理とDB操作の仲介を担い、UIとデータ層を分離
  - 天気データは API → Store → IndexedDB の順で保存し、キャッシュとして再利用
 
-■ ストアの責務
-
-- medicationStore: 薬剤データの CRUD 操作と一覧管理
-- weatherStore: 天気データの取得・キャッシュ・設定管理
-
-■ データフロー
-
-ユーザー操作 → Component → Zustand Store → Dexie (IndexedDB)
-→ OpenWeatherMap API
-
-- Component はストア経由でのみデータにアクセスし、DB を直接操作しない
-- Zustand Store が状態管理とDB操作の仲介を担い、UIとデータ層を分離
-- 天気データは API → Store → IndexedDB の順で保存し、キャッシュとして再利用
-
 ---
 
 ## セットアップ
@@ -224,9 +204,6 @@ VITE_OPENWEATHER_API_KEY=(あなたのAPIキー)
 - 天気連携の ON/OFF トグルと手動更新ボタン
 - 天気連携が有効な場合、現在地の気温・湿度・天気概要を表示
 - 保管環境に問題がある場合は警告バナー、良好な場合は良好バナーを表示
-
-ホーム画面
-![ホーム画面](docs/screenshots/home.png)
 
 ホーム画面
 ![ホーム画面](docs/screenshots/home.png)
