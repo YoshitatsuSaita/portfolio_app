@@ -111,13 +111,16 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
           type="text"
           className={`form-input ${errors.name ? 'error' : ''}`}
           placeholder="例: トラネキサム酸錠250mg"
+          maxLength={50}
           {...register('name', {
             required: '薬品名は必須です',
+            maxLength: {
+              value: 50,
+              message: '薬品名は50文字以内で入力してください',
+            },
           })}
         />
-        {errors.name && (
-          <p className="error-message">{errors.name.message}</p>
-        )}
+        {errors.name && <p className="error-message">{errors.name.message}</p>}
       </div>
 
       <div className="form-group">
@@ -129,8 +132,13 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
           type="text"
           className={`form-input ${errors.dosage ? 'error' : ''}`}
           placeholder="例: 1"
+          maxLength={20}
           {...register('dosage', {
             required: '服用量は必須です',
+            maxLength: {
+              value: 20,
+              message: '服用量は20文字以内で入力してください',
+            },
           })}
         />
         {errors.dosage && (
@@ -237,7 +245,13 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
           rows={3}
           className="form-textarea"
           placeholder="例: 食後に服用"
-          {...register('memo')}
+          maxLength={500}
+          {...register('memo', {
+            maxLength: {
+              value: 500,
+              message: 'メモは500文字以内で入力してください',
+            },
+          })}
         />
       </div>
 
@@ -247,15 +261,13 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
           className="btn btn-primary"
           disabled={isSubmitting}
         >
-          {
-            isSubmitting
-              ? isEditMode
-                ? '更新中...'
-                : '登録中...'
-              : isEditMode
-                ? '更新'
-                : '登録'
-          }
+          {isSubmitting
+            ? isEditMode
+              ? '更新中...'
+              : '登録中...'
+            : isEditMode
+              ? '更新'
+              : '登録'}
         </button>
       </div>
     </form>
