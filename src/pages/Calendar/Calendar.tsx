@@ -7,7 +7,6 @@ import {
   generateScheduleForRange,
   mergeScheduleWithRecords,
 } from '../../utils/scheduleUtils';
-import { getRecordsByDateRange } from '../../db/database';
 import { ScheduleItem } from '../../types';
 import ScheduleList from '../../components/ScheduleList/ScheduleList';
 import './Calendar.css';
@@ -16,7 +15,8 @@ type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 function CalendarPage() {
-  const { medications, fetchActiveMedications } = useMedicationStore();
+  const { medications, fetchActiveMedications, fetchRecordsByDateRange } =
+    useMedicationStore();
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [activeStartDate, setActiveStartDate] = useState<Date>(new Date());
   const [scheduleMap, setScheduleMap] = useState<
@@ -43,7 +43,8 @@ function CalendarPage() {
           endDate
         );
 
-        const records = await getRecordsByDateRange(
+        // 戻り値を直接使うことで ScheduleList との records 上書き競合を防ぐ
+        const records = await fetchRecordsByDateRange(
           startDate.toISOString(),
           endDate.toISOString()
         );
@@ -68,7 +69,7 @@ function CalendarPage() {
         setLoading(false);
       }
     },
-    [medications.length, fetchActiveMedications]
+    [medications.length, fetchActiveMedications, fetchRecordsByDateRange]
   );
 
   useEffect(() => {

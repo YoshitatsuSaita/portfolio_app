@@ -7,11 +7,6 @@ import {
   mergeScheduleWithRecords,
   getTodayDateString,
 } from '../../utils/scheduleUtils';
-import {
-  getRecordsByDateRange,
-  createMedicationRecord,
-  updateMedicationRecord,
-} from '../../db/database';
 import './ScheduleList.css';
 
 interface ScheduleListProps {
@@ -20,7 +15,13 @@ interface ScheduleListProps {
 }
 
 function ScheduleList({ date, onScheduleUpdated }: ScheduleListProps) {
-  const { medications, fetchActiveMedications } = useMedicationStore();
+  const {
+    medications,
+    fetchActiveMedications,
+    fetchRecordsByDateRange,
+    addRecord,
+    editRecord,
+  } = useMedicationStore();
   const [scheduleItems, setScheduleItems] = useState<ScheduleItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -48,20 +49,24 @@ function ScheduleList({ date, onScheduleUpdated }: ScheduleListProps) {
 
       const startTime = `${targetDate}T00:00:00`;
       const endTime = `${targetDate}T23:59:59`;
-      const records = await getRecordsByDateRange(startTime, endTime);
+      const records = await fetchRecordsByDateRange(startTime, endTime);
 
       const mergedSchedule = mergeScheduleWithRecords(
         generatedSchedule,
         records
       );
-
       setScheduleItems(mergedSchedule);
     } catch (error) {
       console.error('服用予定の読み込みに失敗しました:', error);
     } finally {
       setLoading(false);
     }
-  }, [medications.length, fetchActiveMedications, targetDate]);
+  }, [
+    medications.length,
+    fetchActiveMedications,
+    fetchRecordsByDateRange,
+    targetDate,
+  ]);
 
   useEffect(() => {
     loadSchedule();
@@ -71,12 +76,12 @@ function ScheduleList({ date, onScheduleUpdated }: ScheduleListProps) {
     try {
       if (checked) {
         if (item.recordId) {
-          await updateMedicationRecord(item.recordId, {
+          await editRecord(item.recordId, {
             completed: true,
             actualTime: new Date().toISOString(),
           });
         } else {
-          await createMedicationRecord({
+          await addRecord({
             medicationId: item.medicationId,
             scheduledTime: item.scheduledTime,
             actualTime: new Date().toISOString(),
@@ -85,7 +90,7 @@ function ScheduleList({ date, onScheduleUpdated }: ScheduleListProps) {
         }
       } else {
         if (item.recordId) {
-          await updateMedicationRecord(item.recordId, {
+          await editRecord(item.recordId, {
             completed: false,
             actualTime: null,
           });
