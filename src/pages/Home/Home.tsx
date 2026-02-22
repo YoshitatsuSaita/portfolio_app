@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import toast from 'react-hot-toast';
 import ScheduleList from '../../components/ScheduleList/ScheduleList';
 import WeatherAlert from '../../components/WeatherAlert/WeatherAlert';
 import { useWeatherStore } from '../../store/weatherStore';
@@ -17,8 +18,6 @@ function Home() {
     loadLatestWeatherData, // IndexedDBから最新の天気データを読み込む関数
   } = useWeatherStore();
 
-  const [locationError, setLocationError] = useState<string | null>(null);
-
   // 未取得の場合は東京デフォルトで取得する
   useEffect(() => {
     loadSettings().then(() => {
@@ -27,15 +26,20 @@ function Home() {
     });
   }, [loadSettings, loadLatestWeatherData, checkAndFetchWeatherIfNeeded]);
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
+
   // このボタン押下時のみ位置情報の許可を求める（ページ表示時には求めない）
   const handleFetchCurrentLocation = async () => {
-    setLocationError(null);
     try {
       const { getCurrentPosition } = await import('../../api');
       const position = await getCurrentPosition();
       await fetchWeatherData(position.lat, position.lon);
     } catch {
-      setLocationError(
+      toast.error(
         '位置情報の取得に失敗しました。ブラウザの設定を確認してください。'
       );
     }
@@ -60,10 +64,6 @@ function Home() {
   return (
     <div className="home">
       <section className="home-weather-section">
-        {locationError && (
-          <div className="home-weather-error">{locationError}</div>
-        )}
-        {error && <div className="home-weather-error">{error}</div>}
         {weatherData ? (
           <div className="home-weather-info">
             <div className="home-weather-info-left">

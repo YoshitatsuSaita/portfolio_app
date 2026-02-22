@@ -1,6 +1,7 @@
 import { useForm, useWatch } from 'react-hook-form';
 import { useEffect } from 'react';
 import dayjs from 'dayjs';
+import toast from 'react-hot-toast';
 import { useMedicationStore } from '../../store/medicationStore';
 import { Medication } from '../../types';
 import './MedicationForm.css';
@@ -83,6 +84,7 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
           endDate,
           memo: data.memo,
         });
+        toast.success('薬剤情報を更新しました');
       } else {
         await addMedication({
           name: data.name,
@@ -93,10 +95,16 @@ function MedicationForm({ medication, onSuccess }: MedicationFormProps) {
           endDate,
           memo: data.memo,
         });
+        toast.success('薬剤を登録しました');
       }
       onSuccess();
     } catch (error) {
       console.error('薬剤の登録/更新に失敗しました:', error);
+      toast.error(
+        isEditMode
+          ? '薬剤の更新に失敗しました。もう一度お試しください。'
+          : '薬剤の登録に失敗しました。もう一度お試しください。'
+      );
     }
   };
 
