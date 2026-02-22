@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import dayjs from 'dayjs';
+import toast from 'react-hot-toast';
 import { ScheduleItem } from '../../types';
 import { useMedicationStore } from '../../store/medicationStore';
 import {
@@ -58,6 +59,7 @@ function ScheduleList({ date, onScheduleUpdated }: ScheduleListProps) {
       setScheduleItems(mergedSchedule);
     } catch (error) {
       console.error('服用予定の読み込みに失敗しました:', error);
+      toast.error('服用予定の読み込みに失敗しました。');
     } finally {
       setLoading(false);
     }
@@ -103,7 +105,7 @@ function ScheduleList({ date, onScheduleUpdated }: ScheduleListProps) {
       }
     } catch (error) {
       console.error('服用記録の更新に失敗しました:', error);
-      alert('服用記録の更新に失敗しました。もう一度お試しください。');
+      toast.error('服用記録の更新に失敗しました。もう一度お試しください。');
     }
   };
 

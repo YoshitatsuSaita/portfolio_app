@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import toast from 'react-hot-toast';
 import { useMedicationStore } from '../../store/medicationStore';
 import { Medication } from '../../types';
 import MedicationCard from '../MedicationCard/MedicationCard';
@@ -16,18 +17,16 @@ function MedicationList({ onEdit }: MedicationListProps) {
     fetchMedications(); // IndexedDBから全薬剤を取得してストアに保存
   }, [fetchMedications]);
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
+
   if (loading) {
     return (
       <div className="medication-list-container">
         <div className="loading">読み込み中...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="medication-list-container">
-        <div className="error">{error}</div>
       </div>
     );
   }

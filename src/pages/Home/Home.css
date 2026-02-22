@@ -14,16 +14,6 @@
     0 2px 4px -1px rgba(0, 0, 0, 0.06); /* カード感を演出 */
 }
 
-/* 位置情報エラー・ストアエラー共通 */
-.home-weather-error {
-  background-color: #fee;
-  color: #ef5350;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  margin-bottom: 1rem;
-  border-left: 4px solid #ef5350;
-}
-
 .home-weather-loading {
   color: #757575;
   font-size: 0.875rem;
